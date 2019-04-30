@@ -8,7 +8,7 @@
     "start:prod": "node server/server.js",
     "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
     "client": "cd client && npm run start",
-    "lint": "eslint **/*.js",
+    "lint": "eslint '**/canary.test.js'",
     "seed": "node server/scripts/seedDB.js",
     "test": "mocha",
     "install": "cd client && yarn install",
