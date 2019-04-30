@@ -8,6 +8,7 @@
     "start:prod": "node server/server.js",
     "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
     "client": "cd client && npm run start",
+    "lint": "eslint **/*.js",
     "seed": "node server/scripts/seedDB.js",
     "test": "mocha",
     "install": "cd client && yarn install",
@@ -26,7 +27,10 @@
   "devDependencies": {
     "concurrently": "^3.5.0",
     "cypress": "^3.2.0",
+    "eslint": "^5.16.0",
+    "eslint-plugin-prettier": "^3.0.1",
     "nodemon": "^1.11.0",
+    "prettier": "^1.17.0",
     "start-server-and-test": "^1.9.0"
   },
   "dependencies": {
@@ -36,7 +40,7 @@
     "chai": "^4.2.0",
     "connect-mongo": "^2.0.1",
     "dotenv": "^6.1.0",
-    "eslint": "^5.16.0",
+    "eslint-config-prettier": "^4.2.0",
     "express": "^4.16.4",
     "express-session": "^1.15.6",
     "if-env": "^1.0.4",
