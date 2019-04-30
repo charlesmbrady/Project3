@@ -6,14 +6,14 @@ jobs:
     steps:
       - checkout
       - run: npm install
-      - run: npm run start
+      - run: npm run build
   test:
     docker:
       - image: circleci/node:10.15
     steps:
       - checkout
       - run: npm install
-      - run: npm run test
+      - run: npm run start
   cypress:
     docker:
       - image: cypress/base:10
