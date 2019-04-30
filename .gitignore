@@ -1,1 +1,16 @@
-node_modules
+######################
+# Project Specific
+#####################
+/client/build/
+/client/package-lock.json
+
+######################
+# Node
+######################
+/node/
+node_tmp/
+node_modules/
+npm-debug.log.*
+/.awcache/*
+package-lock.json
+/client/node_modules
