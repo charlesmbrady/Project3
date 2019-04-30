@@ -29,7 +29,7 @@ workflows:
       - build
       - test:
           requires:
-            -build
+            - build
       - cypress:
           requires:
-            -build
+            - build
