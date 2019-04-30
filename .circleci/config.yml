@@ -6,7 +6,7 @@ jobs:
     steps:
       - checkout
       - run: npm install
-      - run: npm run start
+      - run: npm run build
   test:
     docker:
       - image: circleci/node:10.15
@@ -27,5 +27,9 @@ workflows:
   build_and_test:
     jobs:
       - build
-      - test
-      - cypress
+      - test:
+          requires:
+            -build
+      - cypress:
+          requires:
+            -build
