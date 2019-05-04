@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Redirect, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Container, Row, Col } from '../../components/Grid';
-import { Card } from '../../components/Card';
 import { InfoCard } from '../../components/InfoCard';
-import { Input, FormBtn } from '../../components/Form';
+import { FormBtn } from '../../components/Form';
 
 
 class SipSpotEntry extends Component {
@@ -36,9 +35,7 @@ class SipSpotEntry extends Component {
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col-md-2 col-lg-2 col-xl-2">
-                                {/* <Card ></Card> */}
-                            </div>
+                            <div className="col-md-2 col-lg-2 col-xl-2"></div>
                             <div className="col-md-8 col-lg-8 col-xl-8"></div>
                             <div className="col-md-2 col-lg-2 col-xl-2">
                                 <InfoCard >Uber Link coming soon...</InfoCard>
