@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import LoginForm from './pages/Auth/LoginForm';
 import SignupForm from './pages/Auth/SignupForm';
+import SipSpotEntry from './pages/Auth/SipSpotEntry';
 import Nav from "./components/Nav";
 import Books from './pages/Books';
 import Detail from "./pages/Detail";
@@ -81,7 +82,8 @@ class App extends Component {
         )}
         { !this.state.loggedIn && (
           <div className="auth-wrapper" style={{paddingTop:40}}>
-            <Route exact path="/" component={() => <LoginForm login={this.login}/>} />
+						<Route exact path="/" component={SipSpotEntry} />
+						<Route exact path="/login" component={() => <LoginForm login={this.login}/>} />
             <Route exact path="/books" component={() => <LoginForm user={this.login}/>} />
             <Route exact path="/signup" component={SignupForm} />
           </div>
