@@ -40,7 +40,7 @@ class LoginForm extends Component {
           <Row>
             <Col size="md-3"></Col>
             <Col size="md-6">
-              <Card title="Login to React Reading List">
+              <Card title="Login to sipSpot">
                 <form style={{marginTop: 10}}>
                   <label htmlFor="username">Username: </label>
                   <Input
@@ -60,6 +60,7 @@ class LoginForm extends Component {
                   <FormBtn onClick={this.handleSubmit}>Login</FormBtn>
                 </form>
               </Card>
+							<Link to="/">Use without login/register</Link>
             </Col>
             <Col size="md-3"></Col>
           </Row>
