@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { Container, Row, Col } from '../../components/Grid';
 import { InfoCard } from '../../components/InfoCard';
 import { FormBtn } from '../../components/Form';
