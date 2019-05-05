@@ -21,6 +21,7 @@ jobs:
     steps:
       - checkout
       - run: npm install
+      - run: npm run start
       - run: npm run cy:run
   
 workflows:
@@ -31,6 +32,6 @@ workflows:
       - test:
           requires:
             - build
-      - cypress:
-          requires:
-            - build
+      # - cypress:
+      #     requires:
+      #       - build
