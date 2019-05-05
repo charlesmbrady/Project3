@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import LoginForm from './pages/Auth/LoginForm';
 import SignupForm from './pages/Auth/SignupForm';
-import SipSpotEntry from './pages/Auth/SipSpotEntry';
+import SipSpotEntry from './pages/SipSpotEntry';
 import Nav from "./components/Nav";
-import Books from './pages/Books';
-import Detail from "./pages/Detail";
+// import Detail from "./pages/Detail";
 import NoMatch from "./pages/NoMatch";
 import AUTH from './utils/AUTH';
 
@@ -72,21 +71,21 @@ class App extends Component {
             <Nav user={this.state.user} logout={this.logout}/>
             <div className="main-view">
               <Switch>
-                <Route exact path="/" component={() => <Books user={this.state.user}/>} />
-                <Route exact path="/books" component={() => <Books user={this.state.user}/>} />
-                <Route exact path="/books/:id" component={Detail} />
+                <Route exact path="/" component={() => <SipSpotEntry user={this.state.user}/>} />
                 <Route component={NoMatch} />
               </Switch>
             </div>
           </div>
         )}
         { !this.state.loggedIn && (
+					<div>
+					<Nav user={this.state.user} />
           <div className="auth-wrapper" style={{paddingTop:40}}>
 						<Route exact path="/" component={SipSpotEntry} />
 						<Route exact path="/login" component={() => <LoginForm login={this.login}/>} />
-            <Route exact path="/books" component={() => <LoginForm user={this.login}/>} />
             <Route exact path="/signup" component={SignupForm} />
           </div>
+					</div>
         )}
 			</div>
 		)
