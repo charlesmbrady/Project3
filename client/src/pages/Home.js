@@ -11,7 +11,7 @@ function Home(props) {
   return (
     <div>
     <Container className="home">
-    <MenuModal logout={props.logout}></MenuModal>
+    <MenuModal user={props.user} logout={props.logout}></MenuModal>
       <Row>
         <Col>
           <h1>Home Screen</h1>

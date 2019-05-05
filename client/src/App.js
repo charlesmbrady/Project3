@@ -87,7 +87,7 @@ class App extends Component {
 					<div>
 						{/* <Nav user={this.state.user} /> */}
 						<div className="auth-wrapper" style={{ paddingTop: 40 }}>
-							<Route exact path="/" component={() => <Home logout={this.logout} />} />
+							<Route exact path="/" component={() => <Home user={this.state.user} logout={this.logout} />} />
 							<Route exact path="/history" component={History} />
 							<Route exact path="/settings" component={Settings} />
 							<Route exact path="/friends" component={Friends} />

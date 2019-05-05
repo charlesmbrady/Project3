@@ -32,19 +32,24 @@ class MenuModal extends React.Component {
                         <Container>
                             <Row>
                                 <Col>
-                                    <Link to='/login'>Login</Link>
+                                {this.props.user ? (<h2>{this.props.user.firstName}</h2>) : 
+                                <Link to='/login'>Login</Link>
+                            }
+                                    
                                 </Col>
 
 
                             </Row>
                             <Row>
                                 <Col>
-                                    <Link to='/signup'>Signup</Link>
+                                    {!this.props.user ? <Link to='/signup'>Signup</Link> : null}
                                 </Col>
                             </Row>
+                           
                             <Row>
                                 <Col>
-                                    <Link to="#" className="logout" onClick={this.props.logout}>Logout</Link>
+                                {this.props.user ? (<Link to="#" className="logout" onClick={this.props.logout}>Logout</Link>) : null}
+                                    
                                 </Col>
                             </Row>
                         </Container>
