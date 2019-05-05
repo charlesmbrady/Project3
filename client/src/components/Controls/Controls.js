@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Container, Row, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Container, Row, Col, Button } from 'reactstrap';
 import './Controls.css';
 
 function Controls() {
@@ -8,25 +8,25 @@ function Controls() {
         <Container className="controls">
             <Row>
                 <Col>
-                <Button>Alert</Button>
+                <Button data-test="controls-alert">Alert</Button>
                 </Col>
                 <Col>
-                <Button>Check-In/Out</Button>
+                <Button data-test="controls-checkin">Check-In/Out</Button>
                 </Col>
                 <Col className="console-drinks">
                     <Row>
                         <Col>
-                        <Button>Beer</Button>
+                        <Button data-test="controls-beer">Beer</Button>
                         </Col>
                     </Row>
                     <Row>
                         <Col>
-                        <Button>Wine</Button>
+                        <Button data-test="controls-wine">Wine</Button>
                         </Col>
                     </Row>
                     <Row>
                         <Col>
-                        <Button>Liqour</Button>
+                        <Button data-test="controls-liquor">Liqour</Button>
                         </Col>
                     </Row>
                 </Col>
