@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { Container, Row, Col } from '../../components/Grid';
 import { InfoCard } from '../../components/InfoCard';
 import { FormBtn } from '../../components/Form';
@@ -10,13 +9,18 @@ class SipSpotEntry extends Component {
         
       };
 
-    handleSubmit = (event) => {
+    drinkTracker = (event) => {
 		event.preventDefault();
-		console.log('handleSubmit');
-		this.props.login(this.state.username, this.state.password);
-		this.setState({
-			redirectTo: '/login'
-		});
+		console.log('drinkTracker');
+    }
+    checkIn = (event) => {
+		event.preventDefault();
+		console.log('checkIn');
+    }
+    
+    help = (event) => {
+		event.preventDefault();
+		console.log('help');
 	}
 
     render() {
@@ -29,11 +33,7 @@ class SipSpotEntry extends Component {
                                 <h1 style={{textAlign: "center"}}>sipSpot</h1>           
                             </div>
                         </div>
-                        <div className="row">
-                            <div  className="col-md-12 col-lg-12 col-xl-12">
-                                <Link to="/login">Login/Register</Link>
-                            </div>
-                        </div>
+
                         <div className="row">
                             <div className="col-md-2 col-lg-2 col-xl-2"></div>
                             <div className="col-md-8 col-lg-8 col-xl-8"></div>
@@ -57,7 +57,7 @@ class SipSpotEntry extends Component {
                             <div className="col-md-5 col-lg-5 col-xl-5"></div>
                             <div className="col-md-1 col-lg-1 col-xl-1">
                                 <form>
-                                <FormBtn >Help</FormBtn>
+                                <FormBtn onClick={this.help}>Help</FormBtn>
                                 </form>
                             </div>
                         </div>
