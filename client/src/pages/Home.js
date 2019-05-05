@@ -1,6 +1,6 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
-import { Container, Row, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Container, Row, Col } from 'reactstrap';
 import MenuModal from '../components/Menu/Menu';
 import Controls from '../components/Controls/Controls';
 
