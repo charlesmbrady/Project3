@@ -32,6 +32,6 @@ workflows:
       - test:
           requires:
             - build
-      - cypress:
-          requires:
-            - build
+      # - cypress:
+      #     requires:
+      #       - build
