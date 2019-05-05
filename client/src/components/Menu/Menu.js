@@ -26,7 +26,7 @@ class MenuModal extends React.Component {
     render() {
         return (
             <div>
-                <Button color="secondary" onClick={this.toggle} className="menu-btn">. . .</Button>
+                <Button color="secondary" onClick={this.toggle} className="menu-btn" data-test="home-menu-button">. . .</Button>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className="menu">
                     <ModalHeader toggle={this.toggle}>
                         <Container>
@@ -53,22 +53,22 @@ class MenuModal extends React.Component {
                         <Container>
                             <Row>
                                 <Col>
-                                    <Link to='/history'>History</Link>
+                                    <Link to='/history' data-test="menu-history">History</Link>
                                 </Col>
                             </Row>
                             <Row>
                                 <Col>
-                                    <Link to='/friends'>Friends</Link>
+                                    <Link to='/friends' data-test="menu-friends">Friends</Link>
                                 </Col>
                             </Row>
                             <Row>
                                 <Col>
-                                    <Link to='/settings'>Settings</Link>
+                                    <Link to='/settings' data-test="menu-settings">Settings</Link>
                                 </Col>
                             </Row>
                             <Row>
                                 <Col>
-                                    <Link to='/rideshare'>Get a Ride</Link>
+                                    <Link to='/rideshare' data-test="menu-ride">Get a Ride</Link>
                                 </Col>
                             </Row>
                         </Container>
