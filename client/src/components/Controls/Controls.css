@@ -1,0 +1,11 @@
+.controls {
+    position: fixed;
+    bottom: 0;
+    border-top: 5px solid black;
+    text-align: center;
+    height: 30vh;
+}
+
+.drink-buttons{
+
+}
