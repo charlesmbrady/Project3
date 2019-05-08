@@ -103,7 +103,6 @@ class Home extends Component {
             </Col>
           </Row>
         </Container>
-        <section id="location-display">location display</section>
       </div>
     );
   }
