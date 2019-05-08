@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Row, Col, Button } from 'reactstrap';
 import MenuModal from '../../components/Menu';
+import PostDrink from '../../components/PostDrink';
 import './Home.css';
 
 class Home extends Component {
@@ -8,6 +9,7 @@ class Home extends Component {
     super(props);
     this.state = {
       numberOfDrinks: 0,
+      timeOfLastDrink: new Date().toLocaleString(),
       location: "",
       bac: "",
       modal: false,
@@ -22,6 +24,12 @@ class Home extends Component {
   drinkTracker = (e) => {
     e.preventDefault();
     console.log("drink tracker clicked");
+    console.log(this.state);
+    let numberOfDrinksCopy=this.state.numberOfDrinks+1;
+    let d = new Date().toLocaleString();
+    let timest=new Date();
+    this.setState({numberOfDrinks:numberOfDrinksCopy,timeOfLastDrink:timest});
+    console.log(this.state);
   };
   checkIn = (e) => {
     e.preventDefault();
@@ -39,15 +47,26 @@ class Home extends Component {
         <MenuModal user={this.props.user} logout={this.props.logout} modal={this.state.modal} toggle={this.state.toggle.bind(this)}></MenuModal>
           <Row>
             <Col>
-              <h1>Home Screen</h1>
+              <div class="row">
+                <div className="col-md-12">
+                  <h1>Home Screen</h1>
+                </div>
+              </div>
             </Col>
           </Row>
           <Row>
             <Col>
-              <p>Welcome to SipSpots.  This page will have a button for checking in/out of a location,
-                and adding drinks.  It will also have a link to the menu, an alert button and a display that
-                calculates your estimated BAC.
-              </p>
+              <div class="row">
+                <div className="col-md-8">
+                  <p>Welcome to SipSpots.  This page will have a button for checking in/out of a location,
+                    and adding drinks.  It will also have a link to the menu, an alert button and a display that
+                    calculates your estimated BAC.
+                  </p>
+                </div>
+                <div className="col-md-4">
+                  <PostDrink drinks={this.state}></PostDrink>
+                </div>
+              </div>
             </Col>
           </Row>
         </Container>
