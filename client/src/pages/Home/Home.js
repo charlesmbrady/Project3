@@ -8,10 +8,9 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      numberOfDrinks: 0,
-      timeOfLastDrink: new Date().toLocaleString(),
+      numberOfDrinks: [{number:0,timeOfLastDrink: [new Date().toLocaleString()]}],
       location: "",
-      bac: "",
+      bac: 0,
       modal: false,
       toggle() {
         this.setState(prevState => ({
@@ -23,12 +22,25 @@ class Home extends Component {
 
   drinkTracker = (e) => {
     e.preventDefault();
-    console.log("drink tracker clicked");
-    console.log(this.state);
-    let numberOfDrinksCopy=this.state.numberOfDrinks+1;
-    let timest=new Date().toLocaleString();
-    this.setState({numberOfDrinks:numberOfDrinksCopy,timeOfLastDrink:timest});
-    console.log(this.state);
+    
+    let lastdrink={};
+    let numberOfDrinksCopy=this.state.numberOfDrinks;
+    lastdrink.number=(numberOfDrinksCopy[(numberOfDrinksCopy.length-1)].number)+1;
+    lastdrink.timeOfLastDrink=new Date().toLocaleString();
+    numberOfDrinksCopy.push(lastdrink);
+
+    //calculate BAC(using 130lbs as generic weight and r=0.55 for conservative estimate)
+    let bac=((lastdrink.number*14)/(58967*0.55))*100;
+
+    //elapsed time 
+    let first=(Date.parse(this.state.numberOfDrinks[0].timeOfLastDrink))/3600000;
+    let now = (Date.parse(new Date().toLocaleString()))/3600000;
+    let elapsedTime=now-first;
+    bac=(bac-(elapsedTime*0.015)).toFixed(2);
+
+    
+    this.setState({numberOfDrinks:numberOfDrinksCopy,bac});
+    
   };
   checkIn = (e) => {
     e.preventDefault();
@@ -52,7 +64,7 @@ class Home extends Component {
           <Row>
             <Col>
               <p id="how-to">Click <em>Check-in</em> to keep track of where your stuff is (your credit card on a bar tab, your jacket, your friends). <em>Add Drink to Count</em> to keep track of your drinks over time to get a rough estimate of your blood-alcohol level. <em>Contact Friends</em> to send a link to your location to friends. Click <em>Get an Uber</em> to get a safe ride home.</p>
-                <PostDrink drinks={ this.state }></PostDrink>
+                <PostDrink drinks={ this.state.numberOfDrinks[((this.state.numberOfDrinks).length)-1] } bac={this.state.bac}></PostDrink>
             </Col>
           </Row>
         </Container>
