@@ -1,9 +1,53 @@
+/* COLORS */
+
+body {
+  background-color: gray;
+}
+
+.cntrl-btn {
+  background-color: black;
+}
+
+.controls-container {
+  width: 80%;
+  margin-left: 10%;
+}
+
+p {
+color: white;
+}
+
+#location-display {
+  color: white;
+  width: 100%;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+}
+
 body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
 }
 
-.App {
+/* .App {
   position: relative;
+} */
+
+#title {
+  font-size: xx-large;
+  font-weight: bold;
+  text-align: center;
+  margin: 5%;
+}
+
+#how-to {
+  padding: 5%;
+}
+
+.controls {
+  position: fixed;
+  bottom: 5%;
+  text-align: center;
 }
