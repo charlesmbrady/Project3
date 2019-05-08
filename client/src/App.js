@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import LoginForm from './pages/Auth/LoginForm';
 import SignupForm from './pages/Auth/SignupForm';
-// import Detail from "./pages/Detail";
 import NoMatch from "./pages/NoMatch";
 import AUTH from './utils/AUTH';
 import Home from './pages/Home';
@@ -71,10 +70,9 @@ class App extends Component {
 			<div className="App">
 				{this.state.loggedIn && (
 					<div>
-						{/* <Nav user={this.state.user} logout={this.logout}/> */}
 						<div className="main-view">
 							<Switch>
-								<Route exact path="/" component={() => <Home user={this.state.user} logout={this.logout} />} />
+								<Route exact path="/" component={() => <Home user={this.state.user} logout={this.logout}></Home>} />
 								<Route exact path="/history" component={History} />
 								<Route exact path="/settings" component={Settings} />
 								<Route exact path="/friends" component={Friends} />
@@ -85,9 +83,8 @@ class App extends Component {
 				)}
 				{!this.state.loggedIn && (
 					<div>
-						{/* <Nav user={this.state.user} /> */}
 						<div className="auth-wrapper" style={{ paddingTop: 40 }}>
-							<Route exact path="/" component={() => <Home user={this.state.user} logout={this.logout} />} />
+							<Route exact path="/" component={() => <Home />} />
 							<Route exact path="/history" component={History} />
 							<Route exact path="/settings" component={Settings} />
 							<Route exact path="/friends" component={Friends} />
