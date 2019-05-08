@@ -10,6 +10,8 @@ class Home extends Component {
     this.state = {
       numberOfDrinks: [{number:0,timeOfLastDrink: [new Date().toLocaleString()]}],
       location: "",
+      latitude: 0,
+      longitude: 0,
       bac: 0,
       modal: false,
       toggle() {
@@ -18,6 +20,15 @@ class Home extends Component {
         }));
       }     
     };
+  }
+
+  componentDidMount () {
+    this._isMounted = true;
+    this._isMounted && this.watchLocation();
+  }
+
+  componentWillUnmount () {
+    this._isMounted = false;
   }
 
   drinkTracker = (e) => {
@@ -46,10 +57,15 @@ class Home extends Component {
     e.preventDefault();
     console.log("Check in clicked");
   };
-  alert = (e) => {
-    e.preventDefault();
-    console.log("alert clicked");
-  };
+
+  watchLocation = () => {
+    navigator.geolocation.watchPosition(this.storePosition);
+  }
+
+  storePosition = (position) => {
+    this._isMounted && this.setState({ latitude: position.coords.latitude, longitude: position.coords.longitude });
+    console.log(position.coords.latitude, position.coords.longitude);
+  }
 
   render () {
     return (
@@ -87,7 +103,6 @@ class Home extends Component {
             </Col>
           </Row>
         </Container>
-        <section id="location-display">location display</section>
       </div>
     );
   }

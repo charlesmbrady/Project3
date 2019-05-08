@@ -1,54 +1,54 @@
 {
-  "name": "sipspot-auth-server",
-  "version": "1.0.0",
-  "description": "Full Stack React App with Authentication",
-  "main": "server/server.js",
-  "scripts": {
-    "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
-    "start:prod": "node server/server.js",
-    "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
-    "client": "cd client && npm run start",
-    "lint": "eslint '**/canary.test.js'",
-    "seed": "node server/scripts/seedDB.js",
-    "test": "mocha",
-    "install": "cd client && npm install",
-    "build": "cd client && npm run build",
-    "heroku-postbuild": "npm run build",
-    "cy:run": "cypress run",
-    "start-and-test": "start-server-and-test start http://localhost:3001 cy:run"
-  },
-  "engines": {
-    "node": "8.9.4",
-    "npm": "5.6.x",
-    "yarn": "1.4.0"
-  },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "concurrently": "^3.5.0",
-    "cypress": "^3.2.0",
-    "eslint": "^5.16.0",
-    "eslint-plugin-prettier": "^3.0.1",
-    "nodemon": "^1.11.0",
-    "prettier": "^1.17.0",
-    "start-server-and-test": "^1.9.0"
-  },
-  "dependencies": {
-    "axios": "^0.18.0",
-    "bcrypt": "^3.0.2",
-    "bcryptjs": "^2.4.3",
-    "chai": "^4.2.0",
-    "connect-mongo": "^2.0.1",
-    "dotenv": "^6.1.0",
-    "eslint-config-prettier": "^4.2.0",
-    "express": "^4.16.4",
-    "express-session": "^1.15.6",
-    "if-env": "^1.0.4",
-    "mocha": "^6.1.4",
-    "mongoose": "^5.3.4",
-    "morgan": "^1.9.1",
-    "passport": "^0.4.0",
-    "passport-local": "^1.0.0",
-    "reactstrap": "^8.0.0"
-  }
+    "name": "sipspot-auth-server",
+    "version": "1.0.0",
+    "description": "Full Stack React App with Authentication",
+    "main": "server/server.js",
+    "scripts": {
+        "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
+        "start:prod": "node server/server.js",
+        "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
+        "client": "cd client && npm run start",
+        "lint": "eslint '**/canary.test.js'",
+        "seed": "node server/scripts/seedDB.js",
+        "test": "mocha",
+        "install": "cd client && npm install",
+        "build": "cd client && npm run build",
+        "heroku-postbuild": "npm run build",
+        "cy:run": "cypress run",
+        "start-and-test": "start-server-and-test start http://localhost:3001 cy:run"
+    },
+    "engines": {
+        "node": "8.9.4",
+        "npm": "5.6.x",
+        "yarn": "1.4.0"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "concurrently": "^3.5.0",
+        "cypress": "^3.2.0",
+        "eslint": "^5.16.0",
+        "eslint-plugin-prettier": "^3.0.1",
+        "nodemon": "^1.11.0",
+        "prettier": "^1.17.0",
+        "start-server-and-test": "^1.9.0"
+    },
+    "dependencies": {
+        "axios": "^0.18.0",
+        "bcrypt": "^3.0.2",
+        "bcryptjs": "^2.4.3",
+        "chai": "^4.2.0",
+        "connect-mongo": "^2.0.1",
+        "dotenv": "^6.1.0",
+        "eslint-config-prettier": "^4.2.0",
+        "express": "^4.16.4",
+        "express-session": "^1.15.6",
+        "if-env": "^1.0.4",
+        "mocha": "^6.1.4",
+        "mongoose": "^5.3.4",
+        "morgan": "^1.9.1",
+        "passport": "^0.4.0",
+        "passport-local": "^1.0.0",
+        "reactstrap": "^8.0.0"
+    }
 }
