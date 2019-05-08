@@ -1,20 +1,21 @@
 {
-  "name": "sipspot-auth-client",
-  "version": "1.0.0",
-  "private": true,
-  "proxy": "http://localhost:3001/",
-  "dependencies": {
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
-    "react-scripts": "1.0.14",
-    "react-router-dom": "^4.1.2",
-    "axios": "^0.16.2",
-    "reactstrap": "^8.0.0"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
-  }
+    "name": "sipspot-auth-client",
+    "version": "1.0.0",
+    "private": true,
+    "proxy": "http://localhost:3001/",
+    "dependencies": {
+        "@ishawnwang/withunmounted": "^1.0.1",
+        "axios": "^0.16.2",
+        "react": "^16.0.0",
+        "react-dom": "^16.0.0",
+        "react-router-dom": "^4.1.2",
+        "react-scripts": "1.0.14",
+        "reactstrap": "^8.0.0"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test --env=jsdom",
+        "eject": "react-scripts eject"
+    }
 }
