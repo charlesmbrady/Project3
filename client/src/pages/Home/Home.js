@@ -26,8 +26,7 @@ class Home extends Component {
     console.log("drink tracker clicked");
     console.log(this.state);
     let numberOfDrinksCopy=this.state.numberOfDrinks+1;
-    let d = new Date().toLocaleString();
-    let timest=new Date();
+    let timest=new Date().toLocaleString();
     this.setState({numberOfDrinks:numberOfDrinksCopy,timeOfLastDrink:timest});
     console.log(this.state);
   };
