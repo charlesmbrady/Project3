@@ -1,9 +1,63 @@
+/* COLORS */
+
+body {
+  background-color: gray;
+}
+
+.cntrl-btn {
+  background-color: black;
+}
+
+.controls-container {
+  width: 80%;
+  margin-left: 10%;
+}
+
+#how-to {
+  color: white;
+  padding: 2%;
+}
+
+#location-display {
+  color: white;
+  width: 100%;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+}
+
+.drink-display {
+  border: dotted;
+  background-color: lightgray;
+  text-align: center;
+  width: 40%;
+  margin-left: 30%;
+}
+
+.drink-text {
+  color: black;
+  font-weight: bold;
+}
+
 body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
 }
 
-.App {
+/* .App {
   position: relative;
+} */
+
+#title {
+  font-size: xx-large;
+  font-weight: bold;
+  text-align: center;
+  /* margin: 5%; */
+}
+
+.controls {
+  position: fixed;
+  bottom: 5%;
+  text-align: center;
 }

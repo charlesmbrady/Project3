@@ -10,7 +10,8 @@
 /node/
 node_tmp/
 node_modules/
+package-lock.json
 npm-debug.log.*
 /.awcache/*
-package-lock.json
 /client/node_modules
+.DS_Store
