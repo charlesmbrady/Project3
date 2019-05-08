@@ -57,7 +57,7 @@ class SignupForm extends Component {
         <Row>
           <Col size="md-3"></Col>
           <Col size="md-6">
-            <Card title="Register for React Reading List">
+            <Card title="Register for sipSpot">
               <form style={{marginTop: 10}}>
                 <label htmlFor="username">First name: </label>
                 <Input
@@ -94,7 +94,7 @@ class SignupForm extends Component {
                   value={this.state.confirmPassword}
                   onChange={this.handleChange}
                 />
-                <Link to="/">Login</Link>
+                <Link to="/login">Login</Link><br/><Link to="/">Use without login/register</Link>
                 <FormBtn onClick={this.handleSubmit}>Register</FormBtn>
               </form>
             </Card>

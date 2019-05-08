@@ -1,4 +1,4 @@
-# reactreadinglist-auth
+# sipspot-auth
 sipSpot
 
 ### sample .env file:
