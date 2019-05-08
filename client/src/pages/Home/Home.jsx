@@ -8,6 +8,7 @@ class Home extends Component {
 
     constructor (props) {
         super(props);
+        this._isMounted = false;
         this.state = {
             numberOfDrinks: 0,
             timeOfLastDrink: new Date().toLocaleString(),
@@ -22,6 +23,15 @@ class Home extends Component {
                 }));
             }
         };
+    }
+
+    componentDidMount () {
+        this._isMounted = true;
+        this._isMounted && this.watchLocation();
+    }
+    
+    componentWillUnmount () {
+        this._isMounted = false;
     }
 
     drinkTracker = (e) => {
@@ -43,7 +53,7 @@ class Home extends Component {
     }
 
     storePosition = (position) => {
-        this.setState({ latitude: position.coords.latitude, longitude: position.coords.longitude });
+        this._isMounted && this.setState({ latitude: position.coords.latitude, longitude: position.coords.longitude });
         console.log(position.coords.latitude, position.coords.longitude);
     }
 
