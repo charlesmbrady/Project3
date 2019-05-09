@@ -15,6 +15,8 @@ class Home extends Component {
       longitude: 0,
       theCheckinLatitude: 0,
       theCheckinLongitude: 0,
+      proximityAlertSent: false,
+      watchID: 0,
       bac: 0,
       modal: false,
       toggle () {
@@ -86,47 +88,44 @@ class Home extends Component {
   };
 
   storeCheckinLocation = () => {
-    console.log('storeCheckinLocation');
+    // console.log('storeCheckinLocation');
+    // console.log(this.state.latitude, this.state.longitude);
     this.setState({ theCheckinLatitude: this.state.latitude, theCheckinLongitude: this.state.longitude }, this.watchLocation);
-    console.log(this.state.latitude, this.state.longitude);
     document.getElementById("test-display").innerText = "Check-In location: " + this.state.latitude + ", " + this.state.longitude + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
-    // this._isMounted && this.setState({ theCheckinLatitude: position.coords.latitude, theCheckinLongitude: position.coords.longitude }, this.watchLocation());
   }
 
   watchLocation = () => {
-    console.log('watch');
-    navigator.geolocation.watchPosition(this.storeLocation);
-  }
-
-  storeLocation = (position) => {
-    console.log('store');
-    this._isMounted && this.setState({ latitude: position.coords.latitude, longitude: position.coords.longitude },
-      () => this.checkLocation(position)
-    );
+    const watchId = navigator.geolocation.watchPosition(this.checkLocation);
+    this.setState({ watchId });
   }
 
   checkLocation = (position) => {
-    console.log('check');
-    console.log(position.coords.latitude, position.coords.longitude);
-    // document.getElementById("test-display").innerText = "in checkLocation " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
-
-    // window.navigator.vibrate([ 200 ]);
-    console.log(this.state.theCheckinLatitude);
+    // console.log('check');
+    // console.log(position.coords.latitude, position.coords.longitude);
+    if (this.state.latitude === 0) {
+      this.setState({ latitude: position.coords.latitude, longitude: position.coords.longitude });
+    }
     if (this.state.theCheckinLatitude !== 0) {
-      // document.getElementById("test-display").innerText = "theCheckinLatitude !==0 " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
       let theDifferenceLatitude = (Math.abs(position.coords.latitude - this.state.theCheckinLatitude)).toFixed(6);
       let theDifferenceLongitude = (Math.abs(position.coords.longitude - this.state.theCheckinLongitude)).toFixed(6);
 
-      if (theDifferenceLatitude > .0001 || theDifferenceLongitude > .0001) {
-        // this.setState({ theCheckinLatitude: position.coords.latitude.toFixed(6), theCheckinLongitude: position.coords.longitude.toFixed(6) });
-
-        document.getElementById("test-display").innerText = "MAJOR PROXIMITY CHANGE " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
-      } else {
-        document.getElementById("test-display").innerText = "minor proximity change " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
+      if (!this.state.proximityAlertSent) {
+        if (theDifferenceLatitude > .0002 || theDifferenceLongitude > .0002) {
+          document.getElementById("test-display").innerText = "MAJOR PROXIMITY CHANGE " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
+          this.setState({ proximityAlertSent: true });
+          navigator.geolocation.clearWatch(this.state.watchID);
+          // TODO: use auto-notify number from settings.
+          const theMessage = "It looks like you are leaving the spot where you checked in with sipSpot. Don't forget your credit card, jacket, friends, etc.! PLEASE NOTE: proximity alerts are now turned off until you Check-In again.";
+          TEXT.sendText({ to: 19192608858, message: theMessage })
+            .then(res => {
+              console.log("proximity alert sent, response:");
+              console.log(res);
+            })
+            .catch(err => console.log(err))
+        } else {
+          document.getElementById("test-display").innerText = "minor proximity change " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
+        }
       }
-    } else {
-      // document.getElementById("test-display").innerText = "theCheckinLatitude===0 " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
-      // this.setState({ theCheckinLatitude: position.coords.latitude.toFixed(6), theCheckinLongitude: position.coords.longitude.toFixed(6) });
     }
   }
 
