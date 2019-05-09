@@ -148,7 +148,8 @@ class Home extends Component {
           </Row>
           <Row>
             <Col>
-              <p id="how-to">Click <em>Check-in</em> to keep track of where your stuff is (your credit card on a bar tab, your jacket, your friends). <em>Add Drink to Count</em> to keep track of your drinks over time to get a rough estimate of your blood-alcohol level. <em>Contact Friends</em> to send a link to your location to friends. Click <em>Get an Uber</em> to get a safe ride home.</p>
+              {/* moved to Quickstart.js */ }
+              {/* <p id="how-to">Click <em>Check-in</em> to keep track of where your stuff is (your credit card on a bar tab, your jacket, your friends). Click <em>Add Drink to Count</em> to keep track of your drinks over time to get a rough estimate of your blood-alcohol level. Click <em>Contact Friends</em> to send a link to your location to friends. Click <em>Get an Uber</em> to get a safe ride home.</p> */ }
               <PostDrink drinks={ this.state.numberOfDrinks[ ((this.state.numberOfDrinks).length) - 1 ] } bac={ this.state.bac }></PostDrink>
             </Col>
           </Row>
