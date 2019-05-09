@@ -86,30 +86,37 @@ class Home extends Component {
   };
 
   storeCheckinLocation = () => {
-    console.log('storeCheckinLocation');
-    console.log(this.state.latitude, this.state.longitude);
+    // console.log('storeCheckinLocation');
+    // console.log(this.state.latitude, this.state.longitude);
     this.setState({ theCheckinLatitude: this.state.latitude, theCheckinLongitude: this.state.longitude }, this.watchLocation);
     document.getElementById("test-display").innerText = "Check-In location: " + this.state.latitude + ", " + this.state.longitude + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
   }
 
   watchLocation = () => {
-    console.log('watch');
     navigator.geolocation.watchPosition(this.checkLocation);
   }
 
   checkLocation = (position) => {
-    console.log('check');
-    console.log(position.coords.latitude, position.coords.longitude);
+    // console.log('check');
+    // console.log(position.coords.latitude, position.coords.longitude);
     if (this.state.latitude === 0) {
       this.setState({ latitude: position.coords.latitude, longitude: position.coords.longitude });
     }
-    console.log(this.state.theCheckinLatitude);
     if (this.state.theCheckinLatitude !== 0) {
       let theDifferenceLatitude = (Math.abs(position.coords.latitude - this.state.theCheckinLatitude)).toFixed(6);
       let theDifferenceLongitude = (Math.abs(position.coords.longitude - this.state.theCheckinLongitude)).toFixed(6);
 
-      if (theDifferenceLatitude > .0001 || theDifferenceLongitude > .0001) {
+      if (theDifferenceLatitude > .0002 || theDifferenceLongitude > .0002) {
         document.getElementById("test-display").innerText = "MAJOR PROXIMITY CHANGE " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
+        // TODO: use auto-notify number from settings.
+        const theMessage = "It looks like you are leaving the spot where you checked in. Don't forget your credit card, jacket, friends, etc.!";
+        TEXT.sendText({ to: 19192608858, message: theMessage })
+          .then(res => {
+            console.log("proximity alert sent, response:");
+            console.log(res);
+          })
+          .catch(err => console.log(err));
+
       } else {
         document.getElementById("test-display").innerText = "minor proximity change " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
       }
