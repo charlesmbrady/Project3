@@ -109,24 +109,23 @@ class Home extends Component {
       let theDifferenceLatitude = (Math.abs(position.coords.latitude - this.state.theCheckinLatitude)).toFixed(6);
       let theDifferenceLongitude = (Math.abs(position.coords.longitude - this.state.theCheckinLongitude)).toFixed(6);
 
-      // if (!this.state.proximityAlertSent) {
-      if (theDifferenceLatitude > .0002 || theDifferenceLongitude > .0002) {
-        document.getElementById("test-display").innerText = "MAJOR PROXIMITY CHANGE " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
-        navigator.geolocation.clearWatch(this.state.watchID);
-        // TODO: use auto-notify number from settings.
-        const theMessage = "It looks like you are leaving the spot where you checked in. Don't forget your credit card, jacket, friends, etc.!";
-        // this.setState({ proximityAlertSent: true },
-        TEXT.sendText({ to: 19192608858, message: theMessage })
-          .then(res => {
-            console.log("proximity alert sent, response:");
-            console.log(res);
-          })
-          .catch(err => console.log(err))
-        // );
-      } else {
-        document.getElementById("test-display").innerText = "minor proximity change " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
+      if (!this.state.proximityAlertSent) {
+        if (theDifferenceLatitude > .0002 || theDifferenceLongitude > .0002) {
+          document.getElementById("test-display").innerText = "MAJOR PROXIMITY CHANGE " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
+          this.setState({ proximityAlertSent: true });
+          navigator.geolocation.clearWatch(this.state.watchID);
+          // TODO: use auto-notify number from settings.
+          const theMessage = "It looks like you are leaving the spot where you checked in. Don't forget your credit card, jacket, friends, etc.!";
+          TEXT.sendText({ to: 19192608858, message: theMessage })
+            .then(res => {
+              console.log("proximity alert sent, response:");
+              console.log(res);
+            })
+            .catch(err => console.log(err))
+        } else {
+          document.getElementById("test-display").innerText = "minor proximity change " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
+        }
       }
-      // }
     }
   }
 
