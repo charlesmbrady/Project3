@@ -18,7 +18,7 @@ class Home extends Component {
         this.setState(prevState => ({
             modal: !prevState.modal
         }));
-      }     
+      }  
     };
   }
 
@@ -31,6 +31,33 @@ class Home extends Component {
     this._isMounted = false;
   }
 
+  calculateBac(drink,time){
+
+    //calculate BAC(using 130lbs as generic weight and r=0.55 for conservative estimate)
+    let bac=((drink*14)/(58967*0.55))*100;
+
+    //elapsed time 
+    let first=(Date.parse(time))/3600000;
+    let now = (Date.parse(new Date().toLocaleString()))/3600000;
+    let elapsedTime=now-first;
+    bac=(bac-(elapsedTime*0.015)).toFixed(2);
+    
+    return bac;
+
+  }
+
+  //update BAC every 15 minutes
+  updateBac() {
+    let lastdrink={};
+    let numberOfDrinksCopy=this.state.numberOfDrinks;
+    lastdrink.number=(numberOfDrinksCopy[(numberOfDrinksCopy.length-1)].number);
+    lastdrink.timeOfLastDrink=new Date().toLocaleString();
+    
+    let bac=this.calculateBac(lastdrink.number,this.state.numberOfDrinks[0].timeOfLastDrink);
+
+    this.setState({bac});
+  }   
+
   drinkTracker = (e) => {
     e.preventDefault();
     
@@ -40,19 +67,14 @@ class Home extends Component {
     lastdrink.timeOfLastDrink=new Date().toLocaleString();
     numberOfDrinksCopy.push(lastdrink);
 
-    //calculate BAC(using 130lbs as generic weight and r=0.55 for conservative estimate)
-    let bac=((lastdrink.number*14)/(58967*0.55))*100;
-
-    //elapsed time 
-    let first=(Date.parse(this.state.numberOfDrinks[0].timeOfLastDrink))/3600000;
-    let now = (Date.parse(new Date().toLocaleString()))/3600000;
-    let elapsedTime=now-first;
-    bac=(bac-(elapsedTime*0.015)).toFixed(2);
-
+    let bac=this.calculateBac(lastdrink.number,this.state.numberOfDrinks[0].timeOfLastDrink);
     
     this.setState({numberOfDrinks:numberOfDrinksCopy,bac});
     
+    setInterval(() => {this.updateBac.bind(this); this.updateBac();}, 900000);
   };
+
+
   checkIn = (e) => {
     e.preventDefault();
     console.log("Check in clicked");
