@@ -95,6 +95,7 @@ class Home extends Component {
 
   checkLocation = (position) => {
     console.log('in checkLocation');
+    window.navigator.vibrate([ 200 ]);
     if (this.state.theLastLatitude !== 0) {
       console.log(position);
       let theDifferenceLatitude = (Math.abs(position.coords.latitude - this.state.theLastLatitude)).toFixed(6);
@@ -107,6 +108,7 @@ class Home extends Component {
         alert('looks like you are leaving the area');
       } else {
         window.navigator.vibrate([ 200 ]);
+        alert('minor proximity change');
       }
     }
   }
@@ -119,7 +121,7 @@ class Home extends Component {
 
   sendAutomaticText = () => {
     // TODO: use auto-notify number from settings.
-    const theUrl = `https://www.google.com/maps/dir/?api=1&destination=${this.state.latitude},${this.state.longitude} |`
+    const theUrl = `additional text https://www.google.com/maps/dir/?api=1&destination=${this.state.latitude},${this.state.longitude} | additional text`;
     const theMessage = "Please come give me a ride; I have had too much to drink. The following text will include a Google Maps link to my location. This message *auto-generated* by sipSpot.";
     TEXT.sendText({ to: 19192608858, message: theMessage })
       .then(res => {
