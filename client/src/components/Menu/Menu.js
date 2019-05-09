@@ -34,6 +34,11 @@ const MenuModal = (props) => {
                     <Container>
                         <Row>
                             <Col>
+                                <Link to='/quickstart' data-test="menu-quickstart">Quick Start</Link>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
                                 <Link to='/alerts' data-test="menu-alerts">Alerts</Link>
                             </Col>
                         </Row>
