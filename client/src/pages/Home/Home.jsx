@@ -95,8 +95,11 @@ class Home extends Component {
 
   checkLocation = (position) => {
     console.log('in checkLocation');
+    document.getElementById("test-display").innerText = "in checkLocation";
+
     window.navigator.vibrate([ 200 ]);
     if (this.state.theLastLatitude !== 0) {
+      document.getElementById("test-display").innerText = "theLastLatitude !==0";
       console.log(position);
       let theDifferenceLatitude = (Math.abs(position.coords.latitude - this.state.theLastLatitude)).toFixed(6);
       let theDifferenceLongitude = (Math.abs(position.coords.longitude - this.state.theLastLongitude)).toFixed(6);
@@ -105,11 +108,14 @@ class Home extends Component {
         this.setState({ theLastLatitude: position.coords.latitude.toFixed(6), theLastLongitude: position.coords.longitude.toFixed(6) });
 
         window.navigator.vibrate([ 200, 100, 200 ]);
-        alert('looks like you are leaving the area');
+        document.getElementById("test-display").innerText = "major proximity change";
       } else {
+        document.getElementById("test-display").innerText = "minor proximity change";
         window.navigator.vibrate([ 200 ]);
-        alert('minor proximity change');
       }
+    } else {
+      document.getElementById("test-display").innerText = "theLastLatitude===0";
+      this.setState({ theLastLatitude: position.coords.latitude.toFixed(6), theLastLongitude: position.coords.longitude.toFixed(6) });
     }
   }
 
@@ -121,19 +127,12 @@ class Home extends Component {
 
   sendAutomaticText = () => {
     // TODO: use auto-notify number from settings.
-    const theUrl = `additional text https://www.google.com/maps/dir/?api=1&destination=${this.state.latitude},${this.state.longitude} | additional text`;
-    const theMessage = "Please come give me a ride; I have had too much to drink. The following text will include a Google Maps link to my location. This message *auto-generated* by sipSpot.";
+    // const theUrl = `additional text https://www.google.com/maps/dir/?api=1&destination=${this.state.latitude},${this.state.longitude} | additional text`;
+    const theMessage = "Please come give me a ride; I have had too much to drink. Here is a Google Maps link to my location. (This message *auto-generated* by sipSpot) https://www.google.com/maps/dir/?api=1&destination=${this.state.latitude},${this.state.longitude} |";
     TEXT.sendText({ to: 19192608858, message: theMessage })
       .then(res => {
         console.log("text message sent, response:");
         console.log(res);
-        TEXT.sendText({ to: 19192608858, message: theUrl })
-          .then(res => {
-            console.log("map link sent, response:");
-            console.log(res);
-          })
-          .catch(err => console.log(err));
-
       })
       .catch(err => console.log(err));
   }
@@ -152,6 +151,7 @@ class Home extends Component {
             <Col>
               {/* moved to Quickstart.js */ }
               {/* <p id="how-to">Click <em>Check-in</em> to keep track of where your stuff is (your credit card on a bar tab, your jacket, your friends). Click <em>Add Drink to Count</em> to keep track of your drinks over time to get a rough estimate of your blood-alcohol level. Click <em>Contact Friends</em> to send a link to your location to friends. Click <em>Get an Uber</em> to get a safe ride home.</p> */ }
+              <div id="test-display">test display</div>
               <PostDrink drinks={ this.state.numberOfDrinks[ ((this.state.numberOfDrinks).length) - 1 ] } bac={ this.state.bac }></PostDrink>
             </Col>
           </Row>
