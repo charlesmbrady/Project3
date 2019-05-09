@@ -115,7 +115,7 @@ class Home extends Component {
           this.setState({ proximityAlertSent: true });
           navigator.geolocation.clearWatch(this.state.watchID);
           // TODO: use auto-notify number from settings.
-          const theMessage = "It looks like you are leaving the spot where you checked in. Don't forget your credit card, jacket, friends, etc.!";
+          const theMessage = "It looks like you are leaving the spot where you checked in. Don't forget your credit card, jacket, friends, etc.! PLEASE NOTE: proximity alerts are now turned off until you Check-In again.";
           TEXT.sendText({ to: 19192608858, message: theMessage })
             .then(res => {
               console.log("proximity alert sent, response:");
