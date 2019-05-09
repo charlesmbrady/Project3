@@ -103,11 +103,11 @@ class Home extends Component {
       let theDifferenceLatitude = (Math.abs(position.coords.latitude - this.state.theLastLatitude)).toFixed(6);
       let theDifferenceLongitude = (Math.abs(position.coords.longitude - this.state.theLastLongitude)).toFixed(6);
 
-      if (theDifferenceLatitude > .0002 || theDifferenceLongitude > .0002) { //~100 feet
+      if (theDifferenceLatitude > .0004 || theDifferenceLongitude > .0004) {
         this.setState({ theLastLatitude: position.coords.latitude.toFixed(6), theLastLongitude: position.coords.longitude.toFixed(6) });
 
         // window.navigator.vibrate([ 200, 100, 200 ]);
-        document.getElementById("test-display").innerText = "major proximity change " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
+        document.getElementById("test-display").innerText = "MAJOR PROXIMITY CHANGE " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
       } else {
         document.getElementById("test-display").innerText = "minor proximity change " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
         // window.navigator.vibrate([ 200 ]);
