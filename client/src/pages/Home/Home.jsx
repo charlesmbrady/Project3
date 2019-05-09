@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Row, Col, Button } from 'reactstrap';
+import TEXT from '../../utils/TEXT';
 import MenuModal from '../../components/Menu';
 import PostDrink from '../../components/PostDrink';
 import './Home.css';
@@ -95,6 +96,15 @@ class Home extends Component {
     return false;
   }
 
+  sendAutomaticText = (to, message) => {
+    TEXT.sendText({ to, message })
+      .then(res => {
+        console.log("text sent, response:");
+        console.log(res);
+      })
+      .catch(err => console.log(err));
+  }
+
   render () {
     return (
       <div>
@@ -126,15 +136,12 @@ class Home extends Component {
             <Col>
               <Button className="cntrl-btn" data-test="controls-uber" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location" target="_blank">Get an Uber</Button>
             </Col>
-            {/* <Col>
-              <Button className="cntrl-btn" data-test="controls-friends" onClick={ this.sendText }>Contact Friends</Button>
-            </Col> */}
             <Col>
               <Button className="cntrl-btn" data-test="controls-friends" onClick={this.sendText}>Contact Friends</Button>
             </Col>
-            {/* <Col>
-              <Button className="cntrl-btn" data-test="controls-friends" href="mailto:?subject=Come%20join%20me!%20Link%20to%20my%20location%20enclosed.&body=my%20location">Contact Friends</Button>
-            </Col> */}
+            <Col>
+              <Button className="cntrl-btn" data-test="controls-friends" onClick={this.sendAutomaticText}>Test Auto</Button>
+            </Col>
           </Row>
         </Container>
       </div>
