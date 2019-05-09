@@ -117,7 +117,7 @@ class Home extends Component {
       let theDifferenceLatitude = (Math.abs(position.coords.latitude - this.state.theCheckinLatitude)).toFixed(6);
       let theDifferenceLongitude = (Math.abs(position.coords.longitude - this.state.theCheckinLongitude)).toFixed(6);
 
-      if (theDifferenceLatitude > .00001 || theDifferenceLongitude > .00001) {
+      if (theDifferenceLatitude > .0001 || theDifferenceLongitude > .0001) {
         // this.setState({ theCheckinLatitude: position.coords.latitude.toFixed(6), theCheckinLongitude: position.coords.longitude.toFixed(6) });
 
         document.getElementById("test-display").innerText = "MAJOR PROXIMITY CHANGE " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
