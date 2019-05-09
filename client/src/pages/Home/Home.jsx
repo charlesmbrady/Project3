@@ -73,7 +73,8 @@ class Home extends Component {
 
     let bac = this.calculateBac(lastdrink.number, this.state.numberOfDrinks[ 0 ].timeOfLastDrink);
 
-    this.setState({ numberOfDrinks: numberOfDrinksCopy, bac });
+    this.setState({ numberOfDrinks: numberOfDrinksCopy, bac },
+      () => this.checkBeforeSendAutomaticText());
 
     setInterval(() => { this.updateBac.bind(this); this.updateBac(); }, 900000);
   };
@@ -130,13 +131,19 @@ class Home extends Component {
     return false;
   }
 
+  checkBeforeSendAutomaticText = () => {
+    if (this.state.bac > 0.3) { //TODO: bring this level down for production
+      this.sendAutomaticText();
+    }
+  }
+
   sendAutomaticText = () => {
     // TODO: use auto-notify number from settings.
     const theUrl = `https://www.google.com/maps/dir/?api=1&destination=${this.state.latitude},${this.state.longitude}`;
     const theMessage = "Please come give me a ride; I have had too much to drink. Here is a Google Maps link to my location. (This message *auto-generated* by sipSpot) " + theUrl;
     TEXT.sendText({ to: 19192608858, message: theMessage })
       .then(res => {
-        console.log("text message sent, response:");
+        console.log("AUTOMATIC text message sent, response:");
         console.log(res);
       })
       .catch(err => console.log(err));
@@ -175,9 +182,6 @@ class Home extends Component {
             </Col>
             <Col>
               <Button className="cntrl-btn" data-test="controls-friends" onClick={ this.sendText }>Contact Friends</Button>
-            </Col>
-            <Col>
-              <Button className="cntrl-btn" data-test="controls-friends" onClick={ this.sendAutomaticText }>Test Auto</Button>
             </Col>
           </Row>
         </Container>
