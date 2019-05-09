@@ -88,22 +88,22 @@ class Home extends Component {
   }
 
   storeLocation = (position) => {
-    this._isMounted && this.setState({ latitude: position.coords.latitude, longitude: position.coords.longitude });
-    console.log(position.coords.latitude, position.coords.longitude);
-    this.checkLocation(position);
+    this._isMounted && this.setState({ latitude: position.coords.latitude, longitude: position.coords.longitude },
+      () => this.checkLocation(position)
+    );
   }
 
   checkLocation = (position) => {
-    document.getElementById("test-display").innerText = "in checkLocation " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
+    console.log(position.coords.latitude, position.coords.longitude),
+      document.getElementById("test-display").innerText = "in checkLocation " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
 
     // window.navigator.vibrate([ 200 ]);
     if (this.state.theLastLatitude !== 0) {
       document.getElementById("test-display").innerText = "theLastLatitude !==0 " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
-      console.log(position);
       let theDifferenceLatitude = (Math.abs(position.coords.latitude - this.state.theLastLatitude)).toFixed(6);
       let theDifferenceLongitude = (Math.abs(position.coords.longitude - this.state.theLastLongitude)).toFixed(6);
 
-      if (theDifferenceLatitude > .0004 || theDifferenceLongitude > .0004) {
+      if (theDifferenceLatitude > .0001 || theDifferenceLongitude > .0001) {
         this.setState({ theLastLatitude: position.coords.latitude.toFixed(6), theLastLongitude: position.coords.longitude.toFixed(6) });
 
         // window.navigator.vibrate([ 200, 100, 200 ]);
