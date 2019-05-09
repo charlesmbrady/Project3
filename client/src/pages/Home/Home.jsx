@@ -94,12 +94,11 @@ class Home extends Component {
   }
 
   checkLocation = (position) => {
-    console.log('in checkLocation');
-    document.getElementById("test-display").innerText = "in checkLocation";
+    document.getElementById("test-display").innerText = "in checkLocation " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
 
     // window.navigator.vibrate([ 200 ]);
     if (this.state.theLastLatitude !== 0) {
-      document.getElementById("test-display").innerText = "theLastLatitude !==0";
+      document.getElementById("test-display").innerText = "theLastLatitude !==0 " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
       console.log(position);
       let theDifferenceLatitude = (Math.abs(position.coords.latitude - this.state.theLastLatitude)).toFixed(6);
       let theDifferenceLongitude = (Math.abs(position.coords.longitude - this.state.theLastLongitude)).toFixed(6);
@@ -108,13 +107,13 @@ class Home extends Component {
         this.setState({ theLastLatitude: position.coords.latitude.toFixed(6), theLastLongitude: position.coords.longitude.toFixed(6) });
 
         // window.navigator.vibrate([ 200, 100, 200 ]);
-        document.getElementById("test-display").innerText = "major proximity change";
+        document.getElementById("test-display").innerText = "major proximity change " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
       } else {
-        document.getElementById("test-display").innerText = "minor proximity change";
+        document.getElementById("test-display").innerText = "minor proximity change " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
         // window.navigator.vibrate([ 200 ]);
       }
     } else {
-      document.getElementById("test-display").innerText = "theLastLatitude===0";
+      document.getElementById("test-display").innerText = "theLastLatitude===0 " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
       this.setState({ theLastLatitude: position.coords.latitude.toFixed(6), theLastLongitude: position.coords.longitude.toFixed(6) });
     }
   }
