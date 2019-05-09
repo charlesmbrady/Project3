@@ -103,7 +103,7 @@ class Home extends Component {
       let theDifferenceLatitude = (Math.abs(position.coords.latitude - this.state.theLastLatitude)).toFixed(6);
       let theDifferenceLongitude = (Math.abs(position.coords.longitude - this.state.theLastLongitude)).toFixed(6);
 
-      if (theDifferenceLatitude > .0001 || theDifferenceLongitude > .0001) { //~50 feet
+      if (theDifferenceLatitude > .0002 || theDifferenceLongitude > .0002) { //~100 feet
         this.setState({ theLastLatitude: position.coords.latitude.toFixed(6), theLastLongitude: position.coords.longitude.toFixed(6) });
 
         // window.navigator.vibrate([ 200, 100, 200 ]);
@@ -126,8 +126,8 @@ class Home extends Component {
 
   sendAutomaticText = () => {
     // TODO: use auto-notify number from settings.
-    // const theUrl = `additional text https://www.google.com/maps/dir/?api=1&destination=${this.state.latitude},${this.state.longitude} | additional text`;
-    const theMessage = "Please come give me a ride; I have had too much to drink. Here is a Google Maps link to my location. (This message *auto-generated* by sipSpot) https://www.google.com/maps/dir/?api=1&destination=${this.state.latitude},${this.state.longitude} |";
+    const theUrl = `https://www.google.com/maps/dir/?api=1&destination=${this.state.latitude},${this.state.longitude} |`;
+    const theMessage = "Please come give me a ride; I have had too much to drink. Here is a Google Maps link to my location. (This message *auto-generated* by sipSpot) " + theUrl;
     TEXT.sendText({ to: 19192608858, message: theMessage })
       .then(res => {
         console.log("text message sent, response:");
@@ -148,8 +148,6 @@ class Home extends Component {
           </Row>
           <Row>
             <Col>
-              {/* moved to Quickstart.js */ }
-              {/* <p id="how-to">Click <em>Check-in</em> to keep track of where your stuff is (your credit card on a bar tab, your jacket, your friends). Click <em>Add Drink to Count</em> to keep track of your drinks over time to get a rough estimate of your blood-alcohol level. Click <em>Contact Friends</em> to send a link to your location to friends. Click <em>Get an Uber</em> to get a safe ride home.</p> */ }
               <div id="test-display">test display</div>
               <PostDrink drinks={ this.state.numberOfDrinks[ ((this.state.numberOfDrinks).length) - 1 ] } bac={ this.state.bac }></PostDrink>
             </Col>

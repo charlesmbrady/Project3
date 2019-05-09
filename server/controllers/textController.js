@@ -4,11 +4,11 @@ const nexmo = new Nexmo({
     apiSecret: 'bQL32wG6XyjNY1OQ'
 });
 
-const from = '14086495624'; // for testing - "watermarks" text messages
-// const from = '19192608858';
+// const from = '14086495624'; // for testing - "watermarks" text messages
+const from = '19192608858';
 
 module.exports = {
-    sendText: function(req, res) {
+    sendText: function (req, res) {
         nexmo.message.sendSms(
             from, req.body.to, req.body.message,
             (err, responseData) => {
