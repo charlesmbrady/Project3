@@ -97,7 +97,7 @@ class Home extends Component {
     console.log('in checkLocation');
     document.getElementById("test-display").innerText = "in checkLocation";
 
-    window.navigator.vibrate([ 200 ]);
+    // window.navigator.vibrate([ 200 ]);
     if (this.state.theLastLatitude !== 0) {
       document.getElementById("test-display").innerText = "theLastLatitude !==0";
       console.log(position);
@@ -107,11 +107,11 @@ class Home extends Component {
       if (theDifferenceLatitude > .0001 || theDifferenceLongitude > .0001) { //~50 feet
         this.setState({ theLastLatitude: position.coords.latitude.toFixed(6), theLastLongitude: position.coords.longitude.toFixed(6) });
 
-        window.navigator.vibrate([ 200, 100, 200 ]);
+        // window.navigator.vibrate([ 200, 100, 200 ]);
         document.getElementById("test-display").innerText = "major proximity change";
       } else {
         document.getElementById("test-display").innerText = "minor proximity change";
-        window.navigator.vibrate([ 200 ]);
+        // window.navigator.vibrate([ 200 ]);
       }
     } else {
       document.getElementById("test-display").innerText = "theLastLatitude===0";
