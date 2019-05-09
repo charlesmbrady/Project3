@@ -87,46 +87,32 @@ class Home extends Component {
 
   storeCheckinLocation = () => {
     console.log('storeCheckinLocation');
-    this.setState({ theCheckinLatitude: this.state.latitude, theCheckinLongitude: this.state.longitude }, this.watchLocation);
     console.log(this.state.latitude, this.state.longitude);
+    this.setState({ theCheckinLatitude: this.state.latitude, theCheckinLongitude: this.state.longitude }, this.watchLocation);
     document.getElementById("test-display").innerText = "Check-In location: " + this.state.latitude + ", " + this.state.longitude + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
-    // this._isMounted && this.setState({ theCheckinLatitude: position.coords.latitude, theCheckinLongitude: position.coords.longitude }, this.watchLocation());
   }
 
   watchLocation = () => {
     console.log('watch');
-    navigator.geolocation.watchPosition(this.storeLocation);
-  }
-
-  storeLocation = (position) => {
-    console.log('store');
-    this._isMounted && this.setState({ latitude: position.coords.latitude, longitude: position.coords.longitude },
-      () => this.checkLocation(position)
-    );
+    navigator.geolocation.watchPosition(this.checkLocation);
   }
 
   checkLocation = (position) => {
     console.log('check');
     console.log(position.coords.latitude, position.coords.longitude);
-    // document.getElementById("test-display").innerText = "in checkLocation " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
-
-    // window.navigator.vibrate([ 200 ]);
+    if (this.state.latitude === 0) {
+      this.setState({ latitude: position.coords.latitude, longitude: position.coords.longitude });
+    }
     console.log(this.state.theCheckinLatitude);
     if (this.state.theCheckinLatitude !== 0) {
-      // document.getElementById("test-display").innerText = "theCheckinLatitude !==0 " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
       let theDifferenceLatitude = (Math.abs(position.coords.latitude - this.state.theCheckinLatitude)).toFixed(6);
       let theDifferenceLongitude = (Math.abs(position.coords.longitude - this.state.theCheckinLongitude)).toFixed(6);
 
       if (theDifferenceLatitude > .0001 || theDifferenceLongitude > .0001) {
-        // this.setState({ theCheckinLatitude: position.coords.latitude.toFixed(6), theCheckinLongitude: position.coords.longitude.toFixed(6) });
-
         document.getElementById("test-display").innerText = "MAJOR PROXIMITY CHANGE " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
       } else {
         document.getElementById("test-display").innerText = "minor proximity change " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
       }
-    } else {
-      // document.getElementById("test-display").innerText = "theCheckinLatitude===0 " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
-      // this.setState({ theCheckinLatitude: position.coords.latitude.toFixed(6), theCheckinLongitude: position.coords.longitude.toFixed(6) });
     }
   }
 
