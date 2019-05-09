@@ -27,7 +27,8 @@ class Home extends Component {
 
   componentDidMount () {
     this._isMounted = true;
-    this._isMounted && this.watchLocation();
+    this._isMounted && this.getLocation();
+    // this._isMounted && this.watchLocation();
   }
 
   componentWillUnmount () {
@@ -81,7 +82,12 @@ class Home extends Component {
   checkIn = (e) => {
     e.preventDefault();
     console.log("Check in clicked");
+    this.watchLocation();
   };
+
+  getLocation = () => {
+    navigator.geolocation.getCurrentPosition(this.storeLocation);
+  }
 
   watchLocation = () => {
     navigator.geolocation.watchPosition(this.storeLocation);
@@ -94,8 +100,8 @@ class Home extends Component {
   }
 
   checkLocation = (position) => {
-    console.log(position.coords.latitude, position.coords.longitude),
-      document.getElementById("test-display").innerText = "in checkLocation " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
+    console.log(position.coords.latitude, position.coords.longitude);
+    document.getElementById("test-display").innerText = "in checkLocation " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
 
     // window.navigator.vibrate([ 200 ]);
     if (this.state.theLastLatitude !== 0) {
@@ -103,7 +109,7 @@ class Home extends Component {
       let theDifferenceLatitude = (Math.abs(position.coords.latitude - this.state.theLastLatitude)).toFixed(6);
       let theDifferenceLongitude = (Math.abs(position.coords.longitude - this.state.theLastLongitude)).toFixed(6);
 
-      if (theDifferenceLatitude > .0001 || theDifferenceLongitude > .0001) {
+      if (theDifferenceLatitude > .0003 || theDifferenceLongitude > .0003) {
         this.setState({ theLastLatitude: position.coords.latitude.toFixed(6), theLastLongitude: position.coords.longitude.toFixed(6) });
 
         // window.navigator.vibrate([ 200, 100, 200 ]);
