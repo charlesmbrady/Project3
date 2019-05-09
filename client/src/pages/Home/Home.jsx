@@ -126,7 +126,7 @@ class Home extends Component {
 
   sendAutomaticText = () => {
     // TODO: use auto-notify number from settings.
-    const theUrl = `https://www.google.com/maps/dir/?api=1&destination=${this.state.latitude},${this.state.longitude} |`;
+    const theUrl = `https://www.google.com/maps/dir/?api=1&destination=${this.state.latitude},${this.state.longitude}`;
     const theMessage = "Please come give me a ride; I have had too much to drink. Here is a Google Maps link to my location. (This message *auto-generated* by sipSpot) " + theUrl;
     TEXT.sendText({ to: 19192608858, message: theMessage })
       .then(res => {
