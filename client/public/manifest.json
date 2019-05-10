@@ -1,11 +1,13 @@
 {
     "short_name": "sipSpot",
     "name": "sipSpot",
-    "icons": [{
-        "src": "favicon.ico",
-        "sizes": "32x32",
-        "type": "image/png"
-    }],
+    "icons": [
+        {
+            "src": "./favicon.ico",
+            "sizes": "32x32",
+            "type": "image/png"
+        }
+    ],
     "start_url": "./index.html",
     "display": "standalone",
     "theme_color": "#000000",
