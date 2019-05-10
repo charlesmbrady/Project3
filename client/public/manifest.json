@@ -3,7 +3,7 @@
     "name": "sipSpot",
     "icons": [
         {
-            "src": "./favicon.ico",
+            "src": "favicon.ico",
             "sizes": "32x32",
             "type": "image/png"
         }

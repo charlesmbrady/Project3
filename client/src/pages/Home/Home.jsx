@@ -93,11 +93,20 @@ class Home extends Component {
 
   checkForNumbers = () => {
     if (this.state.userPhoneNumber === 0) {
-      let userPhoneNumber = prompt("Please enter your phone number so sipSpot can send you alerts. sipSpot will never share your number with anyone else, ever.");
-      let emergencyContactNumber = prompt("Now please enter the phone number of an emergency contact in case you need to be picked up. This is OPTIONAL, but it's a really good idea to do.")
+      let userPhoneNumber = localStorage.getItem("userPhoneNumber");
+      let emergencyContactNumber = localStorage.getItem("emergencyContactNumber");
+      console.log(userPhoneNumber, emergencyContactNumber);
+      if (userPhoneNumber === null) {
+        userPhoneNumber = prompt("Please enter your phone number so sipSpot can send you alerts. sipSpot will never share your number with anyone else, ever.");
+      }
+      if (emergencyContactNumber === null) {
+        emergencyContactNumber = prompt("Now please enter the phone number of an emergency contact in case you need to be picked up. This is OPTIONAL, but it's a really good idea to do.")
+      }
       if (emergencyContactNumber === null || emergencyContactNumber === "") {
         emergencyContactNumber = userPhoneNumber;
       }
+      localStorage.setItem("userPhoneNumber", userPhoneNumber);
+      localStorage.setItem("emergencyContactNumber", emergencyContactNumber);
       this.setState({ userPhoneNumber: userPhoneNumber, emergencyContactNumber: emergencyContactNumber });
     }
   }
