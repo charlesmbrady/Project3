@@ -1,24 +1,18 @@
-const Nexmo = require('nexmo');
-const nexmo = new Nexmo({
-    apiKey: '3f19d248',
-    apiSecret: 'bQL32wG6XyjNY1OQ'
-});
-
-const from = '14086495624';
+// Download the helper library from https://www.twilio.com/docs/node/install
+// Your Account Sid and Auth Token from twilio.com/console
+// DANGER! This is insecure. See http://twil.io/secure
+const accountSid = 'AC506559edcf3eae25102c0c2774bec0b8';
+const authToken = 'ebe2f6c2d3a76d75cc94a47c4041c32b';
+const client = require('twilio')(accountSid, authToken);
 
 module.exports = {
     sendText: function (req, res) {
-        nexmo.message.sendSms(
-            from, req.body.to, req.body.message,
-            (err, responseData) => {
-                if (err) {
-                    console.log('sendSms error: ' + err);
-                    res.status(422).json(err);
-                } else {
-                    console.log('sendSms response: ' + responseData);
-                    res.json(responseData);
-                }
-            }
-        );
+        client.messages
+            .create({
+                body: req.body.message,
+                from: '+19195253167',
+                to: req.body.to
+            })
+            .then(message => console.log(message.sid));
     }
 };
