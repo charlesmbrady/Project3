@@ -86,7 +86,7 @@ class Home extends Component {
 
   checkIn = (e) => {
     e.preventDefault();
-    console.log("Check in clicked");
+    console.log("Check-In");
     this.checkForNumbers();
     this.storeCheckinLocation();
   };
@@ -147,8 +147,8 @@ class Home extends Component {
   }
 
   checkBeforeSendAutomaticText = () => {
-    console.log(this.state.emergencyContactNumber);
     if (this.state.bac > 0.3 && this.state.emergencyNotificationSent === false) { //TODO: bring this level down for production
+      console.log("Sending emergency text to " + this.state.emergencyContactNumber);
       this.sendAutomaticText();
     }
   }
