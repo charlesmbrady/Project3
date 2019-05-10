@@ -4,11 +4,14 @@ import TEXT from '../../utils/TEXT';
 import MenuModal from '../../components/Menu';
 import PostDrink from '../../components/PostDrink';
 import './Home.css';
+import API from "../../utils/API";
 
 class Home extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      user: props,
+      userweight: 130,
       numberOfDrinks: [ { number: 0, timeOfLastDrink: [ new Date().toLocaleString() ] } ],
       location: "",
       userPhoneNumber: 0,
@@ -39,10 +42,10 @@ class Home extends Component {
     this._isMounted = false;
   }
 
-  calculateBac (drink, time) {
+  calculateBac (drink, time, weight) {
 
     //calculate BAC(using 130lbs as generic weight and r=0.55 for conservative estimate)
-    let bac = ((drink * 14) / (58967 * 0.55)) * 100;
+    let bac = ((drink * 14) / ((weight*453.592) * 0.55)) * 100;
 
     //elapsed time 
     let first = (Date.parse(time)) / 3600000;
@@ -61,7 +64,7 @@ class Home extends Component {
     lastdrink.number = (numberOfDrinksCopy[ (numberOfDrinksCopy.length - 1) ].number);
     lastdrink.timeOfLastDrink = new Date().toLocaleString();
 
-    let bac = this.calculateBac(lastdrink.number, this.state.numberOfDrinks[ 0 ].timeOfLastDrink);
+    let bac = this.calculateBac(lastdrink.number, this.state.numberOfDrinks[ 0 ].timeOfLastDrink, this.state.userweight);
 
     this.setState({ bac });
   }
@@ -75,10 +78,23 @@ class Home extends Component {
     lastdrink.timeOfLastDrink = new Date().toLocaleString();
     numberOfDrinksCopy.push(lastdrink);
 
-    let bac = this.calculateBac(lastdrink.number, this.state.numberOfDrinks[ 0 ].timeOfLastDrink);
+    let bac = this.calculateBac(lastdrink.number, this.state.numberOfDrinks[ 0 ].timeOfLastDrink, this.state.userweight);
 
     this.setState({ numberOfDrinks: numberOfDrinksCopy, bac },
       () => this.checkBeforeSendAutomaticText());
+      
+    //push drinks to db
+    if("user" in this.state.user){
+      API.saveDrink({
+        numberOfDrinks: lastdrink.number,
+        bac: bac,
+        timeOfLastDrink: lastdrink.timeOfLastDrink,
+        latitude: this.state.theCheckinLatitude,
+        longitude: this.state.theCheckinLongitude
+      }).then((result) => {
+        console.log("drinks added");
+      }).catch(err => console.log(err));
+    }
 
     setInterval(() => { this.updateBac.bind(this); this.updateBac(); }, 900000);
   };
