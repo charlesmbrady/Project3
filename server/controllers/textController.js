@@ -1,8 +1,7 @@
-// Download the helper library from https://www.twilio.com/docs/node/install
-// Your Account Sid and Auth Token from twilio.com/console
-// DANGER! This is insecure. See http://twil.io/secure
-const accountSid = 'AC506559edcf3eae25102c0c2774bec0b8';
-const authToken = 'ebe2f6c2d3a76d75cc94a47c4041c32b';
+require('dotenv').config();
+const accountSid = process.env.accountSid;
+const authToken = process.env.authToken;
+const from = process.env.from;
 const client = require('twilio')(accountSid, authToken);
 
 module.exports = {
@@ -10,7 +9,7 @@ module.exports = {
         client.messages
             .create({
                 body: req.body.message,
-                from: '+19195253167',
+                from: from,
                 to: req.body.to
             })
             .then(message => res.json(message.sid));
