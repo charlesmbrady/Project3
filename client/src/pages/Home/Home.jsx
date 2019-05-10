@@ -88,9 +88,7 @@ class Home extends Component {
   };
 
   storeCheckinLocation = () => {
-    // console.log('storeCheckinLocation');
-    // console.log(this.state.latitude, this.state.longitude);
-    this.setState({ theCheckinLatitude: this.state.latitude, theCheckinLongitude: this.state.longitude }, this.watchLocation);
+    this.setState({ theCheckinLatitude: this.state.latitude, theCheckinLongitude: this.state.longitude, proximityAlertSent: false }, this.watchLocation);
     document.getElementById("test-display").innerText = "Check-In location: " + this.state.latitude + ", " + this.state.longitude + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
   }
 
@@ -100,8 +98,6 @@ class Home extends Component {
   }
 
   checkLocation = (position) => {
-    // console.log('check');
-    // console.log(position.coords.latitude, position.coords.longitude);
     if (this.state.latitude === 0) {
       this.setState({ latitude: position.coords.latitude, longitude: position.coords.longitude });
     }
