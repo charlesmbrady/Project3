@@ -13,6 +13,6 @@ module.exports = {
                 from: '+19195253167',
                 to: req.body.to
             })
-            .then(message => console.log(message.sid));
+            .then(message => res.json(message.sid));
     }
 };
