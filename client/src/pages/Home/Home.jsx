@@ -92,8 +92,14 @@ class Home extends Component {
 
   storeCheckinLocation = () => {
     if (this.state.userPhoneNumber === 0) {
-      this.setState({ userPhoneNumber: prompt("Please enter your phone number so sipSpot can send you alerts. sipSpot will never share your number with anyone else, ever."), emergencyContactNumber: prompt("Now please enter the phone number of an emergency contact in case you need to be picked up. This is OPTIONAL, but it's a really good idea to do.") });
+      let userPhoneNumber = prompt("Please enter your phone number so sipSpot can send you alerts. sipSpot will never share your number with anyone else, ever.");
+      let emergencyContactNumber = prompt("Now please enter the phone number of an emergency contact in case you need to be picked up. This is OPTIONAL, but it's a really good idea to do.")
+      if (emergencyContactNumber === null || emergencyContactNumber === "") {
+        emergencyContactNumber = userPhoneNumber;
+      }
+      this.setState({ userPhoneNumber: userPhoneNumber, emergencyContactNumber: emergencyContactNumber });
     }
+
     this.setState({ theCheckinLatitude: this.state.latitude, theCheckinLongitude: this.state.longitude, proximityAlertSent: false, emergencyNotificationSent: false }, this.watchLocation);
     document.getElementById("test-display").innerText = "Check-In location: " + this.state.latitude + ", " + this.state.longitude + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
   }
@@ -104,9 +110,9 @@ class Home extends Component {
   }
 
   checkLocation = (position) => {
-    if (this.state.latitude === 0) {
-      this.setState({ latitude: position.coords.latitude, longitude: position.coords.longitude });
-    }
+    // if (this.state.latitude === 0) {
+    this.setState({ latitude: position.coords.latitude, longitude: position.coords.longitude });
+    // }
     if (this.state.theCheckinLatitude !== 0) {
       let theDifferenceLatitude = (Math.abs(position.coords.latitude - this.state.theCheckinLatitude)).toFixed(6);
       let theDifferenceLongitude = (Math.abs(position.coords.longitude - this.state.theCheckinLongitude)).toFixed(6);
@@ -114,8 +120,8 @@ class Home extends Component {
       if (!this.state.proximityAlertSent) {
         if (theDifferenceLatitude > .0002 || theDifferenceLongitude > .0002) {
           document.getElementById("test-display").innerText = "MAJOR PROXIMITY CHANGE " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
-          this.setState({ proximityAlertSent: true });
-          navigator.geolocation.clearWatch(this.state.watchID);
+          this.setState({ proximityAlertSent: true, theCheckinLatitude: 0, theCheckinLongitude: 0 });
+          // navigator.geolocation.clearWatch(this.state.watchID);
           // TODO: use auto-notify number from settings.
           const theMessage = "It looks like you are leaving the spot where you checked in with sipSpot. Don't forget your credit card, jacket, friends, etc.! PLEASE NOTE: proximity alerts are now turned off until you Check-In again.";
           TEXT.sendText({ to: this.state.userPhoneNumber, message: theMessage })
@@ -138,7 +144,8 @@ class Home extends Component {
   }
 
   checkBeforeSendAutomaticText = () => {
-    if (this.state.bac > 0.3 && this.state.emergencyContactNumber !== 0 && this.state.emergencyNotificationSent === false) { //TODO: bring this level down for production
+    console.log(this.state.emergencyContactNumber);
+    if (this.state.bac > 0.3 && this.state.emergencyNotificationSent === false) { //TODO: bring this level down for production
       this.sendAutomaticText();
     }
   }
@@ -146,8 +153,12 @@ class Home extends Component {
   sendAutomaticText = () => {
     this.setState({ emergencyNotificationSent: true });
     // TODO: use auto-notify number from settings.
-    const theUrl = `https://www.google.com/maps/dir/?api=1&destination=${this.state.latitude},${this.state.longitude}`;
-    const theMessage = "Please come give me a ride; I have had too much to drink. Here is a Google Maps link to my location. (This message *auto-generated* by sipSpot) " + theUrl;
+    let theUrl = `https://www.google.com/maps/dir/?api=1&destination=${this.state.latitude},${this.state.longitude}`;
+    let theMessage = "Please come give me a ride; I have had too much to drink. Here is a Google Maps link to my location. (This message *auto-generated* by sipSpot) " + theUrl;
+    if (this.state.emergencyContactNumber === this.state.userPhoneNumber) {
+      theUrl = "https://m.uber.com/ul/?action=setPickup&pickup=my_location"
+      theMessage = "It looks like you have had a lot to drink. Please get a ride home or get an Uber, for your own safety and for the safety of others. Here's a link to Uber: (This message *auto-generated* by sipSpot) " + theUrl;
+    }
     TEXT.sendText({ to: this.state.emergencyContactNumber, message: theMessage })
       .then(res => {
         console.log("AUTOMATIC text message sent, response:");
