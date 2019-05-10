@@ -92,7 +92,7 @@ class Home extends Component {
 
   storeCheckinLocation = () => {
     if (this.state.userPhoneNumber === 0) {
-      this.setState({ userPhoneNumber: prompt("Please enter your phone number so sipSpot can send you alerts. sipSpot will never share your number with anyone else, ever."), emergencyContactNumber: prompt("Now please enter the phone number of an emergency contact in case you need to be picked up.") });
+      this.setState({ userPhoneNumber: prompt("Please enter your phone number so sipSpot can send you alerts. sipSpot will never share your number with anyone else, ever."), emergencyContactNumber: prompt("Now please enter the phone number of an emergency contact in case you need to be picked up. This is OPTIONAL, but it's a really good idea to do.") });
     }
     this.setState({ theCheckinLatitude: this.state.latitude, theCheckinLongitude: this.state.longitude, proximityAlertSent: false, emergencyNotificationSent: false }, this.watchLocation);
     document.getElementById("test-display").innerText = "Check-In location: " + this.state.latitude + ", " + this.state.longitude + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
