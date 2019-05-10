@@ -130,7 +130,7 @@ class Home extends Component {
       let theDifferenceLongitude = (Math.abs(position.coords.longitude - this.state.theCheckinLongitude)).toFixed(6);
 
       if (!this.state.proximityAlertSent) {
-        if (theDifferenceLatitude > .0003 || theDifferenceLongitude > .0003) {
+        if (theDifferenceLatitude > .0004 || theDifferenceLongitude > .0004) {
           document.getElementById("test-display").innerText = "MAJOR PROXIMITY CHANGE " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
           this.setState({ proximityAlertSent: true, theCheckinLatitude: 0, theCheckinLongitude: 0 });
           const theMessage = "It looks like you are leaving the spot where you checked in with sipSpot. Don't forget your credit card, jacket, friends, etc.! PLEASE NOTE: proximity alerts are now turned off until you Check-In again.";
