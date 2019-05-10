@@ -11,11 +11,14 @@ class Home extends Component {
     this.state = {
       numberOfDrinks: [ { number: 0, timeOfLastDrink: [ new Date().toLocaleString() ] } ],
       location: "",
+      userPhoneNumber: 0,
+      emergencyContactNumber: 0,
       latitude: 0,
       longitude: 0,
       theCheckinLatitude: 0,
       theCheckinLongitude: 0,
       proximityAlertSent: false,
+      emergencyNotificationSent: false,
       watchID: 0,
       bac: 0,
       modal: false,
@@ -88,7 +91,10 @@ class Home extends Component {
   };
 
   storeCheckinLocation = () => {
-    this.setState({ theCheckinLatitude: this.state.latitude, theCheckinLongitude: this.state.longitude, proximityAlertSent: false }, this.watchLocation);
+    if (this.state.userPhoneNumber === 0) {
+      this.setState({ userPhoneNumber: prompt("Please enter your phone number so sipSpot can send you alerts. sipSpot will never share your number with anyone else, ever."), emergencyContactNumber: prompt("Now please enter the phone number of an emergency contact in case you need to be picked up.") });
+    }
+    this.setState({ theCheckinLatitude: this.state.latitude, theCheckinLongitude: this.state.longitude, proximityAlertSent: false, emergencyNotificationSent: false }, this.watchLocation);
     document.getElementById("test-display").innerText = "Check-In location: " + this.state.latitude + ", " + this.state.longitude + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
   }
 
@@ -112,7 +118,7 @@ class Home extends Component {
           navigator.geolocation.clearWatch(this.state.watchID);
           // TODO: use auto-notify number from settings.
           const theMessage = "It looks like you are leaving the spot where you checked in with sipSpot. Don't forget your credit card, jacket, friends, etc.! PLEASE NOTE: proximity alerts are now turned off until you Check-In again.";
-          TEXT.sendText({ to: 19192608858, message: theMessage })
+          TEXT.sendText({ to: this.state.userPhoneNumber, message: theMessage })
             .then(res => {
               console.log("proximity alert sent, response:");
               console.log(res);
@@ -132,16 +138,17 @@ class Home extends Component {
   }
 
   checkBeforeSendAutomaticText = () => {
-    if (this.state.bac > 0.3) { //TODO: bring this level down for production
+    if (this.state.bac > 0.3 && this.state.emergencyContactNumber !== 0 && this.state.emergencyNotificationSent === false) { //TODO: bring this level down for production
       this.sendAutomaticText();
     }
   }
 
   sendAutomaticText = () => {
+    this.setState({ emergencyNotificationSent: true });
     // TODO: use auto-notify number from settings.
     const theUrl = `https://www.google.com/maps/dir/?api=1&destination=${this.state.latitude},${this.state.longitude}`;
     const theMessage = "Please come give me a ride; I have had too much to drink. Here is a Google Maps link to my location. (This message *auto-generated* by sipSpot) " + theUrl;
-    TEXT.sendText({ to: 19192608858, message: theMessage })
+    TEXT.sendText({ to: this.state.emergencyContactNumber, message: theMessage })
       .then(res => {
         console.log("AUTOMATIC text message sent, response:");
         console.log(res);
