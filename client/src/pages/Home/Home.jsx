@@ -68,7 +68,7 @@ class Home extends Component {
 
   drinkTracker = (e) => {
     e.preventDefault();
-
+    this.checkForNumbers();
     let lastdrink = {};
     let numberOfDrinksCopy = this.state.numberOfDrinks;
     lastdrink.number = (numberOfDrinksCopy[ (numberOfDrinksCopy.length - 1) ].number) + 1;
@@ -87,10 +87,11 @@ class Home extends Component {
   checkIn = (e) => {
     e.preventDefault();
     console.log("Check in clicked");
+    this.checkForNumbers();
     this.storeCheckinLocation();
   };
 
-  storeCheckinLocation = () => {
+  checkForNumbers = () => {
     if (this.state.userPhoneNumber === 0) {
       let userPhoneNumber = prompt("Please enter your phone number so sipSpot can send you alerts. sipSpot will never share your number with anyone else, ever.");
       let emergencyContactNumber = prompt("Now please enter the phone number of an emergency contact in case you need to be picked up. This is OPTIONAL, but it's a really good idea to do.")
@@ -99,7 +100,9 @@ class Home extends Component {
       }
       this.setState({ userPhoneNumber: userPhoneNumber, emergencyContactNumber: emergencyContactNumber });
     }
+  }
 
+  storeCheckinLocation = () => {
     this.setState({ theCheckinLatitude: this.state.latitude, theCheckinLongitude: this.state.longitude, proximityAlertSent: false, emergencyNotificationSent: false }, this.watchLocation);
     document.getElementById("test-display").innerText = "Check-In location: " + this.state.latitude + ", " + this.state.longitude + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
   }
