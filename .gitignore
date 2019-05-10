@@ -15,4 +15,5 @@ npm-debug.log.*
 /.awcache/*
 /client/node_modules
 /client/package-lock.json
+.env
 .DS_Store
