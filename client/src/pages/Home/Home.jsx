@@ -124,8 +124,6 @@ class Home extends Component {
         if (theDifferenceLatitude > .0003 || theDifferenceLongitude > .0003) {
           document.getElementById("test-display").innerText = "MAJOR PROXIMITY CHANGE " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
           this.setState({ proximityAlertSent: true, theCheckinLatitude: 0, theCheckinLongitude: 0 });
-          // navigator.geolocation.clearWatch(this.state.watchID);
-          // TODO: use auto-notify number from settings.
           const theMessage = "It looks like you are leaving the spot where you checked in with sipSpot. Don't forget your credit card, jacket, friends, etc.! PLEASE NOTE: proximity alerts are now turned off until you Check-In again.";
           TEXT.sendText({ to: this.state.userPhoneNumber, message: theMessage })
             .then(res => {
@@ -147,7 +145,7 @@ class Home extends Component {
   }
 
   checkBeforeSendAutomaticText = () => {
-    if (this.state.bac > 0.3 && this.state.emergencyNotificationSent === false) { //TODO: bring this level down for production
+    if (this.state.bac > 0.1 && this.state.emergencyNotificationSent === false) {
       console.log("Sending emergency text to " + this.state.emergencyContactNumber);
       this.sendAutomaticText();
     }
@@ -155,7 +153,6 @@ class Home extends Component {
 
   sendAutomaticText = () => {
     this.setState({ emergencyNotificationSent: true });
-    // TODO: use auto-notify number from settings.
     let theUrl = `https://www.google.com/maps/dir/?api=1&destination=${this.state.latitude},${this.state.longitude}`;
     let theMessage = "Please come give me a ride; I have had too much to drink. Here is a Google Maps link to my location. (This message *auto-generated* by sipSpot) " + theUrl;
     if (this.state.emergencyContactNumber === this.state.userPhoneNumber) {
