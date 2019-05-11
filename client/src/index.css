@@ -63,6 +63,6 @@ body {
   background: white;
   padding: 20px;
   box-shadow: -50px -50px 100px black;
-  background-image: linear-gradient(white, white, blue);
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.9), rgb(76, 0, 255, .3));
   border-radius: 18px 18px 0px 0px;
 }
