@@ -11,7 +11,7 @@ function Home(){
 
   return (
     <div className="home-button">
-    <Link to="/">Home</Link>
+    <Link className="home-btn" to="/">...</Link>
     </div>
   );
 
