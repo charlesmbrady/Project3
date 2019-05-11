@@ -9,18 +9,18 @@ const userSchema = new Schema({
 	lastName: { type: String, unique: false },
 	username: { type: String, unique: false, required: false },
 	password: { type: String, unique: false, required: false },
-	userPhoneNumber: { type: Number, unique: false, required: true },
-	emergencyContactNumber: { type: Number, unique: false, required: true },
+	userPhoneNumber: { type: Number, unique: false, required: true, default: 0 },
+	emergencyContactNumber: { type: Number, unique: false, required: true, default: 0 },
 	weight: { type: Number, unique: false, required: true, default: 130 },
 	gender: { type: String, unique: false, required: true, default: 'f' },
 	selfAlertThreshold: { type: Number, unique: false, required: true, default: 1 },
 	emergencyAlertThreshold: { type: Number, unique: false, required: true, default: 1 },
 	drinks: [
 		{
-		  // Store ObjectIds in the array
-		  type: Schema.Types.ObjectId,
-		  // The ObjectIds will refer to the ids in the Drinks model
-		  ref: "Drink"
+			// Store ObjectIds in the array
+			type: Schema.Types.ObjectId,
+			// The ObjectIds will refer to the ids in the Drinks model
+			ref: "Drink"
 		}
 	]
 });
