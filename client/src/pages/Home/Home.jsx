@@ -245,7 +245,7 @@ class Home extends Component {
               <Button className="cntrl-btn" data-test="controls-uber" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location" target="_blank">Get an Uber</Button>
             </Col>
             <Col>
-              <Button className="cntrl-btn" data-test="controls-friends" onClick={ this.toggleAlerts }>Contact Friends</Button>
+              <Button className="cntrl-btn" data-test="controls-friends" onClick={ this.sendText }>Contact Friends</Button>
             </Col>
           </Row>
         </Container>
