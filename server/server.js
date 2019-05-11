@@ -26,7 +26,8 @@ app.use(session({
 	resave: false,
 	saveUninitialized: false
 }));
-app.use(favicon(__dirname + '/public/favicon.ico'));
+app.use(favicon(__dirname + '../client/build/favicon.ico'));
+// app.use(favicon(__dirname + '/public/favicon.ico'));
 
 // Passport
 app.use(passport.initialize());
