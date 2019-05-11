@@ -6,7 +6,6 @@ if (process.env.NODE_ENV !== 'production') {
 require('dotenv').config();
 
 const express = require('express');
-var favicon = require('serve-favicon');
 const morgan = require('morgan');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
@@ -26,7 +25,6 @@ app.use(session({
 	resave: false,
 	saveUninitialized: false
 }));
-app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
 // Passport
 app.use(passport.initialize());
