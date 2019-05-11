@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import Settings from './pages/Settings/Settings';
 import History from './pages/History/History';
 import Friends from './pages/Friends/Friends';
+import Quickstart from './pages/Quickstart';
 import './index.css';
 
 class App extends Component {
@@ -85,6 +86,7 @@ class App extends Component {
 					<div>
 						<div className="auth-wrapper" style={{ paddingTop: 40 }}>
 							<Route exact path="/" component={() => <Home />} />
+							<Route exact path="/quickstart" component={Quickstart} />
 							<Route exact path="/history" component={History} />
 							<Route exact path="/settings" component={Settings} />
 							<Route exact path="/friends" component={Friends} />
