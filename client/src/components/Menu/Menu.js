@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Row, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import './menu.css';
-import AlertsModal from '../AlertsModal/AlertsModal';
 
 const MenuModal = (props) => {
     return (
