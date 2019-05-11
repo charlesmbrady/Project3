@@ -23,11 +23,11 @@
 }
 
 .modal-header {
-    /* height: 20vh; */
+    height: 20vh;
 }
 
 .modal-footer {
-    /* height: 10vh; */
+    height: 10vh;
 }
 
 .logout {
