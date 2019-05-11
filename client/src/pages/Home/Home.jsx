@@ -5,6 +5,8 @@ import MenuModal from '../../components/Menu';
 import PostDrink from '../../components/PostDrink';
 import './Home.css';
 import API from "../../utils/API";
+import AlertsModal from '../../components/AlertsModal/AlertsModal';
+import SettingsModal from '../../components/SettingsModal/SettingsModal';
 
 class Home extends Component {
   constructor (props) {
@@ -26,12 +28,16 @@ class Home extends Component {
       emergencyNotificationSent: false,
       watchID: 0,
       bac: 0,
+      alertsModal: false,
+      settingsModal: false,
       modal: false,
       toggle () {
         this.setState(prevState => ({
           modal: !prevState.modal
         }));
       }
+
+      
     };
   }
 
@@ -199,11 +205,23 @@ class Home extends Component {
       .catch(err => console.log(err));
   }
 
+  toggleAlerts = () => {
+    this.setState(prevState => ({
+      alertsModal: !prevState.alertsModal
+    }));
+  }
+
+  toggleSettings = () => {
+    this.setState(prevState => ({
+      settingsModal: !prevState.settingsModal
+    }));
+  }
+
   render () {
     return (
       <div>
         <Container className="home">
-          <MenuModal user={ this.props.user } logout={ this.props.logout } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) }></MenuModal>
+          <MenuModal user={ this.props.user } logout={ this.props.logout } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) } toggleAlerts={this.toggleAlerts} toggleSettings={this.toggleSettings}></MenuModal>
           <Row>
             <Col>
               <div id="title">sipSpot</div>
@@ -235,6 +253,8 @@ class Home extends Component {
             </Col>
           </Row>
         </Container>
+        <AlertsModal alertsModal={this.state.alertsModal} toggleAlerts={this.toggleAlerts} />
+        <SettingsModal settingsModal={this.state.settingsModal} toggleSettings={this.toggleSettings} />
       </div>
     );
   }
