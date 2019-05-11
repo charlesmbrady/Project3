@@ -66,7 +66,6 @@ class Home extends Component {
   //update BAC every minute
   updateBac () {
     let numberOfDrinksCopy = this.state.numberOfDrinks;
-    let numofdrinks = (numberOfDrinksCopy[ (numberOfDrinksCopy.length - 1) ].number);
     let first =(numberOfDrinksCopy[ (numberOfDrinksCopy.length - 1) ].timeOfLastDrink);
     first = (Date.parse(first)) / 3600000;
     let now = (Date.parse(new Date().toLocaleString())) / 3600000;
