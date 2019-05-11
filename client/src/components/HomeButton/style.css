@@ -11,3 +11,7 @@
 .home-button:hover {
     cursor: pointer;
 }
+
+.home-btn {
+    background: white;
+}
