@@ -15,6 +15,14 @@ const userSchema = new Schema({
 	gender: { type: String, unique: false, required: true, default: 'f' },
 	selfAlertThreshold: { type: Number, unique: false, required: true, default: 1 },
 	emergencyAlertThreshold: { type: Number, unique: false, required: true, default: 1 },
+	drinks: [
+		{
+		  // Store ObjectIds in the array
+		  type: Schema.Types.ObjectId,
+		  // The ObjectIds will refer to the ids in the Drinks model
+		  ref: "Drink"
+		}
+	]
 });
 
 // All the following should be read from db and written to state when app loads(?)

@@ -18,7 +18,13 @@ module.exports = {
   create: function(req, res) {
     db.Drink
       .create(req.body)
-      .then(dbModel => res.json(dbModel))
+      .then(dbModel => {
+        return db.User.findOneAndUpdate({ _id: req.user._id }, { $push: { drinks: dbModel._id } }, { new: true });
+      })
+      .then((dbUser) => {
+        // If the User was updated successfully, send it back to the client
+        res.json(dbUser);
+      })
       .catch(err => res.status(422).json(err));
   },
   update: function(req, res) {
