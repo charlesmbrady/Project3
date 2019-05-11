@@ -3,6 +3,9 @@
     z-index: 2;
     top: 0;
     left: 0;
+    background-color:#0095cc;
+    color: #121212;
+    border-color: #121212; 
 }
 
 .menu {
@@ -21,19 +24,22 @@
     scroll-behavior: unset;
     overflow: none;
     text-align: center;
+    background-color: #0095cc;
 }
 
 .modal-header {
     height: 20vh;
     margin: 0 auto;
+    background-color: #0095cc;
 }
 
 .modal-footer {
     height: 10vh;
+    background-color: #0095cc;
 }
 
 .logout {
-    color: black;
+    color: #121212;
 }
 
 .menu-button {
@@ -41,11 +47,16 @@
 }
 
 a {
-    background-image: linear-gradient(to left, rgba(0, 0, 0, .9), rgb(76, 0, 255, .9));
-    color: white;
+    background-image: linear-gradient(to left, #121212, #68a6bd);
+    color: #dcbfff;
     padding: 10% 20%;
     border-radius: 4px;
     font-size: 1rem;
     font-weight: bold;
 
+}
+
+.menu-btn:hover {
+    background-color: #fff10a;
+    
 }
