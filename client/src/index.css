@@ -1,17 +1,17 @@
 /* COLORS */
 
 body {
-  background-image: linear-gradient(to right, rgba(0, 0, 0, .9), rgb(76, 0, 255, .9));
-  color: white;
+  background-image: linear-gradient(to right, #121212, #0095cc);
+  color: #dcbfff;
   margin: 0 auto;
   text-align: center;
 
 }
 
 .cntrl-btn {
-  background-color: white;
-  color: blue;
-  box-shadow: 3px 3px 5px black;
+  background-color:#68a6bd;
+  color:#121212;
+  box-shadow: 3px 3px 5px #121212;
 }
 
 .controls-container {
@@ -20,12 +20,12 @@ body {
 }
 
 #how-to {
-  color: white;
+  color: #dcbfff;
   padding: 2%;
 }
 
 #test-display {
-  color: white;
+  color: #dcbfff;
   width: 100%;
   text-align: center;
   display: none;
@@ -33,15 +33,16 @@ body {
 
 .drink-display {
 
-  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.972), rgb(60, 0, 255, 0.5));
+  background-image: linear-gradient( to left, #dcbfff, #0095cc);
   text-align: center;
   border-radius: 10px;
   width: 100%;
+  color: #121212;
   /* margin-left: 5%; */
 }
 
 .drink-text {
-  color: black;
+  color: #121212;
   font-weight: bold;
 }
 
@@ -50,9 +51,10 @@ body {
 } */
 
 #title {
-  font-size: xx-large;
-  font-weight: bold;
+  font-family: 'Black And White Picture', sans-serif;
+  font-size: 5em;
   text-align: center;
+  color: #fff10a;
   /* margin: 5%; */
 }
 
@@ -60,9 +62,11 @@ body {
   position: absolute;
   width: 100%;
   bottom: 0;
-  background: white;
   padding: 20px;
-  box-shadow: -50px -50px 100px black;
-  background-image: linear-gradient(white, white, blue);
-  border-radius: 18px 18px 0px 0px;
+  /*box-shadow: -50px -50px 100px #121212;
+  border-radius: 18px 18px 0px 0px;*/
+}
+
+.cntrl-btn:hover {
+  background-color: #fff10a;
 }
