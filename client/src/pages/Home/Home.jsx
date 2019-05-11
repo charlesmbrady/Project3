@@ -11,9 +11,7 @@ class Home extends Component {
     super(props);
     this.state = {
       user: props,
-      userweight: 130,
       numberOfDrinks: [ { number: 0, timeOfLastDrink: [ new Date().toLocaleString() ] } ],
-      location: "",
       userPhoneNumber: 0,
       emergencyContactNumber: 0,
       weight: 130,
@@ -68,7 +66,7 @@ class Home extends Component {
     lastdrink.number = (numberOfDrinksCopy[ (numberOfDrinksCopy.length - 1) ].number);
     lastdrink.timeOfLastDrink = new Date().toLocaleString();
 
-    let bac = this.calculateBac(lastdrink.number, this.state.numberOfDrinks[ 0 ].timeOfLastDrink, this.state.userweight);
+    let bac = this.calculateBac(lastdrink.number, this.state.numberOfDrinks[ 0 ].timeOfLastDrink, this.state.weight);
 
     this.setState({ bac });
   }
@@ -82,7 +80,7 @@ class Home extends Component {
     lastdrink.timeOfLastDrink = new Date().toLocaleString();
     numberOfDrinksCopy.push(lastdrink);
 
-    let bac = this.calculateBac(lastdrink.number, this.state.numberOfDrinks[ 0 ].timeOfLastDrink, this.state.userweight);
+    let bac = this.calculateBac(lastdrink.number, this.state.numberOfDrinks[ 0 ].timeOfLastDrink, this.state.weight);
 
     this.setState({ numberOfDrinks: numberOfDrinksCopy, bac },
       () => this.checkBeforeSendAutomaticText());
