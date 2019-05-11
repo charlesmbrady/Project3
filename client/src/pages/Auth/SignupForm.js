@@ -4,6 +4,7 @@ import { Container, Row, Col } from '../../components/Grid';
 import { Card } from '../../components/Card';
 import { Input, FormBtn } from '../../components/Form';
 import AUTH from '../../utils/AUTH';
+import './style.css';
 
 class SignupForm extends Component {
 
@@ -94,9 +95,9 @@ class SignupForm extends Component {
                   value={this.state.confirmPassword}
                   onChange={this.handleChange}
                 />
-                <Link to="/login">Login</Link><br/><Link to="/">Use without login/register</Link>
+                <Link className="auth-button" to="/login">Login</Link><br/><Link className="auth-button"to="/">Use without login/register</Link>
                 <FormBtn onClick={this.handleSubmit}>Register</FormBtn>
-              </form>
+              </form> 
             </Card>
           </Col>
           <Col size="md-3"></Col>
