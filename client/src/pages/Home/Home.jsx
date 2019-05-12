@@ -70,7 +70,6 @@ class Home extends Component {
     let numberOfDrinksCopy = this.state.numberOfDrinks;
     let first =(numberOfDrinksCopy[ (numberOfDrinksCopy.length - 1) ].timeOfLastDrink);
     first = (Date.parse(first)) / 3600000;
-    let now = (Date.parse(new Date().toLocaleString())) / 3600000;
     let bac=(this.state.bac-((1/60)*.015)).toFixed(5);
     if (bac<0) {bac=0;}
     this.setState({ bac });
