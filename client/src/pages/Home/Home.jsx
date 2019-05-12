@@ -164,16 +164,17 @@ class Home extends Component {
           this.setState({ proximityAlertSent: true, theCheckinLatitude: 0, theCheckinLongitude: 0 });
           const theMessage = "It looks like you are leaving the spot where you checked in with sipSpot. Don't forget your credit card, jacket, friends, etc.! PLEASE NOTE: proximity alerts are now turned off until you Check-In again.";
           document.getElementById("test-display").innerText = "sending proximity alert";
-          TEXT.sendText({ to: this.state.userPhoneNumber, message: theMessage })
-            .then(res => {
-              document.getElementById("test-display").innerText = "PROXIMITY ALERT SENT: " + res.data.message;
-              console.log("proximity alert sent, response:");
-              console.log(res.data.message);
-            })
-            .catch(err => {
-              document.getElementById("test-display").innerText = "proximty alert sending error: " + err.message;
-              console.log(err)
-            })
+          this.sendAutomaticTextBasic(this.state.emergencyContactNumber, theMessage);
+          // TEXT.sendText({ to: this.state.userPhoneNumber, message: theMessage })
+          //   .then(res => {
+          //     document.getElementById("test-display").innerText = "PROXIMITY ALERT SENT: " + res.message;
+          //     console.log("proximity alert sent, response:");
+          //     console.log(res.message);
+          //   })
+          //   .catch(err => {
+          //     document.getElementById("test-display").innerText = "proximty alert sending error: " + err.message;
+          //     console.log(err)
+          //   })
         } else {
           document.getElementById("test-display").innerText = "minor proximity change " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
         }
@@ -214,6 +215,19 @@ class Home extends Component {
     }
   }
 
+  sendAutomaticTextBasic = (toNumber, theMessage) => {
+    TEXT.sendText({ to: toNumber, message: theMessage })
+      .then(res => {
+        document.getElementById("test-display").innerText = "AUTOMATIC text message sent: " + res.message;
+        console.log("AUTOMATIC text message sent, response:");
+        console.log(res.message);
+      })
+      .catch(err => {
+        document.getElementById("test-display").innerText = "automatic text sending error: " + err.message;
+        console.log(err)
+      }
+    };
+
   sendAutomaticText = () => {
     this.setState({ emergencyNotificationSent: true });
     let theUrl = `https://www.google.com/maps/dir/?api=1&destination=${this.state.latitude},${this.state.longitude}`;
@@ -222,17 +236,18 @@ class Home extends Component {
       theUrl = "https://m.uber.com/ul/?action=setPickup&pickup=my_location"
       theMessage = "It looks like you have had a lot to drink. Please get a ride home or get an Uber, for your own safety and for the safety of others. Here's a link to Uber: (This message *auto-generated* by sipSpot) " + theUrl;
     }
-    TEXT.sendText({ to: this.state.emergencyContactNumber, message: theMessage })
-      .then(res => {
-        document.getElementById("test-display").innerText = "AUTOMATIC text message sent: " + res.data.message;
-        console.log("AUTOMATIC text message sent, response:");
-        console.log(res.data.message);
-      })
-      .catch(err => {
-        document.getElementById("test-display").innerText = "automatic text sending error: " + err.message;
-        console.log(err)
-      });
-  }
+    this.sendAutomaticTextBasic(this.state.emergencyContactNumber, theMessage);
+    // TEXT.sendText({ to: this.state.emergencyContactNumber, message: theMessage })
+    //   .then(res => {
+    //     document.getElementById("test-display").innerText = "AUTOMATIC text message sent: " + res.message;
+    //     console.log("AUTOMATIC text message sent, response:");
+    //     console.log(res.message);
+    //   })
+    //   .catch(err => {
+    //     document.getElementById("test-display").innerText = "automatic text sending error: " + err.message;
+    //     console.log(err)
+    //   });
+  };
 
   toggleAlerts = () => {
     this.setState(prevState => ({
