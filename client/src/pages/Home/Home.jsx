@@ -254,7 +254,7 @@ class Home extends Component {
           <Row>
             <Col>
               <div id="test-display">test display</div>
-              <PostDrink drinks={ this.state.numberOfDrinks[ ((this.state.numberOfDrinks).length) - 1 ] } bac={ this.state.bac }></PostDrink>
+              <PostDrink drinks={ this.state.numberOfDrinks[ ((this.state.numberOfDrinks).length) - 1 ] } bac={ this.state.bac } zero={ this.state.zero }></PostDrink>
               <div>
                 <img id = "superSip" src={colorSuperSip} alt = "super sip the beer bottle"/>
               </div>
