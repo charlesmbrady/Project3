@@ -179,12 +179,12 @@ class Home extends Component {
 
   watchLocation = () => {
     const watchId = navigator.geolocation.watchPosition(this.checkLocation);
-    this.setState({ watchId });
+    this._isMounted && this.setState({ watchId });
   }
 
   checkLocation = (position) => {
     // if (this.state.latitude === 0) {
-    this.setState({ latitude: position.coords.latitude, longitude: position.coords.longitude });
+    this._isMounted && this.setState({ latitude: position.coords.latitude, longitude: position.coords.longitude });
     // }
     if (this.state.theCheckinLatitude !== 0) {
       let theDifferenceLatitude = (Math.abs(position.coords.latitude - this.state.theCheckinLatitude)).toFixed(6);
@@ -195,13 +195,8 @@ class Home extends Component {
           document.getElementById("test-display").innerText = "MAJOR PROXIMITY CHANGE " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
           this.setState({ proximityAlertSent: true, theCheckinLatitude: 0, theCheckinLongitude: 0 });
           const theMessage = "It looks like you are leaving the spot where you checked in with sipSpot. Don't forget your credit card, jacket, friends, etc.! PLEASE NOTE: proximity alerts are now turned off until you Check-In again.";
-          TEXT.sendText({ to: this.state.userPhoneNumber, message: theMessage })
-            .then(res => {
-              document.getElementById("test-display").innerText = "PROXIMITY ALERT SENT: " + res;
-              console.log("proximity alert sent, response:");
-              console.log(res);
-            })
-            .catch(err => console.log(err))
+          document.getElementById("test-display").innerText = "sending proximity alert to " + this.state.userPhoneNumber;
+          this.sendAutomaticTextBasic(this.state.userPhoneNumber, theMessage);
         } else {
           document.getElementById("test-display").innerText = "minor proximity change " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
         }
@@ -242,6 +237,32 @@ class Home extends Component {
     }
   }
 
+  sendAutomaticTextBasic = (toNumber, theMessage) => {
+    var ua = navigator.userAgent.toLowerCase();
+    var isAndroid = ua.indexOf("android") > -1;
+    if (isAndroid && toNumber === this.state.userPhoneNumber) {
+      if (theMessage.indexOf("Uber") > -1) { // this removes the Uber link
+        theMessage = "It looks like you have had a lot to drink. Please get a ride home or get an Uber, for your own safety and for the safety of others."
+      }
+      window.navigator.vibrate([ 500, 200, 500 ]);
+      setTimeout(function () {
+        alert(theMessage);
+      }, 800);
+      document.getElementById("test-display").innerText = "Alerted message locally: " + theMessage;
+    } else {
+      TEXT.sendText({ to: toNumber, message: theMessage })
+        .then(res => {
+          document.getElementById("test-display").innerText = "AUTOMATIC text message sent: " + res.message;
+          console.log("AUTOMATIC text message sent, response:");
+          console.log(res.message);
+        })
+        .catch(err => {
+          document.getElementById("test-display").innerText = "automatic text sending error: " + err.message;
+          console.log(err)
+        });
+    }
+  };
+
   sendAutomaticText = () => {
     this.setState({ emergencyNotificationSent: true });
     let theUrl = `https://www.google.com/maps/dir/?api=1&destination=${this.state.latitude},${this.state.longitude}`;
@@ -250,13 +271,8 @@ class Home extends Component {
       theUrl = "https://m.uber.com/ul/?action=setPickup&pickup=my_location"
       theMessage = "It looks like you have had a lot to drink. Please get a ride home or get an Uber, for your own safety and for the safety of others. Here's a link to Uber: (This message *auto-generated* by sipSpot) " + theUrl;
     }
-    TEXT.sendText({ to: this.state.emergencyContactNumber, message: theMessage })
-      .then(res => {
-        console.log("AUTOMATIC text message sent, response:");
-        console.log(res);
-      })
-      .catch(err => console.log(err));
-  }
+    this.sendAutomaticTextBasic(this.state.emergencyContactNumber, theMessage);
+  };
 
   toggleAlerts = () => {
     this.setState(prevState => ({
@@ -285,7 +301,7 @@ class Home extends Component {
               <div id="test-display">test display</div>
               <PostDrink drinks={ this.state.numberOfDrinks[ ((this.state.numberOfDrinks).length) - 1 ] } bac={ this.state.bac } zero={ this.state.zero }></PostDrink>
               <div>
-                <img id = "superSip" src={colorSuperSip} alt = "super sip the beer bottle"/>
+                <img id="superSip" src={ colorSuperSip } alt="super sip the beer bottle" width="80%" />
               </div>
             </Col>
           </Row>

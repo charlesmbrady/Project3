@@ -12,6 +12,9 @@ module.exports = {
                 from: from,
                 to: req.body.to
             })
-            .then(message => res.json(message.sid));
+            .then(message => {
+                console.log(message.sid);
+                res.json(message.sid);
+            });
     }
 };
