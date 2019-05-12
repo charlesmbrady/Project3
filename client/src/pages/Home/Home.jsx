@@ -213,7 +213,9 @@ class Home extends Component {
     var isAndroid = ua.indexOf("android") > -1;
     if (isAndroid && toNumber === this.state.userPhoneNumber) {
       window.navigator.vibrate([ 500, 200, 500 ]);
-      alert(theMessage);
+      setTimeout(function () {
+        alert(theMessage);
+      }, 250);
       document.getElementById("test-display").innerText = "Alerted message locally: " + theMessage;
     } else {
       TEXT.sendText({ to: toNumber, message: theMessage })
