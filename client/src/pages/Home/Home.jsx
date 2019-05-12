@@ -36,8 +36,6 @@ class Home extends Component {
           modal: !prevState.modal
         }));
       }
-
-
     };
   }
 
@@ -59,20 +57,21 @@ class Home extends Component {
     let first = (Date.parse(time)) / 3600000;
     let now = (Date.parse(new Date().toLocaleString())) / 3600000;
     let elapsedTime = now - first;
-    bac = (bac - (elapsedTime * 0.015)).toFixed(2);
+    bac = (bac - (elapsedTime * 0.015)).toFixed(5);
 
     return bac;
 
   }
 
-  //update BAC every 15 minutes
+  //update BAC every minute
   updateBac () {
-    let lastdrink = {};
     let numberOfDrinksCopy = this.state.numberOfDrinks;
-    lastdrink.number = (numberOfDrinksCopy[ (numberOfDrinksCopy.length - 1) ].number);
-    lastdrink.timeOfLastDrink = new Date().toLocaleString();
+    let first = (numberOfDrinksCopy[ (numberOfDrinksCopy.length - 1) ].timeOfLastDrink);
+    first = (Date.parse(first)) / 3600000;
+    let now = (Date.parse(new Date().toLocaleString())) / 3600000;
+    let elapsedTime = now - first;
 
-    let bac = this.calculateBac(lastdrink.number, this.state.numberOfDrinks[ 0 ].timeOfLastDrink, this.state.weight);
+    let bac = (this.state.bac - (elapsedTime * .015)).toFixed(5);
 
     this.setState({ bac });
   }
@@ -85,9 +84,7 @@ class Home extends Component {
     lastdrink.number = (numberOfDrinksCopy[ (numberOfDrinksCopy.length - 1) ].number) + 1;
     lastdrink.timeOfLastDrink = new Date().toLocaleString();
     numberOfDrinksCopy.push(lastdrink);
-
-    let bac = this.calculateBac(lastdrink.number, this.state.numberOfDrinks[ 0 ].timeOfLastDrink, this.state.weight);
-
+    let bac = parseFloat(this.calculateBac(1, lastdrink.timeOfLastDrink, this.state.weight)) + parseFloat(this.state.bac);
     this.setState({ numberOfDrinks: numberOfDrinksCopy, bac },
       () => this.checkBeforeSendAutomaticText());
 
@@ -104,8 +101,9 @@ class Home extends Component {
       }).catch(err => console.log(err));
     }
 
-    setInterval(() => { this.updateBac.bind(this); this.updateBac(); }, 900000);
+    setInterval(() => { this.updateBac.bind(this); this.updateBac(); }, 60000);
   };
+
 
 
   checkIn = (e) => {
@@ -234,7 +232,7 @@ class Home extends Component {
             </Col>
           </Row>
         </Container>
-        <Container className="controls-container">
+        <Container className="controls controls-container">
           <Row>
             <Col>
               <Button className="cntrl-btn" data-test="controls-checkin" onClick={ this.checkIn }>Check-In/Out</Button>
