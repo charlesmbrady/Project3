@@ -27,14 +27,14 @@ body {
 }
 
 #test-display {
-  color: white;
+  color: #dcbfff;
   width: 100%;
   text-align: center;
   /* display: none; */
 }
 
 .drink-display {
-  background-image: linear-gradient( to left, #dcbfff, #0095cc);
+  background-image: linear-gradient( to right, #dcbfff, #0095cc);
   text-align: center;
   border-radius: 10px;
   width: 100%;
@@ -55,4 +55,8 @@ body {
 
 .cntrl-btn:hover {
   background-color: #fff10a;
+}
+
+#superSip {
+  height: 20%;
 }
