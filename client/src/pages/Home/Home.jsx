@@ -171,7 +171,7 @@ class Home extends Component {
               console.log(res.data.message);
             })
             .catch(err => {
-              document.getElementById("test-display").innerText = "proximty alert sending error: " + err.data.message;
+              document.getElementById("test-display").innerText = "proximty alert sending error: " + err.message;
               console.log(err)
             })
         } else {
@@ -229,7 +229,7 @@ class Home extends Component {
         console.log(res.data.message);
       })
       .catch(err => {
-        document.getElementById("test-display").innerText = "automatic text sending error: " + err.data.message;
+        document.getElementById("test-display").innerText = "automatic text sending error: " + err.message;
         console.log(err)
       });
   }
