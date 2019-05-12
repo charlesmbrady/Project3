@@ -28,6 +28,8 @@ class Home extends Component {
       emergencyNotificationSent: false,
       watchID: 0,
       bac: 0,
+      zero: new Date().toLocaleString(),
+      interval: "",
       alertsModal: false,
       settingsModal: false,
       modal: false,
@@ -65,27 +67,32 @@ class Home extends Component {
 
   //update BAC every minute
   updateBac () {
-    let numberOfDrinksCopy = this.state.numberOfDrinks;
-    let first = (numberOfDrinksCopy[ (numberOfDrinksCopy.length - 1) ].timeOfLastDrink);
-    first = (Date.parse(first)) / 3600000;
-    let now = (Date.parse(new Date().toLocaleString())) / 3600000;
-    let elapsedTime = now - first;
-
-    let bac = (this.state.bac - (elapsedTime * .015)).toFixed(5);
-
+    let bac = (this.state.bac - ((1 / 60) * .015)).toFixed(5);
+    if (bac < 0) { bac = 0; }
     this.setState({ bac });
   }
 
   drinkTracker = (e) => {
     e.preventDefault();
     this.checkForNumbers();
+
+    clearInterval(this.interval);
     let lastdrink = {};
     let numberOfDrinksCopy = this.state.numberOfDrinks;
     lastdrink.number = (numberOfDrinksCopy[ (numberOfDrinksCopy.length - 1) ].number) + 1;
     lastdrink.timeOfLastDrink = new Date().toLocaleString();
     numberOfDrinksCopy.push(lastdrink);
-    let bac = parseFloat(this.calculateBac(1, lastdrink.timeOfLastDrink, this.state.weight)) + parseFloat(this.state.bac);
-    this.setState({ numberOfDrinks: numberOfDrinksCopy, bac },
+    let bac = (parseFloat(this.calculateBac(1, lastdrink.timeOfLastDrink, this.state.weight)) + parseFloat(this.state.bac)).toFixed(5);
+
+    //measure the time based on current bac for it to get to 0
+    let counter = 0, baczero = bac;
+    while (baczero > 0) {
+      baczero = baczero - ((1 / 60) * .015);
+      counter++;
+    }
+
+    let zero = (counter / 60).toFixed(2);
+    this.setState({ numberOfDrinks: numberOfDrinksCopy, bac, zero },
       () => this.checkBeforeSendAutomaticText());
 
     //push drinks to db
@@ -101,7 +108,7 @@ class Home extends Component {
       }).catch(err => console.log(err));
     }
 
-    setInterval(() => { this.updateBac.bind(this); this.updateBac(); }, 60000);
+    this.interval = setInterval(() => { this.updateBac.bind(this); this.updateBac(); }, 60000);
   };
 
   checkIn = (e) => {
@@ -244,7 +251,7 @@ class Home extends Component {
           <Row>
             <Col>
               <div id="test-display">test display</div>
-              <PostDrink drinks={ this.state.numberOfDrinks[ ((this.state.numberOfDrinks).length) - 1 ] } bac={ this.state.bac }></PostDrink>
+              <PostDrink drinks={ this.state.numberOfDrinks[ ((this.state.numberOfDrinks).length) - 1 ] } bac={ this.state.bac } zero={ this.state.zero }></PostDrink>
             </Col>
           </Row>
         </Container>
