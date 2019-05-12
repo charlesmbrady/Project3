@@ -9,6 +9,7 @@ import AlertsModal from '../../components/AlertsModal/AlertsModal';
 import SettingsModal from '../../components/SettingsModal/SettingsModal';
 import colorSuperSip from '../../images/colorSuperSip.gif';
 
+
 class Home extends Component {
   constructor (props) {
     super(props);
