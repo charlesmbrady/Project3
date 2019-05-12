@@ -26,7 +26,7 @@ const PostDrink = (props) => {
                     Time of last drink: {(props.drinks.timeOfLastDrink).toLocaleString()}<br/></p>
                     <p style={msgdeco}>Your Blood Alcohol Concentration: {props.bac}<br/>
                     (Anything over 0.08 is considered legally intoxicated in most states of USA)<br/>
-                    The time taken for your alcohol content to come down to 0: {props.zero} Hours</p>
+                    The time taken for your BAC to come down to ZERO: {props.zero} Hours (from the time of last drink displayed above)</p>
 
                 </div>
             ) : (
