@@ -7,9 +7,7 @@ import './Home.css';
 import API from "../../utils/API";
 import AlertsModal from '../../components/AlertsModal/AlertsModal';
 import SettingsModal from '../../components/SettingsModal/SettingsModal';
-import colorSuperSip from '../../images/colorSuperSip.gif'
-
-
+import colorSuperSip from '../../images/colorSuperSip.gif';
 
 class Home extends Component {
   constructor (props) {
@@ -44,9 +42,40 @@ class Home extends Component {
     };
   }
 
+  //grab previous drink info from db
+  loadDrinks = () => {
+    API.getDrinks()
+      .then(res =>{
+        clearInterval(this.interval);
+        let lastdrink = {};
+        let numberOfDrinksCopy = this.state.numberOfDrinks;
+        lastdrink.number = res.data[0].numberOfDrinks;
+        lastdrink.timeOfLastDrink = (new Date(res.data[0].timeOfLastDrink)).toLocaleString();
+        numberOfDrinksCopy.push(lastdrink);
+        //elapsed time in minutes since last recorded drink
+        let now=new Date();
+        let elapsedTime=(now - new Date(lastdrink.timeOfLastDrink))/60000;
+        let bac=(res.data[0].bac - (elapsedTime * .00025)).toFixed(5);
+        //measure the time based on current bac for it to get to 0
+        let counter = 0, baczero = bac;
+        while (baczero > 0) {
+          baczero = baczero - ((1 / 60) * .015);
+          counter++;
+        }
+        let zero = (counter / 60).toFixed(2);
+
+        this.setState({ numberOfDrinks: numberOfDrinksCopy, bac, zero });
+        this.interval = setInterval(() => { this.updateBac.bind(this); this.updateBac(); }, 60000);
+      })
+      .catch(err => console.log(err));
+  };
+
   componentDidMount () {
     this._isMounted = true;
     this._isMounted && this.watchLocation();
+    if ("user" in this.state.user) {
+      this.loadDrinks();
+    }
   }
 
   componentWillUnmount () {
