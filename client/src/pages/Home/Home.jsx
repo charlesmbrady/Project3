@@ -47,7 +47,6 @@ class Home extends Component {
   componentDidMount () {
     this._isMounted = true;
     this._isMounted && this.watchLocation();
-    this.notifyMe();
   }
 
   componentWillUnmount () {
@@ -287,7 +286,7 @@ class Home extends Component {
               <div id="test-display">test display</div>
               <PostDrink drinks={ this.state.numberOfDrinks[ ((this.state.numberOfDrinks).length) - 1 ] } bac={ this.state.bac } zero={ this.state.zero }></PostDrink>
               <div>
-                <img id = "superSip" src={colorSuperSip} alt = "super sip the beer bottle"/>
+                <img id="superSip" src={ colorSuperSip } alt="super sip the beer bottle" />
               </div>
             </Col>
           </Row>
