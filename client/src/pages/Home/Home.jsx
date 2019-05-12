@@ -168,16 +168,6 @@ class Home extends Component {
           const theMessage = "It looks like you are leaving the spot where you checked in with sipSpot. Don't forget your credit card, jacket, friends, etc.! PLEASE NOTE: proximity alerts are now turned off until you Check-In again.";
           document.getElementById("test-display").innerText = "sending proximity alert to " + this.state.userPhoneNumber;
           this.sendAutomaticTextBasic(this.state.userPhoneNumber, theMessage);
-          // TEXT.sendText({ to: this.state.userPhoneNumber, message: theMessage })
-          //   .then(res => {
-          //     document.getElementById("test-display").innerText = "PROXIMITY ALERT SENT: " + res.message;
-          //     console.log("proximity alert sent, response:");
-          //     console.log(res.message);
-          //   })
-          //   .catch(err => {
-          //     document.getElementById("test-display").innerText = "proximty alert sending error: " + err.message;
-          //     console.log(err)
-          //   })
         } else {
           document.getElementById("test-display").innerText = "minor proximity change " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
         }
@@ -223,6 +213,7 @@ class Home extends Component {
     var isAndroid = ua.indexOf("android") > -1;
     if (isAndroid) {
       alert(theMessage);
+      window.navigator.vibrate(500);
       document.getElementById("test-display").innerText = "Alerted message: " + theMessage;
     } else {
       TEXT.sendText({ to: toNumber, message: theMessage })
@@ -247,16 +238,6 @@ class Home extends Component {
       theMessage = "It looks like you have had a lot to drink. Please get a ride home or get an Uber, for your own safety and for the safety of others. Here's a link to Uber: (This message *auto-generated* by sipSpot) " + theUrl;
     }
     this.sendAutomaticTextBasic(this.state.emergencyContactNumber, theMessage);
-    // TEXT.sendText({ to: this.state.emergencyContactNumber, message: theMessage })
-    //   .then(res => {
-    //     document.getElementById("test-display").innerText = "AUTOMATIC text message sent: " + res.message;
-    //     console.log("AUTOMATIC text message sent, response:");
-    //     console.log(res.message);
-    //   })
-    //   .catch(err => {
-    //     document.getElementById("test-display").innerText = "automatic text sending error: " + err.message;
-    //     console.log(err)
-    //   });
   };
 
   toggleAlerts = () => {
