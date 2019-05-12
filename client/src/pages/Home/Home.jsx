@@ -119,9 +119,12 @@ class Home extends Component {
   };
 
   checkForNumbers = (callback) => {
-    if (this.state.userPhoneNumber === 0) {
-      let userPhoneNumber = localStorage.getItem("userPhoneNumber");
-      let emergencyContactNumber = localStorage.getItem("emergencyContactNumber");
+    if (0 === 0) {
+      // if (this.state.userPhoneNumber === 0) {
+      let userPhoneNumber = null;
+      let emergencyContactNumber = null;
+      // let userPhoneNumber = localStorage.getItem("userPhoneNumber");
+      // let emergencyContactNumber = localStorage.getItem("emergencyContactNumber");
       console.log("numbers from localStorage - user: " + userPhoneNumber + ", emergency: " + emergencyContactNumber);
       if (userPhoneNumber === null) {
         userPhoneNumber = prompt("Please enter your phone number so sipSpot can send you alerts. sipSpot will never share your number with anyone else, ever.");
