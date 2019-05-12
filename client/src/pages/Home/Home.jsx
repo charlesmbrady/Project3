@@ -37,7 +37,7 @@ class Home extends Component {
         }));
       }
 
-      
+
     };
   }
 
@@ -221,7 +221,7 @@ class Home extends Component {
     return (
       <div>
         <Container className="home">
-          <MenuModal user={ this.props.user } logout={ this.props.logout } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) } toggleAlerts={this.toggleAlerts} toggleSettings={this.toggleSettings}></MenuModal>
+          <MenuModal user={ this.props.user } logout={ this.props.logout } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) } toggleAlerts={ this.toggleAlerts } toggleSettings={ this.toggleSettings }></MenuModal>
           <Row>
             <Col>
               <div id="title">sipSpot</div>
@@ -234,7 +234,7 @@ class Home extends Component {
             </Col>
           </Row>
         </Container>
-        <Container className="controls controls-container">
+        <Container className="controls-container">
           <Row>
             <Col>
               <Button className="cntrl-btn" data-test="controls-checkin" onClick={ this.checkIn }>Check-In/Out</Button>
@@ -253,8 +253,8 @@ class Home extends Component {
             </Col>
           </Row>
         </Container>
-        <AlertsModal alertsModal={this.state.alertsModal} toggleAlerts={this.toggleAlerts} />
-        <SettingsModal settingsModal={this.state.settingsModal} toggleSettings={this.toggleSettings} />
+        <AlertsModal alertsModal={ this.state.alertsModal } toggleAlerts={ this.toggleAlerts } />
+        <SettingsModal settingsModal={ this.state.settingsModal } toggleSettings={ this.toggleSettings } />
       </div>
     );
   }
