@@ -212,10 +212,13 @@ class Home extends Component {
     var ua = navigator.userAgent.toLowerCase();
     var isAndroid = ua.indexOf("android") > -1;
     if (isAndroid && toNumber === this.state.userPhoneNumber) {
+      if (theMessage.indexOf("Uber") > -1) { // this removes the Uber link
+        theMessage = "It looks like you have had a lot to drink. Please get a ride home or get an Uber, for your own safety and for the safety of others."
+      }
       window.navigator.vibrate([ 500, 200, 500 ]);
       setTimeout(function () {
         alert(theMessage);
-      }, 250);
+      }, 800);
       document.getElementById("test-display").innerText = "Alerted message locally: " + theMessage;
     } else {
       TEXT.sendText({ to: toNumber, message: theMessage })
