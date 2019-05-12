@@ -163,13 +163,17 @@ class Home extends Component {
           document.getElementById("test-display").innerText = "MAJOR PROXIMITY CHANGE " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
           this.setState({ proximityAlertSent: true, theCheckinLatitude: 0, theCheckinLongitude: 0 });
           const theMessage = "It looks like you are leaving the spot where you checked in with sipSpot. Don't forget your credit card, jacket, friends, etc.! PLEASE NOTE: proximity alerts are now turned off until you Check-In again.";
+          document.getElementById("test-display").innerText = "sending proximity alert";
           TEXT.sendText({ to: this.state.userPhoneNumber, message: theMessage })
             .then(res => {
-              document.getElementById("test-display").innerText = "PROXIMITY ALERT SENT: " + res;
+              document.getElementById("test-display").innerText = "PROXIMITY ALERT SENT: " + res.message;
               console.log("proximity alert sent, response:");
               console.log(res);
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+              document.getElementById("test-display").innerText = "proximty alert sending error: " + err.message;
+              console.log(err)
+            })
         } else {
           document.getElementById("test-display").innerText = "minor proximity change " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
         }
