@@ -5,10 +5,8 @@ import MenuModal from '../../components/Menu';
 import PostDrink from '../../components/PostDrink';
 import './Home.css';
 import API from "../../utils/API";
-
 import AlertsModal from '../../components/AlertsModal/AlertsModal';
 import SettingsModal from '../../components/SettingsModal/SettingsModal';
-
 import colorSuperSip from '../../images/colorSuperSip.gif'
 
 
