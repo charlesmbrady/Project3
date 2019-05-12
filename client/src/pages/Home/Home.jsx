@@ -5,8 +5,13 @@ import MenuModal from '../../components/Menu';
 import PostDrink from '../../components/PostDrink';
 import './Home.css';
 import API from "../../utils/API";
+
 import AlertsModal from '../../components/AlertsModal/AlertsModal';
 import SettingsModal from '../../components/SettingsModal/SettingsModal';
+
+import colorSuperSip from '../../images/colorSuperSip.gif'
+
+
 
 class Home extends Component {
   constructor (props) {
@@ -235,7 +240,10 @@ class Home extends Component {
           <Row>
             <Col>
               <div id="test-display">test display</div>
-              <PostDrink drinks={ this.state.numberOfDrinks[ ((this.state.numberOfDrinks).length) - 1 ] } bac={ this.state.bac } zero={ this.state.zero }></PostDrink>
+              <PostDrink drinks={ this.state.numberOfDrinks[ ((this.state.numberOfDrinks).length) - 1 ] } bac={ this.state.bac }></PostDrink>
+              <div>
+                <img id = "superSip" src={colorSuperSip} />
+              </div>
             </Col>
           </Row>
         </Container>
