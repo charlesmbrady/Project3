@@ -166,12 +166,12 @@ class Home extends Component {
           document.getElementById("test-display").innerText = "sending proximity alert";
           TEXT.sendText({ to: this.state.userPhoneNumber, message: theMessage })
             .then(res => {
-              document.getElementById("test-display").innerText = "PROXIMITY ALERT SENT: " + res.message;
+              document.getElementById("test-display").innerText = "PROXIMITY ALERT SENT: " + res.data.message;
               console.log("proximity alert sent, response:");
-              console.log(res);
+              console.log(res.data.message);
             })
             .catch(err => {
-              document.getElementById("test-display").innerText = "proximty alert sending error: " + err.message;
+              document.getElementById("test-display").innerText = "proximty alert sending error: " + err.data.message;
               console.log(err)
             })
         } else {
@@ -224,10 +224,14 @@ class Home extends Component {
     }
     TEXT.sendText({ to: this.state.emergencyContactNumber, message: theMessage })
       .then(res => {
+        document.getElementById("test-display").innerText = "AUTOMATIC text message sent: " + res.data.message;
         console.log("AUTOMATIC text message sent, response:");
-        console.log(res);
+        console.log(res.data.message);
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        document.getElementById("test-display").innerText = "automatic text sending error: " + err.data.message;
+        console.log(err)
+      });
   }
 
   toggleAlerts = () => {
