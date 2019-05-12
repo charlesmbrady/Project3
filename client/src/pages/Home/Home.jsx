@@ -242,7 +242,7 @@ class Home extends Component {
               <div id="test-display">test display</div>
               <PostDrink drinks={ this.state.numberOfDrinks[ ((this.state.numberOfDrinks).length) - 1 ] } bac={ this.state.bac }></PostDrink>
               <div>
-                <img id = "superSip" src={colorSuperSip} />
+                <img id = "superSip" src={colorSuperSip} alt = "super sip the beer bottle"/>
               </div>
             </Col>
           </Row>
