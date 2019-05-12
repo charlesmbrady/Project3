@@ -5,7 +5,7 @@ module.exports = {
         theUrlToShorten = req.body.URL;
         theRandomNumber = Date.now() + Math.floor(1000 + Math.random() * 9000);
         const theShortenerUrl = `https://is.gd/create.php?format=json&url=${theUrlToShorten}&shorturl=${theRandomNumber}sipspot`;
-        axios.get(theShortenerUrl)
+        axios.post(theShortenerUrl)
             .then(function (response) {
                 // handle success
                 console.log(response.data);
