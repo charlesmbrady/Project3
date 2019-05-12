@@ -211,10 +211,10 @@ class Home extends Component {
   sendAutomaticTextBasic = (toNumber, theMessage) => {
     var ua = navigator.userAgent.toLowerCase();
     var isAndroid = ua.indexOf("android") > -1;
-    if (isAndroid) {
+    if (isAndroid && toNumber === this.state.userPhoneNumber) {
+      window.navigator.vibrate([ 500, 200, 500 ]);
       alert(theMessage);
-      window.navigator.vibrate(500);
-      document.getElementById("test-display").innerText = "Alerted message: " + theMessage;
+      document.getElementById("test-display").innerText = "Alerted message locally: " + theMessage;
     } else {
       TEXT.sendText({ to: toNumber, message: theMessage })
         .then(res => {
@@ -267,7 +267,7 @@ class Home extends Component {
               <div id="test-display">test display</div>
               <PostDrink drinks={ this.state.numberOfDrinks[ ((this.state.numberOfDrinks).length) - 1 ] } bac={ this.state.bac } zero={ this.state.zero }></PostDrink>
               <div>
-                <img id="superSip" src={ colorSuperSip } alt="super sip the beer bottle" />
+                <img id="superSip" src={ colorSuperSip } alt="super sip the beer bottle" width="80%" />
               </div>
             </Col>
           </Row>
