@@ -225,8 +225,8 @@ class Home extends Component {
       .catch(err => {
         document.getElementById("test-display").innerText = "automatic text sending error: " + err.message;
         console.log(err)
-      }
-    };
+      });
+  };
 
   sendAutomaticText = () => {
     this.setState({ emergencyNotificationSent: true });
