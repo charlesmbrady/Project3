@@ -44,6 +44,7 @@ class Home extends Component {
   componentDidMount () {
     this._isMounted = true;
     this._isMounted && this.watchLocation();
+    this.notifyMe();
   }
 
   componentWillUnmount () {
@@ -147,12 +148,12 @@ class Home extends Component {
 
   watchLocation = () => {
     const watchId = navigator.geolocation.watchPosition(this.checkLocation);
-    this.setState({ watchId });
+    this._isMounted && this.setState({ watchId });
   }
 
   checkLocation = (position) => {
     // if (this.state.latitude === 0) {
-    this.setState({ latitude: position.coords.latitude, longitude: position.coords.longitude });
+    this._isMounted && this.setState({ latitude: position.coords.latitude, longitude: position.coords.longitude });
     // }
     if (this.state.theCheckinLatitude !== 0) {
       let theDifferenceLatitude = (Math.abs(position.coords.latitude - this.state.theCheckinLatitude)).toFixed(6);
@@ -216,16 +217,23 @@ class Home extends Component {
   }
 
   sendAutomaticTextBasic = (toNumber, theMessage) => {
-    TEXT.sendText({ to: toNumber, message: theMessage })
-      .then(res => {
-        document.getElementById("test-display").innerText = "AUTOMATIC text message sent: " + res.message;
-        console.log("AUTOMATIC text message sent, response:");
-        console.log(res.message);
-      })
-      .catch(err => {
-        document.getElementById("test-display").innerText = "automatic text sending error: " + err.message;
-        console.log(err)
-      });
+    var ua = navigator.userAgent.toLowerCase();
+    var isAndroid = ua.indexOf("android") > -1;
+    if (isAndroid) {
+      alert(theMessage);
+      document.getElementById("test-display").innerText = "Alerted message: " + theMessage;
+    } else {
+      TEXT.sendText({ to: toNumber, message: theMessage })
+        .then(res => {
+          document.getElementById("test-display").innerText = "AUTOMATIC text message sent: " + res.message;
+          console.log("AUTOMATIC text message sent, response:");
+          console.log(res.message);
+        })
+        .catch(err => {
+          document.getElementById("test-display").innerText = "automatic text sending error: " + err.message;
+          console.log(err)
+        });
+    }
   };
 
   sendAutomaticText = () => {
