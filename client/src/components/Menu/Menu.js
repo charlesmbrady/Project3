@@ -15,26 +15,6 @@ const MenuModal = (props) => {
                         </Col>
                     </Row>
                 </ModalHeader>
-                <ModalHeader>
-                    <Container>
-                        <Row>
-                            <Col>
-                                { props.user ? (<h2>{ props.user.firstName }</h2>) : <Link to='/login' className="menu-button menu-login">Login</Link>
-                                }
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                { !props.user ? <Link to='/signup' className="menu-button">Signup</Link> : null }
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                { props.user ? (<Link to="#" className="menu-button logout" onClick={ props.logout }>Logout</Link>) : null }
-                            </Col>
-                        </Row>
-                    </Container>
-                </ModalHeader>
                 <ModalBody className="modal-body">
                     <Container>
                         <Row>
