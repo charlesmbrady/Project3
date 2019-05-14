@@ -8,6 +8,7 @@ import API from "../../utils/API";
 import colorSuperSip from '../../images/colorSuperSip.gif';
 import AUTH from '../../utils/AUTH';
 
+
 class Home extends Component {
   constructor (props) {
     super(props);

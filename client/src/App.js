@@ -11,6 +11,7 @@ import History from './pages/History/History';
 import Friends from './pages/Friends/Friends';
 import Quickstart from './pages/Quickstart';
 import './index.css';
+import withSplashScreen from './components/splashScreen/withSplashScreen.js'
 
 class App extends Component {
 
@@ -103,4 +104,5 @@ class App extends Component {
 	}
 }
 
-export default App;
+//export default App;
+export default withSplashScreen(App);
