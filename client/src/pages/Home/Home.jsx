@@ -463,8 +463,6 @@ class Home extends Component {
                     {/* <Button color="secondary" onClick={ props.toggle }>Close</Button> */}
                 </ModalFooter>
             </Modal>
-        {/* <AlertsModal alertsModal={ this.state.alertsModal } toggleAlerts={ this.toggleAlerts } /> */}
-        {/* <SettingsModal settingsModal={ this.state.settingsModal } toggleSettings={ this.toggleSettings } /> */}
       </div>
     );
   }
