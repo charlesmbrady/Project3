@@ -5,8 +5,6 @@ import MenuModal from '../../components/Menu';
 import PostDrink from '../../components/PostDrink';
 import './Home.css';
 import API from "../../utils/API";
-import AlertsModal from '../../components/AlertsModal/AlertsModal';
-import SettingsModal from '../../components/SettingsModal/SettingsModal';
 import colorSuperSip from '../../images/colorSuperSip.gif';
 
 class Home extends Component {
@@ -416,7 +414,6 @@ class Home extends Component {
 
                                         <input className="form-check-input" 
                                         onChange={this.handleInputChange}
-                                        value={this.state.gender}
                                         name="gender"
                                         type="checkbox" id="inputeGenderMale" value="m"></input>
                                         <label className="form-check-label settings-label" for="inlineCheckbox1">M</label>
@@ -429,7 +426,6 @@ class Home extends Component {
                             <div className="form-check form-check-inline">
                                 <input className="form-check-input" 
                                 onChange={this.handleInputChange}
-                                value={this.state.gender}
                                 name="gender"
                                 type="checkbox" id="inputGenderFemale" value="f"></input>
                                 <label className="form-check-label settings-label" for="inlineCheckbox2">F</label>
