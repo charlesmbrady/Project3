@@ -25,7 +25,7 @@
     "author": "",
     "license": "ISC",
     "devDependencies": {
-        "concurrently": "^3.5.0",
+        "concurrently": "^3.6.1",
         "cypress": "^3.2.0",
         "dotenv": "^6.2.0",
         "eslint": "^5.16.0",

@@ -43,17 +43,17 @@ class Home extends Component {
   //grab previous drink info from db
   loadDrinks = () => {
     API.getDrinks()
-      .then(res =>{
+      .then(res => {
         clearInterval(this.interval);
         let lastdrink = {};
         let numberOfDrinksCopy = this.state.numberOfDrinks;
-        lastdrink.number = res.data[0].numberOfDrinks;
-        lastdrink.timeOfLastDrink = (new Date(res.data[0].timeOfLastDrink)).toLocaleString();
+        lastdrink.number = res.data[ 0 ].numberOfDrinks;
+        lastdrink.timeOfLastDrink = (new Date(res.data[ 0 ].timeOfLastDrink)).toLocaleString();
         numberOfDrinksCopy.push(lastdrink);
         //elapsed time in minutes since last recorded drink
-        let now=new Date();
-        let elapsedTime=(now - new Date(lastdrink.timeOfLastDrink))/60000;
-        let bac=(res.data[0].bac - (elapsedTime * .00025)).toFixed(5);
+        let now = new Date();
+        let elapsedTime = (now - new Date(lastdrink.timeOfLastDrink)) / 60000;
+        let bac = (res.data[ 0 ].bac - (elapsedTime * .00025)).toFixed(5);
         //measure the time based on current bac for it to get to 0
         let counter = 0, baczero = bac;
         while (baczero > 0) {
@@ -74,6 +74,7 @@ class Home extends Component {
     if ("user" in this.state.user) {
       this.loadDrinks();
     }
+    this.checkLocalStorageOnMount();
   }
 
   componentWillUnmount () {
@@ -146,6 +147,19 @@ class Home extends Component {
     console.log("Check-In");
     this.checkForNumbers();
     this.storeCheckinLocation();
+  };
+
+  checkLocalStorageOnMount = () => {
+    if (this.state.userPhoneNumber === 0) {
+      let userPhoneNumber = localStorage.getItem("userPhoneNumber");
+      let emergencyContactNumber = localStorage.getItem("emergencyContactNumber");
+      if (userPhoneNumber !== null) {
+        this.setState({ userPhoneNumber: userPhoneNumber }, console.log("set userPhoneNumber from localStorage: " + userPhoneNumber));
+      }
+      if (emergencyContactNumber !== null) {
+        this.setState({ emergencyContactNumber: emergencyContactNumber }, console.log("set emergencyContactNumber from localStorage: " + emergencyContactNumber));
+      }
+    }
   };
 
   checkForNumbers = (callback) => {
@@ -279,17 +293,17 @@ class Home extends Component {
 
     // Updating the input's state
     this.setState({
-      [name]: value
+      [ name ]: value
     });
   };
 
   handleFormSubmit = event => {
     // Preventing the default behavior of the form submit (which is to refresh the page)
     event.preventDefault();
-    
+
     //TODO: currently this form is updating the state in the database, 
     // but this needs to update the user in the database
-    
+
   };
 
   toggleAlerts = () => {
@@ -344,121 +358,121 @@ class Home extends Component {
           </Row>
         </Container>
 
-      {/* Alerts Modal */}
-        <Modal isOpen={this.state.alertsModal} toggleAlerts={this.toggleAlerts} className="alerts">
-                <ModalHeader toggle={this.toggleAlerts}>
+        {/* Alerts Modal */ }
+        <Modal isOpen={ this.state.alertsModal } toggleAlerts={ this.toggleAlerts } className="alerts">
+          <ModalHeader toggle={ this.toggleAlerts }>
 
-                </ModalHeader>
-                <ModalBody className="modal-body">
-                    <Container>
-                        <h2 className="alerts-label">Alerts</h2>
-                        <form>
-                            <div className="form-group">
-                                <label className="form-check-label alerts-label">BAC Alert Threshold</label>
-                                <input 
-                                onChange={this.handleInputChange}
-                                value={this.state.emergencyAlertThreshold}
-                                name="emergencyAlertThreshold"
-                                type="number" className="form-control" id="settings-bac-threshold" aria-describedby="emailHelp" placeholder="Ex. .08"></input>
+          </ModalHeader>
+          <ModalBody className="modal-body">
+            <Container>
+              <h2 className="alerts-label">Alerts</h2>
+              <form>
+                <div className="form-group">
+                  <label className="form-check-label alerts-label">BAC Alert Threshold</label>
+                  <input
+                    onChange={ this.handleInputChange }
+                    value={ this.state.emergencyAlertThreshold }
+                    name="emergencyAlertThreshold"
+                    type="number" className="form-control" id="settings-bac-threshold" aria-describedby="emailHelp" placeholder="Ex. .08"></input>
 
-                            </div>
-                            <div className="form-group">
-                                <label className="alerts-label">Location Alert Threshold Distance (ft)</label>
-                                <input type="number" 
-                                onChange={this.handleInputChange}
-                                name=""
-                                 //TODO: NEED A LOCATION alert threshold variable
-                                className="form-control" id="exampleInputPassword1" placeholder="Ex. 200"></input>
-                            </div>
+                </div>
+                <div className="form-group">
+                  <label className="alerts-label">Location Alert Threshold Distance (ft)</label>
+                  <input type="number"
+                    onChange={ this.handleInputChange }
+                    name=""
+                    //TODO: NEED A LOCATION alert threshold variable
+                    className="form-control" id="exampleInputPassword1" placeholder="Ex. 200"></input>
+                </div>
 
-                            <div className="form-group">
-                                <label className="alerts-label">Drink Count Alert Threshold</label>
-                                <input type="number" 
-                                onChange={this.handleInputChange}
-                                value={this.state.selfAlertThreshold}
-                                name="selfAlertThreshold"
-                                className="form-control" id="drinkCountThreshold" placeholder="Ex. 5"></input>
-                            </div>
+                <div className="form-group">
+                  <label className="alerts-label">Drink Count Alert Threshold</label>
+                  <input type="number"
+                    onChange={ this.handleInputChange }
+                    value={ this.state.selfAlertThreshold }
+                    name="selfAlertThreshold"
+                    className="form-control" id="drinkCountThreshold" placeholder="Ex. 5"></input>
+                </div>
 
-                            <button type="submit" className="btn">Submit</button>
-                        </form>
-                    </Container>
-                </ModalBody>
-                <ModalFooter>
-                    {/* <Button color="secondary" onClick={ props.toggle }>Close</Button> */}
-                </ModalFooter>
-            </Modal>
+                <button type="submit" className="btn">Submit</button>
+              </form>
+            </Container>
+          </ModalBody>
+          <ModalFooter>
+            {/* <Button color="secondary" onClick={ props.toggle }>Close</Button> */ }
+          </ModalFooter>
+        </Modal>
 
-            {/* Settings Modal */}
-            <Modal isOpen={this.state.settingsModal} toggleSettings={this.toggleSettings} className="settings">
-                <ModalHeader toggle={this.toggleSettings}>
+        {/* Settings Modal */ }
+        <Modal isOpen={ this.state.settingsModal } toggleSettings={ this.toggleSettings } className="settings">
+          <ModalHeader toggle={ this.toggleSettings }>
 
-                </ModalHeader>
-                <ModalBody className="modal-body">
-                    <Container>
-                        <h2 className="settings-label">Settings</h2>
-                        <form>
-                            <div className="form-group ">
-                                <label className="form-check-label settings-label" for="settings-weight">Weight (lbs)</label>
-                                <input type="number" 
-                                onChange={this.handleInputChange}
-                                value={this.weight}
-                                name="weight"
-                                className="form-control" id="settings-weight" placeholder="Ex. 130"></input>
-                            </div>
-                            <div className="form-group">
-                                <label className="settings-label">Gender:</label>
-                                {/* TODO: need to make this so only one gender can be selected */}
-                                <div className="form-group">
-                                    <div className="form-check form-check-inline">
+          </ModalHeader>
+          <ModalBody className="modal-body">
+            <Container>
+              <h2 className="settings-label">Settings</h2>
+              <form>
+                <div className="form-group ">
+                  <label className="form-check-label settings-label" for="settings-weight">Weight (lbs)</label>
+                  <input type="number"
+                    onChange={ this.handleInputChange }
+                    value={ this.weight }
+                    name="weight"
+                    className="form-control" id="settings-weight" placeholder="Ex. 130"></input>
+                </div>
+                <div className="form-group">
+                  <label className="settings-label">Gender:</label>
+                  {/* TODO: need to make this so only one gender can be selected */ }
+                  <div className="form-group">
+                    <div className="form-check form-check-inline">
 
-                                        <input className="form-check-input" 
-                                        onChange={this.handleInputChange}
-                                        name="gender"
-                                        type="checkbox" id="inputeGenderMale" value="m"></input>
-                                        <label className="form-check-label settings-label" for="inlineCheckbox1">M</label>
-                                    </div>
-                                </div>
-                            </div>
-
-
-
-                            <div className="form-check form-check-inline">
-                                <input className="form-check-input" 
-                                onChange={this.handleInputChange}
-                                name="gender"
-                                type="checkbox" id="inputGenderFemale" value="f"></input>
-                                <label className="form-check-label settings-label" for="inlineCheckbox2">F</label>
-                            </div>
-
-                            <div className="form-group">
-                                <label className="form-check-label settings-label" for="settings-user-phone-number">Phone Number</label>
-                                <input 
-                                value={this.state.userPhoneNumber}
-                                onChange={this.handleInputChange}
-                                type="number" 
-                                name="userPhoneNumber"
-                                className="form-control" id="settings-user-phone-number" placeholder="2522551122"></input>
-                            </div>
-
-                            <div className="form-group">
-                                <label className="form-check-label settings-label" for="emergencyContactPhoneNumber">Emergency Contact Phone Number</label>
-                                <input type="number" 
-                                value={this.state.emergencyContactNumber}
-                                onChange={this.handleInputChange}
-                                name="emergencyContactNumber"
-                                className="form-control" id="emergencyContactPhoneNumber" aria-describedby="emailHelp" placeholder="2522020784"></input>
-                            </div>
+                      <input className="form-check-input"
+                        onChange={ this.handleInputChange }
+                        name="gender"
+                        type="checkbox" id="inputeGenderMale" value="m"></input>
+                      <label className="form-check-label settings-label" for="inlineCheckbox1">M</label>
+                    </div>
+                  </div>
+                </div>
 
 
-                            <button type="submit" className="btn">Submit</button>
-                        </form>
-                    </Container>
-                </ModalBody>
-                <ModalFooter>
-                    {/* <Button color="secondary" onClick={ props.toggle }>Close</Button> */}
-                </ModalFooter>
-            </Modal>
+
+                <div className="form-check form-check-inline">
+                  <input className="form-check-input"
+                    onChange={ this.handleInputChange }
+                    name="gender"
+                    type="checkbox" id="inputGenderFemale" value="f"></input>
+                  <label className="form-check-label settings-label" for="inlineCheckbox2">F</label>
+                </div>
+
+                <div className="form-group">
+                  <label className="form-check-label settings-label" for="settings-user-phone-number">Phone Number</label>
+                  <input
+                    value={ this.state.userPhoneNumber }
+                    onChange={ this.handleInputChange }
+                    type="number"
+                    name="userPhoneNumber"
+                    className="form-control" id="settings-user-phone-number" placeholder="2522551122"></input>
+                </div>
+
+                <div className="form-group">
+                  <label className="form-check-label settings-label" for="emergencyContactPhoneNumber">Emergency Contact Phone Number</label>
+                  <input type="number"
+                    value={ this.state.emergencyContactNumber }
+                    onChange={ this.handleInputChange }
+                    name="emergencyContactNumber"
+                    className="form-control" id="emergencyContactPhoneNumber" aria-describedby="emailHelp" placeholder="2522020784"></input>
+                </div>
+
+
+                <button type="submit" className="btn">Submit</button>
+              </form>
+            </Container>
+          </ModalBody>
+          <ModalFooter>
+            {/* <Button color="secondary" onClick={ props.toggle }>Close</Button> */ }
+          </ModalFooter>
+        </Modal>
       </div>
     );
   }
