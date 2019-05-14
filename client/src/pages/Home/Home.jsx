@@ -74,7 +74,7 @@ class Home extends Component {
     if ("user" in this.state.user) {
       this.loadDrinks();
     }
-    this.checkForNumbersOnMount();
+    this.checkLocalStorageOnMount();
   }
 
   componentWillUnmount () {
@@ -149,7 +149,7 @@ class Home extends Component {
     this.storeCheckinLocation();
   };
 
-  checkForNumbersOnMount = () => {
+  checkLocalStorageOnMount = () => {
     if (this.state.userPhoneNumber === 0) {
       let userPhoneNumber = localStorage.getItem("userPhoneNumber");
       let emergencyContactNumber = localStorage.getItem("emergencyContactNumber");
