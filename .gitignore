@@ -16,5 +16,9 @@ npm-debug.log.*
 /client/node_modules
 /client/package-lock.json
 .env
+<<<<<<< HEAD
 .DS_Store
 .env
+=======
+.DS_Store
+>>>>>>> 6440c5c0fb4a91e4463cf9fe24346c559e8f2217
