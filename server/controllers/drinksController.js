@@ -16,10 +16,17 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
   create: function(req, res) {
+    let drink={
+      numberOfDrinks: req.body.numberOfDrinks,
+      bac: req.body.bac, 
+      timeOfLastDrink: req.body.timeOfLastDrink, 
+      latitude: req.body.latitude, 
+      longitude: req.body.longitude
+    };
     db.Drink
-      .create(req.body)
+      .create(drink)
       .then(dbModel => {
-        return db.User.findOneAndUpdate({ _id: req.user._id }, { $push: { drinks: dbModel._id } }, { new: true });
+        return db.User.findOneAndUpdate({ userPhoneNumber: req.body.userPhoneNumber }, { $push: { drinks: dbModel._id } }, { new: true });
       })
       .then((dbUser) => {
         // If the User was updated successfully, send it back to the client

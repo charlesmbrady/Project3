@@ -6,12 +6,12 @@ import PostDrink from '../../components/PostDrink';
 import './Home.css';
 import API from "../../utils/API";
 import colorSuperSip from '../../images/colorSuperSip.gif';
+import AUTH from '../../utils/AUTH';
 
 class Home extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      user: props,
       numberOfDrinks: [ { number: 0, timeOfLastDrink: [ new Date().toLocaleString() ] } ],
       userPhoneNumber: 0,
       emergencyContactNumber: 0,
@@ -71,9 +71,6 @@ class Home extends Component {
   componentDidMount () {
     this._isMounted = true;
     this._isMounted && this.watchLocation();
-    if ("user" in this.state.user) {
-      this.loadDrinks();
-    }
     this.checkLocalStorageOnMount();
   }
 
@@ -127,8 +124,9 @@ class Home extends Component {
       () => this.checkBeforeSendAutomaticText());
 
     //push drinks to db
-    if ("user" in this.state.user) {
+    if (this.state.userPhoneNumber !== 0) {
       API.saveDrink({
+        userPhoneNumber: this.state.userPhoneNumber,
         numberOfDrinks: lastdrink.number,
         bac: bac,
         timeOfLastDrink: lastdrink.timeOfLastDrink,
@@ -154,7 +152,7 @@ class Home extends Component {
       let userPhoneNumber = localStorage.getItem("userPhoneNumber");
       let emergencyContactNumber = localStorage.getItem("emergencyContactNumber");
       if (userPhoneNumber !== null) {
-        this.setState({ userPhoneNumber: userPhoneNumber }, console.log("set userPhoneNumber from localStorage: " + userPhoneNumber));
+        this.setState({ userPhoneNumber: userPhoneNumber }, () => {console.log("set userPhoneNumber from localStorage: " + this.state.userPhoneNumber);this.loadDrinks()});
       }
       if (emergencyContactNumber !== null) {
         this.setState({ emergencyContactNumber: emergencyContactNumber }, console.log("set emergencyContactNumber from localStorage: " + emergencyContactNumber));
@@ -163,7 +161,7 @@ class Home extends Component {
   };
 
   checkForNumbers = (callback) => {
-    if (this.state.userPhoneNumber === 0) {
+    if (this.state.userPhoneNumber === 0 || this.state.userPhoneNumber === null) {
       let userPhoneNumber = localStorage.getItem("userPhoneNumber");
       let emergencyContactNumber = localStorage.getItem("emergencyContactNumber");
       console.log("numbers from localStorage - user: " + userPhoneNumber + ", emergency: " + emergencyContactNumber);
@@ -178,7 +176,26 @@ class Home extends Component {
       }
       localStorage.setItem("userPhoneNumber", userPhoneNumber);
       localStorage.setItem("emergencyContactNumber", emergencyContactNumber);
-      this.setState({ userPhoneNumber: userPhoneNumber, emergencyContactNumber: emergencyContactNumber }, callback);
+      this.setState({ userPhoneNumber: userPhoneNumber, emergencyContactNumber: emergencyContactNumber }, ()=>this.loadDrinks());
+      //push ph# to db
+        let firstName="Guest";
+        let username=firstName+new Date().getTime()+(Math.floor(Math.random()*90000) + 10000);
+        AUTH.signup({
+          firstName: firstName,
+          username: username,
+          userPhoneNumber: userPhoneNumber,
+          emergencyContactNumber: emergencyContactNumber
+        }).then(response => {
+          console.log(response);
+          if (!response.data.errmsg) {
+            console.log('youre good');
+            this.setState({
+              redirectTo: '/'
+            });
+          } else {
+            console.log('duplicate');
+          }
+        });
     } else {
       if (typeof callback === "function") { callback() };
     }
@@ -322,7 +339,7 @@ class Home extends Component {
     return (
       <div>
         <Container className="home">
-          <MenuModal user={ this.props.user } logout={ this.props.logout } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) } toggleAlerts={ this.toggleAlerts } toggleSettings={ this.toggleSettings }></MenuModal>
+          <MenuModal user={ this.state.firstName } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) } toggleAlerts={ this.toggleAlerts } toggleSettings={ this.toggleSettings }></MenuModal>
           <Row>
             <Col>
               <div id="title">sipSpot</div>
