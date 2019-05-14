@@ -36,4 +36,10 @@
 
   h1 {
     font-family: 'Black And White Picture', sans-serif;
+    color: #fff10a;
+    font-size: xx-large;
+  }
+
+  p {
+      color: white;
   }

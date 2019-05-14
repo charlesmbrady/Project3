@@ -1,18 +1,19 @@
 import React, {Component} from 'react';
-import AUTH from '../../utils/AUTH.js'
 import './splash-screen.css';
 
 function LoadingMessage() {
-  return (
+    console.log("loading message")
+    return (
     <div className="splash-screen">
       <h1>sipSpot</h1>
-      <p>is loading.</p>
+      <p>Invite friends, track drinks, get home safe!</p>
       <div className="loading-dot">.</div>
     </div>
   );
 }
 
 function withSplashScreen(WrappedComponent) {
+    console.log( " with Splash Screen")
   return class extends Component {
     constructor(props) {
       super(props);
@@ -23,12 +24,11 @@ function withSplashScreen(WrappedComponent) {
 
     async componentDidMount() {
       try {
-        await AUTH.loadSession();
-        setTimeout(() => {
+          setTimeout(() => {
           this.setState({
             loading: false,
           });
-        }, 1500)
+        }, 2000)
       } catch (err) {
         console.log(err);
         this.setState({
