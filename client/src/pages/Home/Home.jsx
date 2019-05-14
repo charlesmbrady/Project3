@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, Button } from 'reactstrap';
+import { Container, Row, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import TEXT from '../../utils/TEXT';
 import MenuModal from '../../components/Menu';
 import PostDrink from '../../components/PostDrink';
 import './Home.css';
 import API from "../../utils/API";
-import AlertsModal from '../../components/AlertsModal/AlertsModal';
-import SettingsModal from '../../components/SettingsModal/SettingsModal';
 import colorSuperSip from '../../images/colorSuperSip.gif';
 
 class Home extends Component {
@@ -274,6 +272,26 @@ class Home extends Component {
     this.sendAutomaticTextBasic(this.state.emergencyContactNumber, theMessage);
   };
 
+  handleInputChange = event => {
+    // Getting the value and name of the input which triggered the change
+    let value = event.target.value;
+    const name = event.target.name;
+
+    // Updating the input's state
+    this.setState({
+      [name]: value
+    });
+  };
+
+  handleFormSubmit = event => {
+    // Preventing the default behavior of the form submit (which is to refresh the page)
+    event.preventDefault();
+    
+    //TODO: currently this form is updating the state in the database, 
+    // but this needs to update the user in the database
+    
+  };
+
   toggleAlerts = () => {
     this.setState(prevState => ({
       alertsModal: !prevState.alertsModal
@@ -325,8 +343,122 @@ class Home extends Component {
             </Col>
           </Row>
         </Container>
-        <AlertsModal alertsModal={ this.state.alertsModal } toggleAlerts={ this.toggleAlerts } />
-        <SettingsModal settingsModal={ this.state.settingsModal } toggleSettings={ this.toggleSettings } />
+
+      {/* Alerts Modal */}
+        <Modal isOpen={this.state.alertsModal} toggleAlerts={this.toggleAlerts} className="alerts">
+                <ModalHeader toggle={this.toggleAlerts}>
+
+                </ModalHeader>
+                <ModalBody className="modal-body">
+                    <Container>
+                        <h2 className="alerts-label">Alerts</h2>
+                        <form>
+                            <div className="form-group">
+                                <label className="form-check-label alerts-label">BAC Alert Threshold</label>
+                                <input 
+                                onChange={this.handleInputChange}
+                                value={this.state.emergencyAlertThreshold}
+                                name="emergencyAlertThreshold"
+                                type="number" className="form-control" id="settings-bac-threshold" aria-describedby="emailHelp" placeholder="Ex. .08"></input>
+
+                            </div>
+                            <div className="form-group">
+                                <label className="alerts-label">Location Alert Threshold Distance (ft)</label>
+                                <input type="number" 
+                                onChange={this.handleInputChange}
+                                name=""
+                                 //TODO: NEED A LOCATION alert threshold variable
+                                className="form-control" id="exampleInputPassword1" placeholder="Ex. 200"></input>
+                            </div>
+
+                            <div className="form-group">
+                                <label className="alerts-label">Drink Count Alert Threshold</label>
+                                <input type="number" 
+                                onChange={this.handleInputChange}
+                                value={this.state.selfAlertThreshold}
+                                name="selfAlertThreshold"
+                                className="form-control" id="drinkCountThreshold" placeholder="Ex. 5"></input>
+                            </div>
+
+                            <button type="submit" className="btn">Submit</button>
+                        </form>
+                    </Container>
+                </ModalBody>
+                <ModalFooter>
+                    {/* <Button color="secondary" onClick={ props.toggle }>Close</Button> */}
+                </ModalFooter>
+            </Modal>
+
+            {/* Settings Modal */}
+            <Modal isOpen={this.state.settingsModal} toggleSettings={this.toggleSettings} className="settings">
+                <ModalHeader toggle={this.toggleSettings}>
+
+                </ModalHeader>
+                <ModalBody className="modal-body">
+                    <Container>
+                        <h2 className="settings-label">Settings</h2>
+                        <form>
+                            <div className="form-group ">
+                                <label className="form-check-label settings-label" for="settings-weight">Weight (lbs)</label>
+                                <input type="number" 
+                                onChange={this.handleInputChange}
+                                value={this.weight}
+                                name="weight"
+                                className="form-control" id="settings-weight" placeholder="Ex. 130"></input>
+                            </div>
+                            <div className="form-group">
+                                <label className="settings-label">Gender:</label>
+                                {/* TODO: need to make this so only one gender can be selected */}
+                                <div className="form-group">
+                                    <div className="form-check form-check-inline">
+
+                                        <input className="form-check-input" 
+                                        onChange={this.handleInputChange}
+                                        name="gender"
+                                        type="checkbox" id="inputeGenderMale" value="m"></input>
+                                        <label className="form-check-label settings-label" for="inlineCheckbox1">M</label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div className="form-check form-check-inline">
+                                <input className="form-check-input" 
+                                onChange={this.handleInputChange}
+                                name="gender"
+                                type="checkbox" id="inputGenderFemale" value="f"></input>
+                                <label className="form-check-label settings-label" for="inlineCheckbox2">F</label>
+                            </div>
+
+                            <div className="form-group">
+                                <label className="form-check-label settings-label" for="settings-user-phone-number">Phone Number</label>
+                                <input 
+                                value={this.state.userPhoneNumber}
+                                onChange={this.handleInputChange}
+                                type="number" 
+                                name="userPhoneNumber"
+                                className="form-control" id="settings-user-phone-number" placeholder="2522551122"></input>
+                            </div>
+
+                            <div className="form-group">
+                                <label className="form-check-label settings-label" for="emergencyContactPhoneNumber">Emergency Contact Phone Number</label>
+                                <input type="number" 
+                                value={this.state.emergencyContactNumber}
+                                onChange={this.handleInputChange}
+                                name="emergencyContactNumber"
+                                className="form-control" id="emergencyContactPhoneNumber" aria-describedby="emailHelp" placeholder="2522020784"></input>
+                            </div>
+
+
+                            <button type="submit" className="btn">Submit</button>
+                        </form>
+                    </Container>
+                </ModalBody>
+                <ModalFooter>
+                    {/* <Button color="secondary" onClick={ props.toggle }>Close</Button> */}
+                </ModalFooter>
+            </Modal>
       </div>
     );
   }
