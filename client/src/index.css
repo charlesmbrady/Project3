@@ -30,11 +30,12 @@ body {
 .topbar>a, .topbar>button, .bottombar>a, .bottombar>button {
   background-color: #121212;
   color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
   display: inline-block;
   display: -moz-inline-box;
   width: 25%;
-  /* vertical-align: middle; */
-  /* text-align: center; */
+  padding: 10px;
 }
 
 .topbar>a, .topbar>button {
@@ -49,6 +50,11 @@ body {
 .cntrl-btn, .menu-settings {
   height: 40px;
   vertical-align: middle;
+}
+
+.menu-btn:hover, .topbar>a:hover, .topbar>button:hover, .bottombar>a:hover, .bottombar>button:hover {
+  background-color: #fff10a;
+  color: #121212;
 }
 
 .menu-settings {}
