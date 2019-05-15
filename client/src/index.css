@@ -28,15 +28,13 @@ p {
 }
 
 .spot-and-splash-text {
-  width: 30rem;
+  width: 25rem;
   margin: 0 auto;
   text-align: center;
-  background-color: gray;
 }
 
 .superSip-container {
   width: 25%;
-  background-color: red;
   display: inline-block;
   vertical-align: middle;
 }
@@ -51,7 +49,6 @@ p {
 
 .splashscreen-list-container {
   width: 75%;
-  background-color: blue;
   display: inline-block;
   vertical-align: middle;
 }
