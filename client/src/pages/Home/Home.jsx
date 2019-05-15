@@ -70,9 +70,11 @@ class Home extends Component {
       }
       let zero = (counter / 60).toFixed(2);
       //add all db vars to state on mount
-      this.setState({ emergencyContactNumber: res.data.emergencyContactNumber, weight: res.data.weight,
-        gender: res.data.gender, selfAlertThreshold: res.data.selfAlertThreshold, emergencyAlertThreshold: res.data.emergencyAlertThreshold, 
-        numberOfDrinks: numberOfDrinksCopy, bac, zero });
+      this.setState({
+        emergencyContactNumber: res.data.emergencyContactNumber, weight: res.data.weight,
+        gender: res.data.gender, selfAlertThreshold: res.data.selfAlertThreshold, emergencyAlertThreshold: res.data.emergencyAlertThreshold,
+        numberOfDrinks: numberOfDrinksCopy, bac, zero
+      });
       this.interval = setInterval(() => { this.updateBac.bind(this); this.updateBac(); }, 60000);
     })
       .catch(err => console.log(err));
@@ -90,9 +92,9 @@ class Home extends Component {
 
   calculateBac (drink, time, weight, gender) {
     //calculate BAC(using 130lbs as generic weight and r=0.55 for conservative estimate if user does not give the data)
-    let r=0.55;
-    if(gender.toLowerCase==='m'){
-      r=0.68;
+    let r = 0.55;
+    if (gender.toLowerCase === 'm') {
+      r = 0.68;
     }
     let bac = ((drink * 14) / ((weight * 453.592) * r)) * 100;
     //elapsed time 
@@ -119,8 +121,8 @@ class Home extends Component {
     lastdrink.number = (numberOfDrinksCopy[ (numberOfDrinksCopy.length - 1) ].number) + 1;
     lastdrink.timeOfLastDrink = new Date().toLocaleString();
     numberOfDrinksCopy.push(lastdrink);
-    let bac = (parseFloat(this.calculateBac(1, lastdrink.timeOfLastDrink, this.state.weight, this.state.gender)) + 
-              parseFloat(this.state.bac)).toFixed(5);
+    let bac = (parseFloat(this.calculateBac(1, lastdrink.timeOfLastDrink, this.state.weight, this.state.gender)) +
+      parseFloat(this.state.bac)).toFixed(5);
     if (bac < 0) { bac = 0; }
     //measure the time based on current bac for it to get to 0
     let counter = 0, baczero = bac;
@@ -280,7 +282,7 @@ class Home extends Component {
     this.setState({ emergencyNotificationSent: true });
     let theUrl = `https://www.google.com/maps/dir/?api=1&destination=${this.state.latitude},${this.state.longitude}`;
     let theMessage = "Please come give me a ride; I have had too much to drink. Here is a Google Maps link to my location. (This message *auto-generated* by sipSpot) " + theUrl;
-    if (this.state.emergencyContactNumber === this.state.userPhoneNumber) {
+    if (this.state.emergencyContactNumber === this.state.userPhoneNumber || this.state.emergencyContactNumber === 0) {
       theUrl = "https://m.uber.com/ul/?action=setPickup&pickup=my_location"
       theMessage = "It looks like you have had a lot to drink. Please get a ride home or get an Uber, for your own safety and for the safety of others. Here's a link to Uber: (This message *auto-generated* by sipSpot) " + theUrl;
     }
@@ -290,6 +292,7 @@ class Home extends Component {
     } else {
       theNumber = this.state.emergencyContactNumber;
     }
+    console.log(theNumber, theMessage);
     this.sendAutomaticTextBasic(theNumber, theMessage);
   };
 
