@@ -30,7 +30,7 @@ class Home extends Component {
       zero: new Date().toLocaleString(),
       interval: "",
       alertsModal: false,
-      phoneModal: true,
+      phoneModal: false,
       settingsModal: false,
       modal: false,
       toggle () {
