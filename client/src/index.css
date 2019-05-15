@@ -8,18 +8,45 @@ body {
   text-align: center;
 }
 
-.cntrl-btn {
-  background-color: #68a6bd;
-  color: #121212;
-  box-shadow: 3px 3px 3px #121212;
+.topbar, .bottombar {
+  position: fixed;
+  width: 100%;
+  text-align: center;
 }
 
-.controls-container {
-  position: fixed;
-  bottom: 5%;
-  width: 80%;
-  margin-left: 10%;
+.topbar {
+  top: 0;
 }
+
+.bottombar {
+  bottom: 0;
+}
+
+.topbar>a, .topbar>button, .bottombar>a, .bottombar>button {
+  background-color: #121212;
+  color: white;
+  display: inline-block;
+  display: -moz-inline-box;
+  width: 25%;
+  /* vertical-align: middle; */
+  /* text-align: center; */
+}
+
+.topbar>a, .topbar>button {
+  width: 50%;
+  float: right;
+}
+
+.bottombar>a, .bottombar>button {
+  width: 25%;
+}
+
+.cntrl-btn, .menu-settings {
+  height: 40px;
+  vertical-align: middle;
+}
+
+.menu-settings {}
 
 #how-to {
   color: #dcbfff;
