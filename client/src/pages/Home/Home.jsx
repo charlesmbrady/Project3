@@ -299,6 +299,10 @@ class Home extends Component {
     event.preventDefault();
     if (this.state.settingsModal) {
       this.toggleSettings();
+      // TODO: @Marcia, this is where we need to update db from state. The settings
+      // values are already in state because they've been updated by handleInputChange.
+      // just update weight, gender, and phone numbers if there are valid values in
+      // those states.
     }
     if (this.state.phoneModal) {
       localStorage.setItem("userPhoneNumber", this.state.userPhoneNumber);
@@ -421,7 +425,7 @@ class Home extends Component {
                 <label className="form-check-label settings-label" for="settings-weight">Weight in pounds:</label>
                 <input type="number"
                   onChange={ this.handleInputChange }
-                  value={ this.weight }
+                  value={ this.state.weight }
                   name="weight"
                   className="form-control" id="settings-weight" placeholder="Ex. 130"></input>
                 {/* </div>
