@@ -2,8 +2,19 @@
 import React from 'react';
 import HomeButton from '../../components/HomeButton/HomeButton';
 import './History.css';
+import Axios from 'axios';
 
 function History() {
+ 
+  const [drinks, setDrinks] = useState([]);
+
+  useEffect(() => {
+    Axios.get( (drinksapi) => {
+      //api call that gives us drinks data as a response
+    }).then((data) => {
+      setDrinks(data);
+    })
+  }, []);
 
   return (
     <div>
@@ -18,21 +29,12 @@ function History() {
         </tr>
       </thead>
       <tbody>
+      {drinks.map(drink => (
         <tr>
-          <th scope="row">Friday</th>
-          <td>5-10-2019</td>
-          <td>1</td>
-        </tr>
-        <tr>
-          <th scope="row">Saturday</th>
-          <td>5-11-2019</td>
-          <td>2</td>
-        </tr>
-        <tr>
-          <th scope="row">Sunday</th>
-          <td>5-12-2019</td>
-          <td>0</td>
-        </tr>
+          <td>{drink.day}</td>
+          <td>{drink.date}</td>
+          <td>{drink.drinkCount}</td>
+        </tr>))}
       </tbody>
     </table>
     </div>
