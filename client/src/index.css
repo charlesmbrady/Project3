@@ -13,7 +13,7 @@ p {
 
 .splashscreen-header {
   text-align: center;
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: bold;
   text-shadow: 2px 2px 5px black;
   margin: 0;
@@ -40,9 +40,10 @@ p {
 }
 
 #superSip-splashscreen {
-  width: 250%;
+  z-index: -99;
+  width: 350%;
   position: relative;
-  right: 50%;
+  right: 100%;
   padding: 0;
   margin: 0;
 }
@@ -56,9 +57,31 @@ p {
 .splashscreen-list {
   text-align: left;
   color: white;
-  font-size: 1rem;
+  font-size: 1.5rem;
   font-weight: bold;
   text-shadow: 2px 2px 5px black;
+}
+
+@media only screen and (max-width: 400px) {
+  .spot-and-splash-text {
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .splashscreen-header {
+    font-size: 1.5rem;
+  }
+  .splashscreen-list {
+    text-align: left;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 5px black;
+  }
+  #superSip-splashscreen {
+    width: 250%;
+    right: 50%;
+  }
 }
 
 .topbar, .bottombar {
