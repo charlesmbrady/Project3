@@ -34,6 +34,9 @@ class Home extends Component {
       alertsModal: false,
       phoneModal: false,
       settingsModal: false,
+      quickstartModal: false,
+      infoModal: false,
+      infoModalBody: "",
       modal: false,
       toggle () {
         this.setState(prevState => ({
@@ -75,7 +78,7 @@ class Home extends Component {
   componentDidMount () {
     this._isMounted = true;
     this.checkLocalStorageOnMount();
-    setTimeout(function () { this.watchLocation }, 3000);
+    this.watchLocation();
   }
 
   componentWillUnmount () {
@@ -180,8 +183,10 @@ class Home extends Component {
   };
 
   watchLocation = () => {
-    const watchId = navigator.geolocation.watchPosition(this.checkLocation);
-    this._isMounted && this.setState({ watchId });
+    setTimeout(() => {
+      const watchId = navigator.geolocation.watchPosition(this.checkLocation);
+      this._isMounted && this.setState({ watchId });
+    }, 3000);
   };
 
   checkLocation = (position) => {
@@ -331,6 +336,15 @@ class Home extends Component {
     }
   };
 
+  changePhoneNotification = () => {
+    console.log('change phone');
+    const theInformation = "The only way to change your phone number is to Logout and then start fresh. If you do so, you will lose any drink history and settings you may have saved. For most people this is not a big deal; it is the only way to change your phone number."
+    this.setState(prevState => ({
+      infoModal: !prevState.infoModal,
+      infoModalBody: theInformation
+    }));
+  }
+
   toggleAlerts = () => {
     this.setState(prevState => ({
       alertsModal: !prevState.alertsModal
@@ -350,11 +364,23 @@ class Home extends Component {
     }))
   }
 
+  toggleQuickstart = () => {
+    this.setState(prevState => ({
+      quickstartModal: !prevState.quickstartModal
+    }))
+  }
+
+  toggleInfoModal = () => {
+    this.setState(prevState => ({
+      infoModal: !prevState.infoModal
+    }))
+  }
+
   render () {
     return (
       <div>
         <div className="topbar">
-          <MenuModal user={ this.state.firstName } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) } toggleAlerts={ this.toggleAlerts } toggleSettings={ this.toggleSettings }></MenuModal><a className="cntrl-btn" data-test="menu-quickstart" href="/quickstart">Quick Start</a>
+          <MenuModal user={ this.state.firstName } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) } toggleAlerts={ this.toggleAlerts } toggleSettings={ this.toggleSettings }></MenuModal><button className="cntrl-btn" data-test="menu-quickstart" onClick={ this.toggleQuickstart }>Quick Start</button>
         </div>
         <Container className="home">
           <MenuModal user={ this.state.firstName } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) } toggleAlerts={ this.toggleAlerts } toggleSettings={ this.toggleSettings }></MenuModal>
@@ -452,16 +478,16 @@ class Home extends Component {
                 <div />
                 <label className="form-check-label settings-label modal-text" for="settings-user-phone-number">Phone Number</label>
                 <input
-                  value={ this.state.userPhoneNumber === 0 ? "" : this.state.userPhoneNumber }
-                  onChange={ this.handleInputChange }
+                  value=""
                   type="number"
                   name="userPhoneNumber"
-                  className="form-control modal-text" id="settings-user-phone-number" placeholder="9195551212"></input>
+                  onClick={ this.changePhoneNotification }
+                  className="form-control modal-text" id="settings-user-phone-number" placeholder={ this.state.userPhoneNumber }></input>
                 {/* </div>
                 <div className="form-group"> */}
                 <label className="form-check-label settings-label modal-text" for="emergencyContactPhoneNumber">Emergency Contact Number:</label>
                 <input type="number"
-                  value={ this.state.emergencyContactNumber === 0 ? "" : this.state.emergencyContactNumber }
+                  value={ this.state.emergencyContactNumber < 1 ? "" : this.state.emergencyContactNumber }
                   onChange={ this.handleInputChange }
                   name="emergencyContactNumber"
                   className="form-control modal-text" id="emergencyContactPhoneNumber" placeholder=""></input>
@@ -507,6 +533,33 @@ class Home extends Component {
                 </div>
                 <button type="submit" className="btn">Submit</button>
               </form>
+            </Container>
+          </ModalBody>
+        </Modal>
+        {/* Quickstart Modal */ }
+        <Modal isOpen={ this.state.quickstartModal } toggleQuickstart={ this.toggleQuickstart } className="settings">
+          <ModalHeader toggle={ this.toggleQuickstart }>
+          </ModalHeader>
+          <ModalBody className="modal-body">
+            <Container>
+              <ul id="how-to" className="modal-text">
+                <li>Click <em><strong>CheckIn</strong></em> to keep track of where your stuff is (your credit card on a bar tab, your jacket, your friends).</li>
+                <li>Click <em><strong>+Drink</strong></em> to keep track of your drinks over time to get a rough estimate of your blood-alcohol level.</li>
+                <li>Click <em><strong>Uber</strong></em> to get a safe ride home.</li>
+                <li>Click <em><strong>Friends</strong></em> to send a link to your location to friends.</li>
+                <li>Click <em><strong>Menu</strong></em> at the top left to change thresholds for Alerts, view History, or change your Settings.</li>
+              </ul>
+              <p className="modal-text">*BAC stands for "Blood Alcohol Concentration". Properly calculating BAC requires a complicated equation and depends on accurate measures of a person's alcohol intake along with their weight and gender. While <em>sipSpot</em> can provide a more accurate BAC number if you enter your weight and gender in <em><strong>Settings</strong></em>, this number will always be a rough estimate. Please use the BAC readings in <em>sipSpot</em> as a <em>general guidance</em>. If in doubt, please call a friend for a ride or get an Uber.</p>
+            </Container>
+          </ModalBody>
+        </Modal>
+        {/* Info Modal */ }
+        <Modal isOpen={ this.state.infoModal } toggleInfoModal={ this.toggleInfoModal } className="settings">
+          <ModalHeader toggle={ this.toggleInfoModal }>
+          </ModalHeader>
+          <ModalBody className="modal-body">
+            <Container>
+              { this.state.infoModalBody }
             </Container>
           </ModalBody>
         </Modal>

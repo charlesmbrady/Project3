@@ -62,10 +62,6 @@ p {
   text-shadow: 2px 2px 5px black;
 }
 
-.modal-text {
-  font-size: small;
-}
-
 @media only screen and (max-width: 400px) {
   .spot-and-splash-text {
     width: 100%;
@@ -158,8 +154,12 @@ p {
 .menu-settings {}
 
 #how-to {
-  color: #dcbfff;
+  color: white;
   padding: 2%;
+}
+
+#how-to li {
+  margin: 5% 2%;
 }
 
 #test-display {
@@ -187,6 +187,7 @@ p {
   font-size: 5em;
   text-align: center;
   color: #fff10a;
+  text-shadow: 2px 2px 5px black;
   margin: -10px;
 }
 

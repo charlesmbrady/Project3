@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Row, Col, Button, Modal, ModalHeader, ModalBody } from 'reactstrap';
+import { Container, Row, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import './menu.css';
 
 const MenuModal = (props) => {
@@ -9,11 +9,6 @@ const MenuModal = (props) => {
             <Button onClick={ props.toggle } className="menu-btn" data-test="home-menu-button">Menu</Button>
             <Modal isOpen={ props.modal } toggle={ props.toggle } className="menu">
                 <ModalHeader toggle={ props.toggle }>
-                    {/* <Row>
-                        <Col>
-                            <Link to='/quickstart' className="menu-button quickstart" data-test="menu-quickstart">Quick Start</Link>
-                        </Col>
-                    </Row> */}
                 </ModalHeader>
                 <ModalBody className="modal-body">
                     <Container>
@@ -34,9 +29,9 @@ const MenuModal = (props) => {
                         </Row>
                     </Container>
                 </ModalBody>
-                {/* <ModalFooter> */ }
-                {/* <Button color="secondary" onClick={ props.toggle }>Close</Button> */ }
-                {/* </ModalFooter> */ }
+                <ModalFooter>
+                    <button className="menu-button" data-test="menu-logout">Logout</button>
+                </ModalFooter>
             </Modal>
         </div>
     )

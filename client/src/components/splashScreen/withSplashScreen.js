@@ -4,7 +4,6 @@ import "../../../src/index.css";
 import colorSuperSip from '../../images/colorSuperSip.gif';
 
 function LoadingMessage () {
-  console.log("loading message")
   return (
     <div className="splash-screen">
       <div className="topbar topbar-splash">&nbsp;</div>
@@ -30,7 +29,6 @@ function LoadingMessage () {
 }
 
 function withSplashScreen (WrappedComponent) {
-  console.log(" with Splash Screen")
   return class extends Component {
     constructor (props) {
       super(props);
