@@ -43,28 +43,30 @@ class Home extends Component {
 
   //grab previous drink info from db
   loadDrinks = () => {
-    API.getDrinks()
-      .then(res => {
-        clearInterval(this.interval);
-        let lastdrink = {};
-        let numberOfDrinksCopy = this.state.numberOfDrinks;
-        lastdrink.number = res.data[ 0 ].numberOfDrinks;
-        lastdrink.timeOfLastDrink = (new Date(res.data[ 0 ].timeOfLastDrink)).toLocaleString();
-        numberOfDrinksCopy.push(lastdrink);
-        //elapsed time in minutes since last recorded drink
-        let now = new Date();
-        let elapsedTime = (now - new Date(lastdrink.timeOfLastDrink)) / 60000;
-        let bac = (res.data[ 0 ].bac - (elapsedTime * .00025)).toFixed(5);
-        //measure the time based on current bac for it to get to 0
-        let counter = 0, baczero = bac;
-        while (baczero > 0) {
-          baczero = baczero - ((1 / 60) * .015);
-          counter++;
-        }
-        let zero = (counter / 60).toFixed(2);
+    AUTH.getUserDrinks({    
+      userPhoneNumber: this.state.userPhoneNumber
+    }).then(res => {
 
-        this.setState({ numberOfDrinks: numberOfDrinksCopy, bac, zero });
-        this.interval = setInterval(() => { this.updateBac.bind(this); this.updateBac(); }, 60000);
+      clearInterval(this.interval);
+      let lastdrink = {};
+      let numberOfDrinksCopy = this.state.numberOfDrinks;
+      lastdrink.number = res.data.drinks[ (res.data.drinks.length)-1 ].numberOfDrinks;
+      lastdrink.timeOfLastDrink = (new Date(res.data.drinks[ (res.data.drinks.length)-1 ].timeOfLastDrink)).toLocaleString();
+      numberOfDrinksCopy.push(lastdrink);
+      //elapsed time in minutes since last recorded drink
+      let now = new Date();
+      let elapsedTime = (now - new Date(lastdrink.timeOfLastDrink)) / 60000;
+      let bac = (res.data.drinks[ (res.data.drinks.length)-1 ].bac - (elapsedTime * .00025)).toFixed(5);
+      //measure the time based on current bac for it to get to 0
+      let counter = 0, baczero = bac;
+      while (baczero > 0) {
+        baczero = baczero - ((1 / 60) * .015);
+        counter++;
+      }
+      let zero = (counter / 60).toFixed(2);
+
+      this.setState({ numberOfDrinks: numberOfDrinksCopy, bac, zero });
+      this.interval = setInterval(() => { this.updateBac.bind(this); this.updateBac(); }, 60000);
       })
       .catch(err => console.log(err));
   };
@@ -173,9 +175,11 @@ class Home extends Component {
     if (this.state.userPhoneNumber === 0 || this.state.userPhoneNumber === null) {
       let userPhoneNumber = localStorage.getItem("userPhoneNumber");
       let emergencyContactNumber = localStorage.getItem("emergencyContactNumber");
+      var password;
       console.log("numbers from localStorage - user: " + userPhoneNumber + ", emergency: " + emergencyContactNumber);
       if (userPhoneNumber === null) {
         userPhoneNumber = prompt("Please enter your phone number so sipSpot can send you alerts. sipSpot will never share your number with anyone else, ever.");
+        password = prompt("Please enter a password.");
       }
       if (emergencyContactNumber === null) {
         emergencyContactNumber = prompt("Now please enter the phone number of an emergency contact in case you need to be picked up. This is OPTIONAL, but it's a really good idea to do.")
@@ -193,6 +197,7 @@ class Home extends Component {
         firstName: firstName,
         username: username,
         userPhoneNumber: userPhoneNumber,
+        password: password,
         emergencyContactNumber: emergencyContactNumber
       }).then(response => {
         console.log(response);
