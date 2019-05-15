@@ -20,7 +20,7 @@ function LoadingMessage () {
         </ul>
       </div>
       <div>
-        <img id="superSip" src={ colorSuperSip } alt="super sip the beer bottle" width="80%" />
+        <img id="superSip-splashscreen" src={ colorSuperSip } alt="super sip the beer bottle" width="80%" />
       </div>
       <div className="bottombar bottombar-splash">&nbsp;</div>
     </div>
