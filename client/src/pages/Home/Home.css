@@ -5,3 +5,8 @@ a:hover {
 .cntrl-btn {
     background: white;
 }
+
+.cntrl-btn:hover {
+    cursor: pointer;
+    background: none;
+}
