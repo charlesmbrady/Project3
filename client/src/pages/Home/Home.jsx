@@ -66,7 +66,6 @@ class Home extends Component {
         counter++;
       }
       let zero = (counter / 60).toFixed(2);
-
       this.setState({ numberOfDrinks: numberOfDrinksCopy, bac, zero });
       this.interval = setInterval(() => { this.updateBac.bind(this); this.updateBac(); }, 60000);
     })
