@@ -48,7 +48,6 @@ class Home extends Component {
     AUTH.getUserDrinks({
       userPhoneNumber: this.state.userPhoneNumber
     }).then(res => {
-
       clearInterval(this.interval);
       let lastdrink = {};
       let numberOfDrinksCopy = this.state.numberOfDrinks;
