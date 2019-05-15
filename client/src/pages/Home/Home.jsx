@@ -142,9 +142,6 @@ class Home extends Component {
   checkIn = (e) => {
     e.preventDefault();
     console.log("Check-In");
-    // if (!this.state.userPhoneNumber) {
-    //   this.togglePhone();
-    // }
     this.checkForNumbers();
     this.storeCheckinLocation();
   };
@@ -174,10 +171,6 @@ class Home extends Component {
       } else {
         this.loadDrinks();
       }
-      // this.setState({ userPhoneNumber: userPhoneNumber, emergencyContactNumber: emergencyContactNumber }, () => this.loadDrinks());
-      //push ph# to db
-      // let firstName = "Guest";
-      // let username = firstName + new Date().getTime() + (Math.floor(Math.random() * 90000) + 10000);
     } else {
       if (typeof callback === "function") { callback() };
     }
@@ -324,6 +317,7 @@ class Home extends Component {
           this.setState({
             redirectTo: '/'
           });
+          this.loadDrinks();
         } else {
           console.log('duplicate');
         }
@@ -333,8 +327,6 @@ class Home extends Component {
     if (this.state.alertsModal) {
       this.toggleAlerts();
     }
-    //TODO: currently this form is updating the state, 
-    // but this needs to update the user in the database
   };
 
   toggleAlerts = () => {
@@ -401,14 +393,6 @@ class Home extends Component {
                     name="emergencyAlertThreshold"
                     type="number" className="form-control" id="settings-bac-threshold" placeholder="Ex. .08"></input>
                 </div>
-                {/* <div className="form-group">
-                  <label className="alerts-label">Location Alert Threshold Distance (ft)</label>
-                  <input type="number"
-                    onChange={ this.handleInputChange }
-                    name=""
-                    //TODO: NEED A LOCATION alert threshold variable
-                    className="form-control" id="exampleInputPassword1" placeholder="Ex. 200"></input>
-                </div> */}
                 <div className="form-group">
                   <label className="alerts-label">BAC Self Alert Threshold</label>
                   <input type="number"
