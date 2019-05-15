@@ -4,21 +4,31 @@ import "../../../src/index.css";
 import colorSuperSip from '../../images/colorSuperSip.gif';
 
 function LoadingMessage () {
-  console.log("loading message")
   return (
     <div className="splash-screen">
-      <div id="title">sipSpot</div>
+      <div className="topbar topbar-splash">&nbsp;</div>
+      <div id="splash-title">sipSpot</div>
       <div className="loading-dot">.</div>
-      <p className="splashscreen-text"><em>Spot helps you:</em><br /><br />&bull; remember your things,<br />&bull; track your drinks,<br />&bull; invite your friends,<br />&bull; and get home <em>safe!</em></p>
-      <div>
-        <img id="superSip" src={ colorSuperSip } alt="super sip the beer bottle" width="80%" />
+      <p className="splashscreen-header"><em>Spot helps you:</em></p>
+      <div className="spot-and-splash-text">
+        <section className="superSip-container">
+          <img id="superSip-splashscreen" src={ colorSuperSip } alt="super sip the beer bottle" width="80%" />
+        </section>
+        <section className="splashscreen-list-container">
+          <ul className="splashscreen-list">
+            <li>remember your things</li>
+            <li>track your drinks</li>
+            <li>invite your friends</li>
+            <li>get home <em>safe!</em></li>
+          </ul>
+        </section>
       </div>
+      <div className="bottombar bottombar-splash">&nbsp;</div>
     </div>
   );
 }
 
 function withSplashScreen (WrappedComponent) {
-  console.log(" with Splash Screen")
   return class extends Component {
     constructor (props) {
       super(props);
@@ -33,7 +43,7 @@ function withSplashScreen (WrappedComponent) {
           this.setState({
             loading: false,
           });
-        }, 3000)
+        }, 5000)
       } catch (err) {
         console.log(err);
         this.setState({

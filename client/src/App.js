@@ -6,14 +6,13 @@ import NoMatch from "./pages/NoMatch";
 import AUTH from './utils/AUTH';
 import History from './pages/History/History';
 import Friends from './pages/Friends/Friends';
-import Quickstart from './pages/Quickstart';
 import Home from './pages/Home/Home';
 import './index.css';
 import withSplashScreen from './components/splashScreen/withSplashScreen.js'
 
 class App extends Component {
 
-	constructor() {
+	constructor () {
 		super();
 
 		this.state = {
@@ -22,7 +21,7 @@ class App extends Component {
 		};
 	}
 
-	componentDidMount() {
+	componentDidMount () {
 		AUTH.getUser().then(response => {
 			console.log(response.data);
 			if (!!response.data.user) {
@@ -66,33 +65,32 @@ class App extends Component {
 		});
 	}
 
-	render() {
+	render () {
 		return (
 			<div className="App">
-				{this.state.loggedIn && (
+				{ this.state.loggedIn && (
 					<div>
 						<div className="main-view">
 							<Switch>
-								<Route exact path="/" component={() => <Home user={this.state.user} logout={this.logout}></Home>} />
-								<Route exact path="/history" component={History} />
-								<Route exact path="/friends" component={Friends} />
-								<Route component={NoMatch} />
+								<Route exact path="/" component={ () => <Home user={ this.state.user } logout={ this.logout }></Home> } />
+								<Route exact path="/history" component={ History } />
+								<Route exact path="/friends" component={ Friends } />
+								<Route component={ NoMatch } />
 							</Switch>
 						</div>
 					</div>
-				)}
-				{!this.state.loggedIn && (
+				) }
+				{ !this.state.loggedIn && (
 					<div>
-						<div className="auth-wrapper" style={{ paddingTop: 40 }}>
-							<Route exact path="/" component={() => <Home />} />
-							<Route exact path="/quickstart" component={Quickstart} />
-							<Route exact path="/history" component={History} />
-							<Route exact path="/friends" component={Friends} />
-							<Route exact path="/login" component={() => <LoginForm login={this.login} />} />
-							<Route exact path="/signup" component={SignupForm} />
+						<div className="auth-wrapper" style={ { paddingTop: 40 } }>
+							<Route exact path="/" component={ () => <Home /> } />
+							<Route exact path="/history" component={ History } />
+							<Route exact path="/friends" component={ Friends } />
+							<Route exact path="/login" component={ () => <LoginForm login={ this.login } /> } />
+							<Route exact path="/signup" component={ SignupForm } />
 						</div>
 					</div>
-				)}
+				) }
 			</div>
 		)
 	}
