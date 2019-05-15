@@ -332,13 +332,13 @@ class Home extends Component {
           this.setState({
             redirectTo: '/'
           });
-        }else if(response.data.error === 'Phone number exists'){
+        } else if (response.data.error === 'Phone number exists') {
           console.log('duplicate');
           this.loadDrinks();
-        }else if(response.data.error === 'Password does not match'){
+        } else if (response.data.error === 'Password does not match') {
           console.log('wrong password');
           alert("Password does not match, Please enter the right password");
-          this.setState({userPhoneNumber: 0, emergencyContactNumber: 0});
+          this.setState({ userPhoneNumber: 0, emergencyContactNumber: 0 });
           localStorage.clear();
         }
       });
@@ -387,6 +387,48 @@ class Home extends Component {
     this.setState(prevState => ({
       infoModal: !prevState.infoModal
     }))
+  }
+
+  handleLogout = () => {
+    this.clearLocalStorage();
+    this.resetState();
+  }
+
+  clearLocalStorage = () => {
+    localStorage.setItem("userPhoneNumber", "");
+    localStorage.setItem("emergencyContactNumber", "");
+    localStorage.setItem("isLoggedIn", false);
+  }
+
+  resetState = () => {
+    this.setState({
+      numberOfDrinks: [ { number: 0, timeOfLastDrink: [ new Date().toLocaleString() ] } ],
+      userPhoneNumber: 0,
+      emergencyContactNumber: 0,
+      password: '',
+      isLoggedIn: false,
+      weight: 130,
+      gender: 'f',
+      selfAlertThreshold: 1,
+      emergencyAlertThreshold: 1,
+      latitude: 0,
+      longitude: 0,
+      theCheckinLatitude: 0,
+      theCheckinLongitude: 0,
+      proximityAlertSent: false,
+      emergencyNotificationSent: false,
+      watchID: 0,
+      bac: 0,
+      zero: new Date().toLocaleString(),
+      interval: "",
+      alertsModal: false,
+      phoneModal: false,
+      settingsModal: false,
+      quickstartModal: false,
+      infoModal: false,
+      infoModalBody: "",
+      modal: false,
+    })
   }
 
   render () {
