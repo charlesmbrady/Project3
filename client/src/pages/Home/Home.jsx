@@ -15,6 +15,8 @@ class Home extends Component {
       numberOfDrinks: [ { number: 0, timeOfLastDrink: [ new Date().toLocaleString() ] } ],
       userPhoneNumber: 0,
       emergencyContactNumber: 0,
+      password: '',
+      isLoggedIn: false,
       weight: 130,
       gender: 'f',
       selfAlertThreshold: 1,
@@ -43,20 +45,20 @@ class Home extends Component {
 
   //grab previous drink info from db
   loadDrinks = () => {
-    AUTH.getUserDrinks({    
+    AUTH.getUserDrinks({
       userPhoneNumber: this.state.userPhoneNumber
     }).then(res => {
 
       clearInterval(this.interval);
       let lastdrink = {};
       let numberOfDrinksCopy = this.state.numberOfDrinks;
-      lastdrink.number = res.data.drinks[ (res.data.drinks.length)-1 ].numberOfDrinks;
-      lastdrink.timeOfLastDrink = (new Date(res.data.drinks[ (res.data.drinks.length)-1 ].timeOfLastDrink)).toLocaleString();
+      lastdrink.number = res.data.drinks[ (res.data.drinks.length) - 1 ].numberOfDrinks;
+      lastdrink.timeOfLastDrink = (new Date(res.data.drinks[ (res.data.drinks.length) - 1 ].timeOfLastDrink)).toLocaleString();
       numberOfDrinksCopy.push(lastdrink);
       //elapsed time in minutes since last recorded drink
       let now = new Date();
       let elapsedTime = (now - new Date(lastdrink.timeOfLastDrink)) / 60000;
-      let bac = (res.data.drinks[ (res.data.drinks.length)-1 ].bac - (elapsedTime * .00025)).toFixed(5);
+      let bac = (res.data.drinks[ (res.data.drinks.length) - 1 ].bac - (elapsedTime * .00025)).toFixed(5);
       if (bac < 0) { bac = 0; }
       //measure the time based on current bac for it to get to 0
       let counter = 0, baczero = bac;
@@ -68,13 +70,13 @@ class Home extends Component {
 
       this.setState({ numberOfDrinks: numberOfDrinksCopy, bac, zero });
       this.interval = setInterval(() => { this.updateBac.bind(this); this.updateBac(); }, 60000);
-      })
+    })
       .catch(err => console.log(err));
   };
 
   componentDidMount () {
     this._isMounted = true;
-    this._isMounted && this.watchLocation();
+    this.watchLocation();
     this.checkLocalStorageOnMount();
   }
 
@@ -83,18 +85,14 @@ class Home extends Component {
   }
 
   calculateBac (drink, time, weight) {
-
     //calculate BAC(using 130lbs as generic weight and r=0.55 for conservative estimate)
     let bac = ((drink * 14) / ((weight * 453.592) * 0.55)) * 100;
-
     //elapsed time 
     let first = (Date.parse(time)) / 3600000;
     let now = (Date.parse(new Date().toLocaleString())) / 3600000;
     let elapsedTime = now - first;
     bac = (bac - (elapsedTime * 0.015)).toFixed(5);
-
     return bac;
-
   }
 
   //update BAC every minute
@@ -107,7 +105,6 @@ class Home extends Component {
   drinkTracker = (e) => {
     e.preventDefault();
     this.checkForNumbers();
-
     clearInterval(this.interval);
     let lastdrink = {};
     let numberOfDrinksCopy = this.state.numberOfDrinks;
@@ -115,7 +112,7 @@ class Home extends Component {
     lastdrink.timeOfLastDrink = new Date().toLocaleString();
     numberOfDrinksCopy.push(lastdrink);
     let bac = (parseFloat(this.calculateBac(1, lastdrink.timeOfLastDrink, this.state.weight)) + parseFloat(this.state.bac)).toFixed(5);
-    console.log("line 117 "+bac);
+    console.log("line 117 " + bac);
     if (bac < 0) { bac = 0; }
     //measure the time based on current bac for it to get to 0
     let counter = 0, baczero = bac;
@@ -126,7 +123,6 @@ class Home extends Component {
     let zero = (counter / 60).toFixed(2);
     this.setState({ numberOfDrinks: numberOfDrinksCopy, bac, zero },
       () => this.checkBeforeSendAutomaticText());
-
     //push drinks to db
     if (this.state.userPhoneNumber !== 0) {
       API.saveDrink({
@@ -140,16 +136,15 @@ class Home extends Component {
         console.log("drinks added");
       }).catch(err => console.log(err));
     }
-
     this.interval = setInterval(() => { this.updateBac.bind(this); this.updateBac(); }, 60000);
   };
 
   checkIn = (e) => {
     e.preventDefault();
     console.log("Check-In");
-    if (!this.state.userPhoneNumber) {
-      this.togglePhone();
-    }
+    // if (!this.state.userPhoneNumber) {
+    //   this.togglePhone();
+    // }
     this.checkForNumbers();
     this.storeCheckinLocation();
   };
@@ -171,55 +166,32 @@ class Home extends Component {
     if (this.state.userPhoneNumber === 0 || this.state.userPhoneNumber === null) {
       let userPhoneNumber = localStorage.getItem("userPhoneNumber");
       let emergencyContactNumber = localStorage.getItem("emergencyContactNumber");
-      var password;
-      console.log("numbers from localStorage - user: " + userPhoneNumber + ", emergency: " + emergencyContactNumber);
+      let isLoggedIn = localStorage.getItem("isLoggedIn");
+      // var password;
+      console.log("numbers from localStorage - user: " + userPhoneNumber + ", emergency: " + emergencyContactNumber + ", isLoggedIn: " + isLoggedIn);
       if (userPhoneNumber === null) {
-        userPhoneNumber = prompt("Please enter your phone number so sipSpot can send you alerts. sipSpot will never share your number with anyone else, ever.");
-        password = prompt("Please enter a password.");
+        this.togglePhone();
+      } else {
+        this.loadDrinks();
       }
-      if (emergencyContactNumber === null) {
-        emergencyContactNumber = prompt("Now please enter the phone number of an emergency contact in case you need to be picked up. This is OPTIONAL, but it's a really good idea to do.")
-      }
-      if (emergencyContactNumber === null || emergencyContactNumber === "") {
-        emergencyContactNumber = userPhoneNumber;
-      }
-      localStorage.setItem("userPhoneNumber", userPhoneNumber);
-      localStorage.setItem("emergencyContactNumber", emergencyContactNumber);
-      this.setState({ userPhoneNumber: userPhoneNumber, emergencyContactNumber: emergencyContactNumber }, () => this.loadDrinks());
+      // this.setState({ userPhoneNumber: userPhoneNumber, emergencyContactNumber: emergencyContactNumber }, () => this.loadDrinks());
       //push ph# to db
-      let firstName = "Guest";
-      let username = firstName + new Date().getTime() + (Math.floor(Math.random() * 90000) + 10000);
-      AUTH.signup({
-        firstName: firstName,
-        username: username,
-        userPhoneNumber: userPhoneNumber,
-        password: password,
-        emergencyContactNumber: emergencyContactNumber
-      }).then(response => {
-        console.log(response);
-        if (!response.data.errmsg) {
-          console.log('youre good');
-          this.setState({
-            redirectTo: '/'
-          });
-        } else {
-          console.log('duplicate');
-        }
-      });
+      // let firstName = "Guest";
+      // let username = firstName + new Date().getTime() + (Math.floor(Math.random() * 90000) + 10000);
     } else {
       if (typeof callback === "function") { callback() };
     }
-  }
+  };
 
   storeCheckinLocation = () => {
     this.setState({ theCheckinLatitude: this.state.latitude, theCheckinLongitude: this.state.longitude, proximityAlertSent: false, emergencyNotificationSent: false }, this.watchLocation);
     document.getElementById("test-display").innerText = "Check-In location: " + this.state.latitude + ", " + this.state.longitude + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
-  }
+  };
 
   watchLocation = () => {
     const watchId = navigator.geolocation.watchPosition(this.checkLocation);
     this._isMounted && this.setState({ watchId });
-  }
+  };
 
   checkLocation = (position) => {
     // if (this.state.latitude === 0) {
@@ -228,7 +200,6 @@ class Home extends Component {
     if (this.state.theCheckinLatitude !== 0) {
       let theDifferenceLatitude = (Math.abs(position.coords.latitude - this.state.theCheckinLatitude)).toFixed(6);
       let theDifferenceLongitude = (Math.abs(position.coords.longitude - this.state.theCheckinLongitude)).toFixed(6);
-
       if (!this.state.proximityAlertSent) {
         if (theDifferenceLatitude > .0004 || theDifferenceLongitude > .0004) {
           document.getElementById("test-display").innerText = "MAJOR PROXIMITY CHANGE " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
@@ -241,11 +212,11 @@ class Home extends Component {
         }
       }
     }
-  }
+  };
 
   contactFriends = () => {
     this.checkForNumbers(this.sendText);
-  }
+  };
 
   sendText = () => {
     var ua = navigator.userAgent.toLowerCase();
@@ -267,14 +238,14 @@ class Home extends Component {
       window.open(theMessageString, "_self");
       return false;
     }
-  }
+  };
 
   checkBeforeSendAutomaticText = () => {
     if (this.state.bac > 0.1 && this.state.emergencyNotificationSent === false) {
       console.log("Sending emergency text to " + this.state.emergencyContactNumber);
       this.sendAutomaticText();
     }
-  }
+  };
 
   sendAutomaticTextBasic = (toNumber, theMessage) => {
     var ua = navigator.userAgent.toLowerCase();
@@ -310,14 +281,19 @@ class Home extends Component {
       theUrl = "https://m.uber.com/ul/?action=setPickup&pickup=my_location"
       theMessage = "It looks like you have had a lot to drink. Please get a ride home or get an Uber, for your own safety and for the safety of others. Here's a link to Uber: (This message *auto-generated* by sipSpot) " + theUrl;
     }
-    this.sendAutomaticTextBasic(this.state.emergencyContactNumber, theMessage);
+    let theNumber;
+    if (this.state.emergencyContactNumber === 0 || this.state.emergencyContactNumber === null) {
+      theNumber = this.state.userPhoneNumber;
+    } else {
+      theNumber = this.state.emergencyContactNumber;
+    }
+    this.sendAutomaticTextBasic(theNumber, theMessage);
   };
 
   handleInputChange = event => {
     // Getting the value and name of the input which triggered the change
     let value = event.target.value;
     const name = event.target.name;
-
     // Updating the input's state
     this.setState({
       [ name ]: value
@@ -332,6 +308,26 @@ class Home extends Component {
       this.toggleSettings();
     }
     if (this.state.phoneModal) {
+      localStorage.setItem("userPhoneNumber", this.state.userPhoneNumber);
+      localStorage.setItem("emergencyContactNumber", this.state.emergencyContactNumber);
+      localStorage.setItem("isLoggedIn", true);
+      this.setState({ isLoggedIn: true });
+      AUTH.signup({
+        userPhoneNumber: this.state.userPhoneNumber,
+        emergencyContactNumber: this.state.emergencyContactNumber,
+        password: this.state.password
+      }).then(response => {
+        console.log("user: " + this.state.userPhoneNumber + ", emerg: " + this.state.emergencyContactNumber + ", pass: " + this.state.password);
+        console.log(response);
+        if (!response.data.errmsg) {
+          console.log('youre good');
+          this.setState({
+            redirectTo: '/'
+          });
+        } else {
+          console.log('duplicate');
+        }
+      });
       this.togglePhone();
     }
     if (this.state.alertsModal) {
@@ -339,7 +335,6 @@ class Home extends Component {
     }
     //TODO: currently this form is updating the state, 
     // but this needs to update the user in the database
-
   };
 
   toggleAlerts = () => {
@@ -365,7 +360,7 @@ class Home extends Component {
     return (
       <div>
         <div className="topbar">
-          <MenuModal user={ this.state.firstName } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) } toggleAlerts={ this.toggleAlerts } toggleSettings={ this.toggleSettings }></MenuModal><button className="menu-settings" data-test="menu-settings" onClick={ this.checkIn }>Settings</button>
+          <MenuModal user={ this.state.firstName } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) } toggleAlerts={ this.toggleAlerts } toggleSettings={ this.toggleSettings }></MenuModal><a className="cntrl-btn" data-test="menu-quickstart" href="/quickstart">Quick Start</a>
         </div>
         <Container className="home">
           <MenuModal user={ this.state.firstName } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) } toggleAlerts={ this.toggleAlerts } toggleSettings={ this.toggleSettings }></MenuModal>
@@ -384,19 +379,15 @@ class Home extends Component {
             </Col>
           </Row>
         </Container>
-
         <div className="bottombar">
           <button className="cntrl-btn" data-test="controls-checkin" onClick={ this.checkIn }>Chk</button>
           <button className="cntrl-btn" data-test="controls-drink" onClick={ this.drinkTracker }>Drnk</button>
           <a className="cntrl-btn" data-test="controls-uber" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location" target="_blank" rel="noopener noreferrer">Uber</a>
           <button className="cntrl-btn" data-test="controls-friends" onClick={ this.contactFriends }>Frnd</button>
         </div>
-
-
         {/* Alerts Modal */ }
         <Modal isOpen={ this.state.alertsModal } toggleAlerts={ this.toggleAlerts } className="alerts">
           <ModalHeader toggle={ this.toggleAlerts }>
-
           </ModalHeader>
           <ModalBody className="modal-body">
             <Container>
@@ -408,8 +399,7 @@ class Home extends Component {
                     onChange={ this.handleInputChange }
                     value={ this.state.emergencyAlertThreshold }
                     name="emergencyAlertThreshold"
-                    type="number" className="form-control" id="settings-bac-threshold" aria-describedby="emailHelp" placeholder="Ex. .08"></input>
-
+                    type="number" className="form-control" id="settings-bac-threshold" placeholder="Ex. .08"></input>
                 </div>
                 {/* <div className="form-group">
                   <label className="alerts-label">Location Alert Threshold Distance (ft)</label>
@@ -419,7 +409,6 @@ class Home extends Component {
                     //TODO: NEED A LOCATION alert threshold variable
                     className="form-control" id="exampleInputPassword1" placeholder="Ex. 200"></input>
                 </div> */}
-
                 <div className="form-group">
                   <label className="alerts-label">BAC Self Alert Threshold</label>
                   <input type="number"
@@ -428,7 +417,6 @@ class Home extends Component {
                     name="selfAlertThreshold"
                     className="form-control" id="drinkCountThreshold" placeholder="Ex. 5"></input>
                 </div>
-
                 <button type="submit" className="btn">Submit</button>
               </form>
             </Container>
@@ -437,69 +425,61 @@ class Home extends Component {
             {/* <Button color="secondary" onClick={ props.toggle }>Close</Button> */ }
           </ModalFooter>
         </Modal>
-
         {/* Settings Modal */ }
         <Modal isOpen={ this.state.settingsModal } toggleSettings={ this.toggleSettings } className="settings">
           <ModalHeader toggle={ this.toggleSettings }>
-
           </ModalHeader>
           <ModalBody className="modal-body">
             <Container>
-              <h2 className="settings-label">Settings</h2>
+              <p>Settings: Enter your weight and gender below to more-accurately calculate Blood Alcohol Concentration (BAC). You can also optionally change your phone number, emergency contact number, and password here.</p>
               <form onSubmit={ this.handleFormSubmit }>
-                <div className="form-group ">
-                  <label className="form-check-label settings-label" for="settings-weight">Weight (lbs)</label>
-                  <input type="number"
-                    onChange={ this.handleInputChange }
-                    value={ this.weight }
-                    name="weight"
-                    className="form-control" id="settings-weight" placeholder="Ex. 130"></input>
-                </div>
+                {/* <div className="form-group "> */ }
+                <label className="form-check-label settings-label" for="settings-weight">Weight in pounds:</label>
+                <input type="number"
+                  onChange={ this.handleInputChange }
+                  value={ this.weight }
+                  name="weight"
+                  className="form-control" id="settings-weight" placeholder="Ex. 130"></input>
+                {/* </div>
+                <div className="form-group"> */}
+                <label className="settings-label">Gender:</label>
+                {/* TODO: need to make this so only one gender can be selected */ }
                 <div className="form-group">
-                  <label className="settings-label">Gender:</label>
-                  {/* TODO: need to make this so only one gender can be selected */ }
-                  <div className="form-group">
-                    <div className="form-check form-check-inline">
+                  <div className="form-check form-check-inline">
 
-                      <input className="form-check-input"
-                        onChange={ this.handleInputChange }
-                        name="gender"
-                        type="checkbox" id="inputeGenderMale" value="m"></input>
-                      <label className="form-check-label settings-label" for="inlineCheckbox1">M</label>
-                    </div>
+                    <input className="form-check-input"
+                      onChange={ this.handleInputChange }
+                      name="gender"
+                      type="checkbox" id="inputeGenderMale" value="m"></input>
+                    <label className="form-check-label settings-label" for="inlineCheckbox1">M</label>
                   </div>
                 </div>
-
-
-
-                <div className="form-check form-check-inline">
-                  <input className="form-check-input"
-                    onChange={ this.handleInputChange }
-                    name="gender"
-                    type="checkbox" id="inputGenderFemale" value="f"></input>
-                  <label className="form-check-label settings-label" for="inlineCheckbox2">F</label>
-                </div>
-
-                <div className="form-group">
-                  <label className="form-check-label settings-label" for="settings-user-phone-number">Phone Number</label>
-                  <input
-                    value={ this.state.userPhoneNumber }
-                    onChange={ this.handleInputChange }
-                    type="number"
-                    name="userPhoneNumber"
-                    className="form-control" id="settings-user-phone-number" placeholder="2522551122"></input>
-                </div>
-
-                <div className="form-group">
-                  <label className="form-check-label settings-label" for="emergencyContactPhoneNumber">Emergency Contact Phone Number</label>
-                  <input type="number"
-                    value={ this.state.emergencyContactNumber }
-                    onChange={ this.handleInputChange }
-                    name="emergencyContactNumber"
-                    className="form-control" id="emergencyContactPhoneNumber" placeholder="2522020784"></input>
-                </div>
-
-
+                {/* </div>
+                <div className="form-check form-check-inline"> */}
+                <input className="form-check-input"
+                  onChange={ this.handleInputChange }
+                  name="gender"
+                  type="checkbox" id="inputGenderFemale" value="f"></input>
+                <label className="form-check-label settings-label" for="inlineCheckbox2">F</label>
+                {/* </div>
+                <div className="form-group"> */}
+                <div />
+                <label className="form-check-label settings-label" for="settings-user-phone-number">Phone Number</label>
+                <input
+                  value={ this.state.userPhoneNumber === 0 ? "" : this.state.userPhoneNumber }
+                  onChange={ this.handleInputChange }
+                  type="number"
+                  name="userPhoneNumber"
+                  className="form-control" id="settings-user-phone-number" placeholder="9195551212"></input>
+                {/* </div>
+                <div className="form-group"> */}
+                <label className="form-check-label settings-label" for="emergencyContactPhoneNumber">Emergency Contact Number:</label>
+                <input type="number"
+                  value={ this.state.emergencyContactNumber === 0 ? "" : this.state.emergencyContactNumber }
+                  onChange={ this.handleInputChange }
+                  name="emergencyContactNumber"
+                  className="form-control" id="emergencyContactPhoneNumber" placeholder=""></input>
+                {/* </div> */ }
                 <button type="submit" className="btn">Submit</button>
               </form>
             </Container>
@@ -508,29 +488,37 @@ class Home extends Component {
             {/* <Button color="secondary" onClick={ props.toggle }>Close</Button> */ }
           </ModalFooter>
         </Modal>
-
         {/* Phone Modal */ }
         <Modal isOpen={ this.state.phoneModal } togglePhone={ this.togglePhone } className="settings">
           <ModalHeader toggle={ this.togglePhone }>
-
           </ModalHeader>
           <ModalBody className="modal-body">
             <Container>
-              <p>Input your phone number to receive location alerts</p>
+              <p>Spot just needs two or three bits of info to help you. Your phone number so he can send you alerts (required), an optional emergency contact number so he can send them directions to your location if you're overdoing it, and a password so he can keep your information private (required).</p>
               <form onSubmit={ this.handleFormSubmit }>
-
-
                 <div className="form-group">
-                  <label className="form-check-label settings-label" for="settings-user-phone-number">Phone Number</label>
+                  <label className="form-check-label settings-label" for="settings-user-phone-number">Phone Number:</label>
                   <input
-                    value={ this.state.userPhoneNumber }
+                    value={ this.state.userPhoneNumber === 0 ? "" : this.state.userPhoneNumber }
                     onChange={ this.handleInputChange }
                     type="number"
                     name="userPhoneNumber"
-                    className="form-control" id="settings-user-phone-number" placeholder="2522551122"></input>
+                    className="form-control" id="settings-user-phone-number" placeholder="9195551212"></input><br />
+                  <label className="form-check-label settings-label" for="settings-emergency-contact-number">Emergency Contact Number (optional):</label>
+                  <input
+                    value={ this.state.emergencyContactNumber === 0 ? "" : this.state.emergencyContactNumber }
+                    onChange={ this.handleInputChange }
+                    type="number"
+                    name="emergencyContactNumber"
+                    className="form-control" id="settings-emergency-contact-number" placeholder="9195551212"></input><br />
+                  <label className="form-check-label settings-label" for="settings-password">Password:</label>
+                  <input
+                    value={ this.state.password }
+                    onChange={ this.handleInputChange }
+                    type="text"
+                    name="password"
+                    className="form-control" id="settings-password" placeholder=""></input>
                 </div>
-
-
                 <button type="submit" className="btn">Submit</button>
               </form>
             </Container>

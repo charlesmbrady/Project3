@@ -1,30 +1,35 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './splash-screen.css';
+import "../../../src/index.css";
+import colorSuperSip from '../../images/colorSuperSip.gif';
 
-function LoadingMessage() {
-    console.log("loading message")
-    return (
+function LoadingMessage () {
+  console.log("loading message")
+  return (
     <div className="splash-screen">
-      <h1>sipSpot</h1>
-      <p>Invite friends, track drinks, get home safe!</p>
+      <div id="title">sipSpot</div>
       <div className="loading-dot">.</div>
+      <p className="splashscreen-text">Spot helps you:<br />&bull; remember your things,<br />&bull; track your drinks,<br />&bull; invite your friends,<br />&bull; and get home <em>safe!</em></p>
+      <div>
+        <img id="superSip" src={ colorSuperSip } alt="super sip the beer bottle" width="80%" />
+      </div>
     </div>
   );
 }
 
-function withSplashScreen(WrappedComponent) {
-    console.log( " with Splash Screen")
+function withSplashScreen (WrappedComponent) {
+  console.log(" with Splash Screen")
   return class extends Component {
-    constructor(props) {
+    constructor (props) {
       super(props);
       this.state = {
         loading: true,
       };
     }
 
-    async componentDidMount() {
+    async componentDidMount () {
       try {
-          setTimeout(() => {
+        setTimeout(() => {
           this.setState({
             loading: false,
           });
@@ -37,12 +42,12 @@ function withSplashScreen(WrappedComponent) {
       }
     }
 
-    render() {
+    render () {
       // while checking user session, show "loading" message
       if (this.state.loading) return LoadingMessage();
 
       // otherwise, show the desired route
-      return <WrappedComponent {...this.props} />;
+      return <WrappedComponent { ...this.props } />;
     }
   };
 }

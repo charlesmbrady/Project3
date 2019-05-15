@@ -9,11 +9,11 @@ const MenuModal = (props) => {
             <Button color="secondary" onClick={ props.toggle } className="menu-btn" data-test="home-menu-button">Menu</Button>
             <Modal isOpen={ props.modal } toggle={ props.toggle } className="menu">
                 <ModalHeader toggle={ props.toggle }>
-                    <Row>
+                    {/* <Row>
                         <Col>
                             <Link to='/quickstart' className="menu-button quickstart" data-test="menu-quickstart">Quick Start</Link>
                         </Col>
-                    </Row>
+                    </Row> */}
                 </ModalHeader>
                 <ModalBody className="modal-body">
                     <Container>
