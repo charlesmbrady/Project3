@@ -4,10 +4,10 @@ import LoginForm from './pages/Auth/LoginForm';
 import SignupForm from './pages/Auth/SignupForm';
 import NoMatch from "./pages/NoMatch";
 import AUTH from './utils/AUTH';
-import Alerts from './pages/Alerts/Alerts';
 import History from './pages/History/History';
 import Friends from './pages/Friends/Friends';
 import Quickstart from './pages/Quickstart';
+import Home from './pages/Home/Home';
 import './index.css';
 import withSplashScreen from './components/splashScreen/withSplashScreen.js'
 
@@ -75,8 +75,6 @@ class App extends Component {
 							<Switch>
 								<Route exact path="/" component={() => <Home user={this.state.user} logout={this.logout}></Home>} />
 								<Route exact path="/history" component={History} />
-								<Route exact path="/alerts" component={Alerts} />
-								<Route exact path="/settings" component={Settings} />
 								<Route exact path="/friends" component={Friends} />
 								<Route component={NoMatch} />
 							</Switch>
