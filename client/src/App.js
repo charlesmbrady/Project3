@@ -4,8 +4,6 @@ import LoginForm from './pages/Auth/LoginForm';
 import SignupForm from './pages/Auth/SignupForm';
 import NoMatch from "./pages/NoMatch";
 import AUTH from './utils/AUTH';
-import Home from './pages/Home';
-import Settings from './pages/Settings/Settings';
 import Alerts from './pages/Alerts/Alerts';
 import History from './pages/History/History';
 import Friends from './pages/Friends/Friends';
@@ -89,10 +87,8 @@ class App extends Component {
 					<div>
 						<div className="auth-wrapper" style={{ paddingTop: 40 }}>
 							<Route exact path="/" component={() => <Home />} />
-							<Route exact path="/alerts" component={Alerts} />
 							<Route exact path="/quickstart" component={Quickstart} />
 							<Route exact path="/history" component={History} />
-							<Route exact path="/settings" component={Settings} />
 							<Route exact path="/friends" component={Friends} />
 							<Route exact path="/login" component={() => <LoginForm login={this.login} />} />
 							<Route exact path="/signup" component={SignupForm} />
