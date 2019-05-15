@@ -417,54 +417,54 @@ class Home extends Component {
           </ModalHeader>
           <ModalBody className="modal-body">
             <Container>
-              <p>Settings: Enter your weight and gender below to more-accurately calculate Blood Alcohol Concentration (BAC). You can also optionally change your phone number, emergency contact number, and password here.</p>
+              <p className="modal-text">Settings: Enter your weight and gender below to more-accurately calculate Blood Alcohol Concentration (BAC). You can also optionally change your phone number, emergency contact number, and password here.</p>
               <form onSubmit={ this.handleFormSubmit }>
                 {/* <div className="form-group "> */ }
-                <label className="form-check-label settings-label" for="settings-weight">Weight in pounds:</label>
+                <label className="form-check-label settings-label modal-text" for="settings-weight">Weight in pounds:</label>
                 <input type="number"
                   onChange={ this.handleInputChange }
                   value={ this.state.weight }
                   name="weight"
-                  className="form-control" id="settings-weight" placeholder="Ex. 130"></input>
+                  className="form-control modal-text" id="settings-weight" placeholder="Ex. 130"></input>
                 {/* </div>
                 <div className="form-group"> */}
-                <label className="settings-label">Gender:</label>
+                <label className="settings-label modal-text">Gender:</label>
                 {/* TODO: need to make this so only one gender can be selected */ }
                 <div className="form-group">
                   <div className="form-check form-check-inline">
 
-                    <input className="form-check-input"
+                    <input className="form-check-input modal-text"
                       onChange={ this.handleInputChange }
                       name="gender"
                       type="checkbox" id="inputeGenderMale" value="m"></input>
-                    <label className="form-check-label settings-label" for="inlineCheckbox1">M</label>
+                    <label className="form-check-label settings-label modal-text" for="inlineCheckbox1">M</label>
                   </div>
                 </div>
                 {/* </div>
                 <div className="form-check form-check-inline"> */}
-                <input className="form-check-input"
+                <input className="form-check-input modal-text"
                   onChange={ this.handleInputChange }
                   name="gender"
                   type="checkbox" id="inputGenderFemale" value="f"></input>
-                <label className="form-check-label settings-label" for="inlineCheckbox2">F</label>
+                <label className="form-check-label settings-label modal-text" for="inlineCheckbox2">F</label>
                 {/* </div>
                 <div className="form-group"> */}
                 <div />
-                <label className="form-check-label settings-label" for="settings-user-phone-number">Phone Number</label>
+                <label className="form-check-label settings-label modal-text" for="settings-user-phone-number">Phone Number</label>
                 <input
                   value={ this.state.userPhoneNumber === 0 ? "" : this.state.userPhoneNumber }
                   onChange={ this.handleInputChange }
                   type="number"
                   name="userPhoneNumber"
-                  className="form-control" id="settings-user-phone-number" placeholder="9195551212"></input>
+                  className="form-control modal-text" id="settings-user-phone-number" placeholder="9195551212"></input>
                 {/* </div>
                 <div className="form-group"> */}
-                <label className="form-check-label settings-label" for="emergencyContactPhoneNumber">Emergency Contact Number:</label>
+                <label className="form-check-label settings-label modal-text" for="emergencyContactPhoneNumber">Emergency Contact Number:</label>
                 <input type="number"
                   value={ this.state.emergencyContactNumber === 0 ? "" : this.state.emergencyContactNumber }
                   onChange={ this.handleInputChange }
                   name="emergencyContactNumber"
-                  className="form-control" id="emergencyContactPhoneNumber" placeholder=""></input>
+                  className="form-control modal-text" id="emergencyContactPhoneNumber" placeholder=""></input>
                 {/* </div> */ }
                 <button type="submit" className="btn">Submit</button>
               </form>
@@ -480,30 +480,30 @@ class Home extends Component {
           </ModalHeader>
           <ModalBody className="modal-body">
             <Container>
-              <p>Spot just needs two or three bits of info to help you. Your phone number so he can send you alerts (required), an optional emergency contact number so he can send them directions to your location if you're overdoing it, and a password so he can keep your information private (required).</p>
+              <p className="modal-text">Spot just needs two or three bits of info to help you. Your phone number so he can send you alerts (required), an optional emergency contact number so he can send them directions to your location if you're overdoing it, and a password so he can keep your information private (required).</p>
               <form onSubmit={ this.handleFormSubmit }>
                 <div className="form-group">
-                  <label className="form-check-label settings-label" for="settings-user-phone-number">Phone Number:</label>
+                  <label className="form-check-label settings-label modal-text" for="settings-user-phone-number">Phone Number:</label>
                   <input
                     value={ this.state.userPhoneNumber === 0 ? "" : this.state.userPhoneNumber }
                     onChange={ this.handleInputChange }
                     type="number"
                     name="userPhoneNumber"
-                    className="form-control" id="settings-user-phone-number" placeholder="9195551212"></input><br />
-                  <label className="form-check-label settings-label" for="settings-emergency-contact-number">Emergency Contact Number (optional):</label>
+                    className="form-control modal-text" id="settings-user-phone-number" placeholder="9195551212"></input><br />
+                  <label className="form-check-label settings-label modal-text" for="settings-emergency-contact-number">Emergency Contact Number (optional):</label>
                   <input
                     value={ this.state.emergencyContactNumber === 0 ? "" : this.state.emergencyContactNumber }
                     onChange={ this.handleInputChange }
                     type="number"
                     name="emergencyContactNumber"
-                    className="form-control" id="settings-emergency-contact-number" placeholder="9195551212"></input><br />
-                  <label className="form-check-label settings-label" for="settings-password">Password:</label>
+                    className="form-control modal-text" id="settings-emergency-contact-number" placeholder="9195551212"></input><br />
+                  <label className="form-check-label settings-label modal-text" for="settings-password">Password:</label>
                   <input
                     value={ this.state.password }
                     onChange={ this.handleInputChange }
                     type="text"
                     name="password"
-                    className="form-control" id="settings-password" placeholder=""></input>
+                    className="form-control modal-text" id="settings-password" placeholder=""></input>
                 </div>
                 <button type="submit" className="btn">Submit</button>
               </form>
