@@ -62,5 +62,15 @@ module.exports = {
 			delete cleanUser.password;
 		}
 		res.json({ user: cleanUser });
-	}
+	},
+  getUserDrinks: (req, res) => {
+    db.User.find({userPhoneNumber: req.body.userPhoneNumber})
+    // Specify that we want to populate the retrieved saved news with any associated notes
+    .populate("drinks")
+    .then(userdrinks => res.json(userdrinks[0]))
+    .catch(err => {
+      // If an error occurs, send it back to the client
+      res.json(err);
+    });
+  }
 };

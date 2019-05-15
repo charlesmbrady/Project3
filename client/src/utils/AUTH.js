@@ -16,5 +16,9 @@ export default {
   // New user registration
   signup: function(userData) {
     return axios.post('/auth/signup', userData);
+  },
+  // Gets user drinks info
+  getUserDrinks: function(userPhone) {
+    return axios.post('/auth/userdrinks',userPhone);
   }
 };
