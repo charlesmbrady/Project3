@@ -81,8 +81,10 @@ body {
 }
 
 .cntrl-btn:hover {
-  background-color: #fff10a;
+  background-color: #121212;
+  cursor: pointer;
 }
+
 
 #superSip {
   height: 20%;
