@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Container, Row, Col, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import TEXT from '../../utils/TEXT';
 import MenuModal from '../../components/Menu';
 import PostDrink from '../../components/PostDrink';
