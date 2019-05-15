@@ -57,6 +57,7 @@ class Home extends Component {
       let now = new Date();
       let elapsedTime = (now - new Date(lastdrink.timeOfLastDrink)) / 60000;
       let bac = (res.data.drinks[ (res.data.drinks.length)-1 ].bac - (elapsedTime * .00025)).toFixed(5);
+      if (bac < 0) { bac = 0; }
       //measure the time based on current bac for it to get to 0
       let counter = 0, baczero = bac;
       while (baczero > 0) {
@@ -114,7 +115,8 @@ class Home extends Component {
     lastdrink.timeOfLastDrink = new Date().toLocaleString();
     numberOfDrinksCopy.push(lastdrink);
     let bac = (parseFloat(this.calculateBac(1, lastdrink.timeOfLastDrink, this.state.weight)) + parseFloat(this.state.bac)).toFixed(5);
-
+    console.log("line 117 "+bac);
+    if (bac < 0) { bac = 0; }
     //measure the time based on current bac for it to get to 0
     let counter = 0, baczero = bac;
     while (baczero > 0) {
