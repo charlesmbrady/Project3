@@ -147,13 +147,14 @@ class Home extends Component {
   checkIn = (e) => {
     e.preventDefault();
     console.log("Check-In");
+    if(!this.state.userPhoneNumber){
+      this.togglePhone();
+    }
     
     this.checkForNumbers();
     this.storeCheckinLocation();
 
-    if(!this.state.userPhoneNumber){
-      this.togglePhone();
-    }
+    
     
   };
 
