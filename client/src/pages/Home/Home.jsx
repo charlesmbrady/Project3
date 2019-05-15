@@ -8,7 +8,6 @@ import API from "../../utils/API";
 import colorSuperSip from '../../images/colorSuperSip.gif';
 import AUTH from '../../utils/AUTH';
 
-
 class Home extends Component {
   constructor (props) {
     super(props);
@@ -31,6 +30,7 @@ class Home extends Component {
       zero: new Date().toLocaleString(),
       interval: "",
       alertsModal: false,
+      phoneModal: true,
       settingsModal: false,
       modal: false,
       toggle () {
@@ -119,6 +119,7 @@ class Home extends Component {
       baczero = baczero - ((1 / 60) * .015);
       counter++;
     }
+    
 
     let zero = (counter / 60).toFixed(2);
     this.setState({ numberOfDrinks: numberOfDrinksCopy, bac, zero },
@@ -144,8 +145,14 @@ class Home extends Component {
   checkIn = (e) => {
     e.preventDefault();
     console.log("Check-In");
+    
     this.checkForNumbers();
     this.storeCheckinLocation();
+
+    if(!this.state.userPhoneNumber){
+      this.togglePhone();
+    }
+    
   };
 
   checkLocalStorageOnMount = () => {
@@ -317,9 +324,18 @@ class Home extends Component {
 
   handleFormSubmit = event => {
     // Preventing the default behavior of the form submit (which is to refresh the page)
+    //toggles off the respective modal
     event.preventDefault();
-
-    //TODO: currently this form is updating the state in the database, 
+    if(this.state.settingsModal){
+      this.toggleSettings();
+    }
+    if(this.state.phoneModal){
+      this.togglePhone();
+    }
+    if(this.state.alertsModal){
+      this.toggleAlerts();
+    }
+    //TODO: currently this form is updating the state, 
     // but this needs to update the user in the database
 
   };
@@ -331,9 +347,16 @@ class Home extends Component {
   }
 
   toggleSettings = () => {
+    console.log('this too')
     this.setState(prevState => ({
       settingsModal: !prevState.settingsModal
     }));
+  }
+
+  togglePhone = () => {
+    this.setState(prevState => ({
+      phoneModal: !prevState.phoneModal
+    }))
   }
 
   render () {
@@ -359,12 +382,14 @@ class Home extends Component {
             </Col>
           </Row>
         </Container>
+
         <div className="bottombar">
           <button className="cntrl-btn" data-test="controls-checkin" onClick={ this.checkIn }>Chk</button>
           <button className="cntrl-btn" data-test="controls-drink" onClick={ this.drinkTracker }>Drnk</button>
           <a className="cntrl-btn" data-test="controls-uber" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location" target="_blank" rel="noopener noreferrer">Uber</a>
           <button className="cntrl-btn" data-test="controls-friends" onClick={ this.contactFriends }>Frnd</button>
         </div>
+
 
         {/* Alerts Modal */ }
         <Modal isOpen={ this.state.alertsModal } toggleAlerts={ this.toggleAlerts } className="alerts">
@@ -374,9 +399,9 @@ class Home extends Component {
           <ModalBody className="modal-body">
             <Container>
               <h2 className="alerts-label">Alerts</h2>
-              <form>
+              <form onSubmit={this.handleFormSubmit}>
                 <div className="form-group">
-                  <label className="form-check-label alerts-label">BAC Alert Threshold</label>
+                  <label className="form-check-label alerts-label">BAC Emergency Alert Threshold</label>
                   <input
                     onChange={ this.handleInputChange }
                     value={ this.state.emergencyAlertThreshold }
@@ -384,17 +409,17 @@ class Home extends Component {
                     type="number" className="form-control" id="settings-bac-threshold" aria-describedby="emailHelp" placeholder="Ex. .08"></input>
 
                 </div>
-                <div className="form-group">
+                {/* <div className="form-group">
                   <label className="alerts-label">Location Alert Threshold Distance (ft)</label>
                   <input type="number"
                     onChange={ this.handleInputChange }
                     name=""
                     //TODO: NEED A LOCATION alert threshold variable
                     className="form-control" id="exampleInputPassword1" placeholder="Ex. 200"></input>
-                </div>
+                </div> */}
 
                 <div className="form-group">
-                  <label className="alerts-label">Drink Count Alert Threshold</label>
+                  <label className="alerts-label">BAC Self Alert Threshold</label>
                   <input type="number"
                     onChange={ this.handleInputChange }
                     value={ this.state.selfAlertThreshold }
@@ -419,7 +444,7 @@ class Home extends Component {
           <ModalBody className="modal-body">
             <Container>
               <h2 className="settings-label">Settings</h2>
-              <form>
+              <form onSubmit={this.handleFormSubmit}>
                 <div className="form-group ">
                   <label className="form-check-label settings-label" for="settings-weight">Weight (lbs)</label>
                   <input type="number"
@@ -469,7 +494,7 @@ class Home extends Component {
                     value={ this.state.emergencyContactNumber }
                     onChange={ this.handleInputChange }
                     name="emergencyContactNumber"
-                    className="form-control" id="emergencyContactPhoneNumber" aria-describedby="emailHelp" placeholder="2522020784"></input>
+                    className="form-control" id="emergencyContactPhoneNumber"  placeholder="2522020784"></input>
                 </div>
 
 
@@ -480,6 +505,34 @@ class Home extends Component {
           <ModalFooter>
             {/* <Button color="secondary" onClick={ props.toggle }>Close</Button> */ }
           </ModalFooter>
+        </Modal>
+
+        {/* Phone Modal */ }
+        <Modal isOpen={ this.state.phoneModal } togglePhone={ this.togglePhone } className="settings">
+          <ModalHeader toggle={ this.togglePhone }>
+
+          </ModalHeader>
+          <ModalBody className="modal-body">
+            <Container>
+              <p>Input your phone number to receive location alerts</p>
+              <form onSubmit={this.handleFormSubmit}>
+
+
+                <div className="form-group">
+                  <label className="form-check-label settings-label" for="settings-user-phone-number">Phone Number</label>
+                  <input
+                    value={ this.state.userPhoneNumber }
+                    onChange={ this.handleInputChange }
+                    type="number"
+                    name="userPhoneNumber"
+                    className="form-control" id="settings-user-phone-number" placeholder="2522551122"></input>
+                </div>
+
+
+                <button type="submit" className="btn">Submit</button>
+              </form>
+            </Container>
+          </ModalBody>
         </Modal>
       </div>
     );
