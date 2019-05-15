@@ -8,7 +8,6 @@ import API from "../../utils/API";
 import colorSuperSip from '../../images/colorSuperSip.gif';
 import AUTH from '../../utils/AUTH';
 
-
 class Home extends Component {
   constructor (props) {
     super(props);
@@ -325,6 +324,7 @@ class Home extends Component {
 
   handleFormSubmit = event => {
     // Preventing the default behavior of the form submit (which is to refresh the page)
+    //toggles off the respective modal
     event.preventDefault();
     if(this.state.settingsModal){
       this.toggleSettings();
@@ -382,7 +382,7 @@ class Home extends Component {
         <Container className="controls controls-container">
           <Row>
             <Col>
-              <Button className="cntrl-btn" data-test="controls-checkin" onClick={ () => this.checkIn() } >Check-In/Out</Button>
+              <Button className="cntrl-btn" data-test="controls-checkin" onClick={ this.checkIn } >Check-In/Out</Button>
             </Col>
             <Col>
               <Button className="cntrl-btn" data-test="controls-drink" onClick={ this.drinkTracker }>Add Drink to Count</Button>
