@@ -7,12 +7,22 @@ function LoadingMessage () {
   console.log("loading message")
   return (
     <div className="splash-screen">
-      <div id="title">sipSpot</div>
+      <div className="topbar topbar-splash">&nbsp;</div>
+      <div id="splash-title">sipSpot</div>
       <div className="loading-dot">.</div>
-      <p className="splashscreen-text"><em>Spot helps you:</em><br /><br />&bull; remember your things,<br />&bull; track your drinks,<br />&bull; invite your friends,<br />&bull; and get home <em>safe!</em></p>
+      <div className="splashscreen-container">
+        <p className="splashscreen-header"><em>Spot helps you:</em></p>
+        <ul className="splashscreen-list">
+          <li>remember your things</li>
+          <li>track your drinks</li>
+          <li>invite your friends</li>
+          <li>get home <em>safe!</em></li>
+        </ul>
+      </div>
       <div>
         <img id="superSip" src={ colorSuperSip } alt="super sip the beer bottle" width="80%" />
       </div>
+      <div className="bottombar bottombar-splash">&nbsp;</div>
     </div>
   );
 }

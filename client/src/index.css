@@ -8,12 +8,30 @@ body {
   text-align: center;
 }
 
-.splashscreen-text {
+p {
+  color: white;
+}
+
+.splashscreen-container {
+  display: inline-block;
+  text-align: left;
+  margin: 0 auto;
+}
+
+.splashscreen-header {
+  text-align: center;
+  font-size: xx-large;
+  font-weight: bold;
+}
+
+.splashscreen-list {
+  color: white;
   font-size: x-large;
   font-weight: bold;
 }
 
 .topbar, .bottombar {
+  z-index: 999;
   position: fixed;
   width: 100%;
   text-align: center;
@@ -25,6 +43,19 @@ body {
 
 .bottombar {
   bottom: 0;
+}
+
+.topbar-splash, .bottombar-splash {
+  background-color: #121212;
+  height: 40px;
+}
+
+.topbar-splash {
+  margin-bottom: 20px;
+}
+
+.bottombar-splash {
+  margin-top: 20px;
 }
 
 .topbar>a, .topbar>button, .bottombar>a, .bottombar>button {
@@ -90,11 +121,16 @@ body {
   font-weight: bold;
 }
 
-#title {
+#title, #splash-title {
   font-family: 'Black And White Picture', sans-serif;
   font-size: 5em;
   text-align: center;
   color: #fff10a;
+  margin: -10px;
+}
+
+#splash-title {
+  margin: 30px;
 }
 
 .cntrl-btn:hover {
@@ -103,5 +139,8 @@ body {
 }
 
 #superSip {
+  position: relative;
   height: 20%;
+  margin: -7%;
+  left: 4%;
 }
