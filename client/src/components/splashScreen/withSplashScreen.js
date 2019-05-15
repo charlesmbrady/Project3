@@ -9,7 +9,7 @@ function LoadingMessage () {
     <div className="splash-screen">
       <div id="title">sipSpot</div>
       <div className="loading-dot">.</div>
-      <p className="splashscreen-text">Spot helps you:<br />&bull; remember your things,<br />&bull; track your drinks,<br />&bull; invite your friends,<br />&bull; and get home <em>safe!</em></p>
+      <p className="splashscreen-text"><em>Spot helps you:</em><br /><br />&bull; remember your things,<br />&bull; track your drinks,<br />&bull; invite your friends,<br />&bull; and get home <em>safe!</em></p>
       <div>
         <img id="superSip" src={ colorSuperSip } alt="super sip the beer bottle" width="80%" />
       </div>
