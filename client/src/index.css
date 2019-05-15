@@ -2,7 +2,6 @@
 
 body {
   background-image: linear-gradient(to right, #121212, #0095cc);
-  /* color: #dcbfff; */
   font-family: Arial, Helvetica, sans-serif;
   margin: 0 auto;
   text-align: center;
@@ -20,13 +19,15 @@ p {
 
 .splashscreen-header {
   text-align: center;
-  font-size: xx-large;
+  font-size: 2em;
   font-weight: bold;
+  margin: 0;
+  padding: 0;
 }
 
 .splashscreen-list {
   color: white;
-  font-size: x-large;
+  font-size: 1.5em;
   font-weight: bold;
 }
 
