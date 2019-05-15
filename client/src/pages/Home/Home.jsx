@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Container, Row, Col, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import TEXT from '../../utils/TEXT';
 import MenuModal from '../../components/Menu';
 import PostDrink from '../../components/PostDrink';
@@ -160,7 +160,7 @@ class Home extends Component {
       let userPhoneNumber = localStorage.getItem("userPhoneNumber");
       let emergencyContactNumber = localStorage.getItem("emergencyContactNumber");
       if (userPhoneNumber !== null) {
-        this.setState({ userPhoneNumber: userPhoneNumber }, () => {console.log("set userPhoneNumber from localStorage: " + this.state.userPhoneNumber);this.loadDrinks()});
+        this.setState({ userPhoneNumber: userPhoneNumber }, () => { console.log("set userPhoneNumber from localStorage: " + this.state.userPhoneNumber); this.loadDrinks() });
       }
       if (emergencyContactNumber !== null) {
         this.setState({ emergencyContactNumber: emergencyContactNumber }, console.log("set emergencyContactNumber from localStorage: " + emergencyContactNumber));
@@ -184,26 +184,26 @@ class Home extends Component {
       }
       localStorage.setItem("userPhoneNumber", userPhoneNumber);
       localStorage.setItem("emergencyContactNumber", emergencyContactNumber);
-      this.setState({ userPhoneNumber: userPhoneNumber, emergencyContactNumber: emergencyContactNumber }, ()=>this.loadDrinks());
+      this.setState({ userPhoneNumber: userPhoneNumber, emergencyContactNumber: emergencyContactNumber }, () => this.loadDrinks());
       //push ph# to db
-        let firstName="Guest";
-        let username=firstName+new Date().getTime()+(Math.floor(Math.random()*90000) + 10000);
-        AUTH.signup({
-          firstName: firstName,
-          username: username,
-          userPhoneNumber: userPhoneNumber,
-          emergencyContactNumber: emergencyContactNumber
-        }).then(response => {
-          console.log(response);
-          if (!response.data.errmsg) {
-            console.log('youre good');
-            this.setState({
-              redirectTo: '/'
-            });
-          } else {
-            console.log('duplicate');
-          }
-        });
+      let firstName = "Guest";
+      let username = firstName + new Date().getTime() + (Math.floor(Math.random() * 90000) + 10000);
+      AUTH.signup({
+        firstName: firstName,
+        username: username,
+        userPhoneNumber: userPhoneNumber,
+        emergencyContactNumber: emergencyContactNumber
+      }).then(response => {
+        console.log(response);
+        if (!response.data.errmsg) {
+          console.log('youre good');
+          this.setState({
+            redirectTo: '/'
+          });
+        } else {
+          console.log('duplicate');
+        }
+      });
     } else {
       if (typeof callback === "function") { callback() };
     }
@@ -362,6 +362,9 @@ class Home extends Component {
   render () {
     return (
       <div>
+        <div className="topbar">
+          <MenuModal user={ this.state.firstName } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) } toggleAlerts={ this.toggleAlerts } toggleSettings={ this.toggleSettings }></MenuModal><button className="menu-settings" data-test="menu-settings" onClick={ this.checkIn }>Settings</button>
+        </div>
         <Container className="home">
           <MenuModal user={ this.state.firstName } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) } toggleAlerts={ this.toggleAlerts } toggleSettings={ this.toggleSettings }></MenuModal>
           <Row>
@@ -379,25 +382,14 @@ class Home extends Component {
             </Col>
           </Row>
         </Container>
-        <Container className="controls controls-container">
-          <Row>
-            <Col>
-              <Button className="cntrl-btn" data-test="controls-checkin" onClick={ this.checkIn } >Check-In/Out</Button>
-            </Col>
-            <Col>
-              <Button className="cntrl-btn" data-test="controls-drink" onClick={ this.drinkTracker }>Add Drink to Count</Button>
-            </Col>
-          </Row>
-          <br />
-          <Row>
-            <Col>
-              <Button className="cntrl-btn" data-test="controls-uber" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location" target="_blank">Get an Uber</Button>
-            </Col>
-            <Col>
-              <Button className="cntrl-btn" data-test="controls-friends" onClick={ this.contactFriends }>Contact Friends</Button>
-            </Col>
-          </Row>
-        </Container>
+
+        <div className="bottombar">
+          <button className="cntrl-btn" data-test="controls-checkin" onClick={ this.checkIn }>Chk</button>
+          <button className="cntrl-btn" data-test="controls-drink" onClick={ this.drinkTracker }>Drnk</button>
+          <a className="cntrl-btn" data-test="controls-uber" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location" target="_blank" rel="noopener noreferrer">Uber</a>
+          <button className="cntrl-btn" data-test="controls-friends" onClick={ this.contactFriends }>Frnd</button>
+        </div>
+
 
         {/* Alerts Modal */ }
         <Modal isOpen={ this.state.alertsModal } toggleAlerts={ this.toggleAlerts } className="alerts">

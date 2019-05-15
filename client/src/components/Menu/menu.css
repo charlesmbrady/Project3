@@ -3,9 +3,12 @@
     z-index: 2;
     top: 0;
     left: 0;
-    background-color: #68a6bd;
-    color: #121212;
-    box-shadow: 3px 3px 3px #121212;
+    border: none;
+    border-radius: 0;
+    height: 40px;
+    width: 50%;
+    background-color: #121212;
+    color: white;
 }
 
 .menu-btn:hover {
