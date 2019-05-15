@@ -614,7 +614,7 @@ class Home extends Component {
           </ModalHeader>
           <ModalBody className="modal-body">
             <Container>
-              { this.state.infoModalBody }
+              <p className="modal-text">{ this.state.infoModalBody }</p>
             </Container>
           </ModalBody>
         </Modal>
