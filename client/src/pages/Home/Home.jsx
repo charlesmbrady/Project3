@@ -362,7 +362,7 @@ class Home extends Component {
         <div className="bottombar">
           <button className="cntrl-btn" data-test="controls-checkin" onClick={ this.checkIn }>Chk</button>
           <button className="cntrl-btn" data-test="controls-drink" onClick={ this.drinkTracker }>Drnk</button>
-          <a className="cntrl-btn" data-test="controls-uber" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location" target="_blank">Uber</a>
+          <a className="cntrl-btn" data-test="controls-uber" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location" target="_blank" rel="noopener noreferrer">Uber</a>
           <button className="cntrl-btn" data-test="controls-friends" onClick={ this.contactFriends }>Frnd</button>
         </div>
 
