@@ -112,7 +112,6 @@ class Home extends Component {
     lastdrink.timeOfLastDrink = new Date().toLocaleString();
     numberOfDrinksCopy.push(lastdrink);
     let bac = (parseFloat(this.calculateBac(1, lastdrink.timeOfLastDrink, this.state.weight)) + parseFloat(this.state.bac)).toFixed(5);
-    console.log("line 117 " + bac);
     if (bac < 0) { bac = 0; }
     //measure the time based on current bac for it to get to 0
     let counter = 0, baczero = bac;
@@ -315,15 +314,19 @@ class Home extends Component {
         password: this.state.password
       }).then(response => {
         console.log("user: " + this.state.userPhoneNumber + ", emerg: " + this.state.emergencyContactNumber + ", pass: " + this.state.password);
-        console.log(response);
-        if (!response.data.errmsg) {
-          console.log('youre good');
+        if (response.data.error !== 'Phone number exists' && response.data.error !== 'Password does not match') {
+          console.log('youre registered');
           this.setState({
             redirectTo: '/'
           });
-          this.loadDrinks();
-        } else {
+        }else if(response.data.error === 'Phone number exists'){
           console.log('duplicate');
+          this.loadDrinks();
+        }else if(response.data.error === 'Password does not match'){
+          console.log('wrong password');
+          alert("Password does not match, Please enter the right password");
+          this.setState({userPhoneNumber: 0, emergencyContactNumber: 0});
+          localStorage.clear();
         }
       });
       this.togglePhone();
