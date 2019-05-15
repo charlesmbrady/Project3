@@ -20,5 +20,9 @@ export default {
   // Gets user drinks info
   getUserDrinks: function(userPhone) {
     return axios.post('/auth/userdrinks',userPhone);
+  },
+  // update user info
+  userUpdate: function(userData) {
+    return axios.post('/auth/update', userData);
   }
 };

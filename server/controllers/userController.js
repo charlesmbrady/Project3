@@ -17,8 +17,13 @@ module.exports = {
     // ADD VALIDATION
     db.User.findOne({ 'userPhoneNumber': userPhoneNumber }, (err, userMatch) => {
       if (userMatch) {
+        let msg=`Phone number exists`;
+        //check for password
+        if (!userMatch.checkPassword(req.body.password)){  
+          msg= `Password does not match`; 
+        }
         return res.json({
-          error: `Sorry, already a user with the userPhoneNumber: ${userPhoneNumber}`
+          error: msg
         });
       }
       const newUser = new db.User({
@@ -72,5 +77,11 @@ module.exports = {
       // If an error occurs, send it back to the client
       res.json(err);
     });
+  },
+  update: function(req, res) {
+     db.User.findOneAndUpdate({ userPhoneNumber: req.body.userPhoneNumber }, 
+     {"weight":req.body.weight, "gender":req.body.gender, "emergencyContactNumber":req.body.emergencyContactNumber})
+       .then(dbModel => res.json(dbModel) )
+       .catch(err => res.status(422).json(err));
   }
 };

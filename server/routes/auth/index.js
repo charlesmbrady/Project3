@@ -9,5 +9,6 @@ router.post('/login', userController.auth, passport.authenticate('local'), userC
 router.post('/logout', userController.logout);
 router.post('/signup', userController.register);
 router.post('/userdrinks', userController.getUserDrinks);
+router.post('/update', userController.update);
 
 module.exports = router;
