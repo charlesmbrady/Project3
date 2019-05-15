@@ -302,6 +302,16 @@ class Home extends Component {
       // values are already in state because they've been updated by handleInputChange.
       // just update weight, gender, and phone numbers if there are valid values in
       // those states.
+      console.log("update db with this.state");
+      console.log(this.state);
+      AUTH.userUpdate({
+        userPhoneNumber: this.state.userPhoneNumber,
+        emergencyContactNumber: this.state.emergencyContactNumber,
+        weight: this.state.weight,
+        gender: this.state.gender
+      }).then(response => {
+        console.log("user info updated");
+      });
     }
     if (this.state.phoneModal) {
       localStorage.setItem("userPhoneNumber", this.state.userPhoneNumber);
