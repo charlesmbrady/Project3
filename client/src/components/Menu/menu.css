@@ -17,8 +17,8 @@
 
 .menu {
     position: absolute;
-    z-index: 2;
-    top: -10px;
+    z-index: 99;
+    top: -30px;
     left: -10px;
 }
 
@@ -47,7 +47,8 @@
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
 }
-.menu-button:hover{
+
+.menu-button:hover {
     cursor: pointer;
 }
 
@@ -64,7 +65,8 @@
 a {
     color: #121212;
 }
-a:hover{
+
+a:hover {
     text-decoration: none;
     color: #121212;
 }

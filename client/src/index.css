@@ -8,6 +8,11 @@ body {
   text-align: center;
 }
 
+.splashscreen-text {
+  font-size: x-large;
+  font-weight: bold;
+}
+
 .topbar, .bottombar {
   position: fixed;
   width: 100%;
@@ -84,7 +89,6 @@ body {
   background-color: #121212;
   cursor: pointer;
 }
-
 
 #superSip {
   height: 20%;
