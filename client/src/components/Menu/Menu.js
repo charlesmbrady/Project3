@@ -6,7 +6,7 @@ import './menu.css';
 const MenuModal = (props) => {
     return (
         <div>
-            <Button color="secondary" onClick={ props.toggle } className="menu-btn" data-test="home-menu-button">Menu</Button>
+            <Button onClick={ props.toggle } className="menu-btn" data-test="home-menu-button">Menu</Button>
             <Modal isOpen={ props.modal } toggle={ props.toggle } className="menu">
                 <ModalHeader toggle={ props.toggle }>
                     {/* <Row>

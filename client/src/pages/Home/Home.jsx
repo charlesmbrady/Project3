@@ -376,10 +376,10 @@ class Home extends Component {
           </Row>
         </Container>
         <div className="bottombar">
-          <button className="cntrl-btn" data-test="controls-checkin" onClick={ this.checkIn }>Chk</button>
-          <button className="cntrl-btn" data-test="controls-drink" onClick={ this.drinkTracker }>Drnk</button>
+          <button className="cntrl-btn" data-test="controls-checkin" onClick={ this.checkIn }>Check-In</button>
+          <button className="cntrl-btn" data-test="controls-drink" onClick={ this.drinkTracker }>+Drink</button>
           <a className="cntrl-btn" data-test="controls-uber" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location" target="_blank" rel="noopener noreferrer">Uber</a>
-          <button className="cntrl-btn" data-test="controls-friends" onClick={ this.contactFriends }>Frnd</button>
+          <button className="cntrl-btn" data-test="controls-friends" onClick={ this.contactFriends }>Txt Friends</button>
         </div>
         {/* Alerts Modal */ }
         <Modal isOpen={ this.state.alertsModal } toggleAlerts={ this.toggleAlerts } className="alerts">

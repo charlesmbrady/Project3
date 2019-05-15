@@ -38,6 +38,12 @@ body {
   padding: 10px;
 }
 
+.btn {
+  /* this is necessary to override Bootstrap */
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+}
+
 .topbar>a, .topbar>button {
   width: 50%;
   float: right;
