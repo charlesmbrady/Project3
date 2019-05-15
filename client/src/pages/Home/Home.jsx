@@ -30,7 +30,7 @@ class Home extends Component {
       zero: new Date().toLocaleString(),
       interval: "",
       alertsModal: false,
-      phoneModal: true,
+      phoneModal: false,
       settingsModal: false,
       modal: false,
       toggle () {
@@ -119,8 +119,6 @@ class Home extends Component {
       baczero = baczero - ((1 / 60) * .015);
       counter++;
     }
-    
-
     let zero = (counter / 60).toFixed(2);
     this.setState({ numberOfDrinks: numberOfDrinksCopy, bac, zero },
       () => this.checkBeforeSendAutomaticText());
@@ -145,15 +143,11 @@ class Home extends Component {
   checkIn = (e) => {
     e.preventDefault();
     console.log("Check-In");
-    if(!this.state.userPhoneNumber){
+    if (!this.state.userPhoneNumber) {
       this.togglePhone();
     }
-    
     this.checkForNumbers();
     this.storeCheckinLocation();
-
-    
-    
   };
 
   checkLocalStorageOnMount = () => {
@@ -327,13 +321,13 @@ class Home extends Component {
     // Preventing the default behavior of the form submit (which is to refresh the page)
     //toggles off the respective modal
     event.preventDefault();
-    if(this.state.settingsModal){
+    if (this.state.settingsModal) {
       this.toggleSettings();
     }
-    if(this.state.phoneModal){
+    if (this.state.phoneModal) {
       this.togglePhone();
     }
-    if(this.state.alertsModal){
+    if (this.state.alertsModal) {
       this.toggleAlerts();
     }
     //TODO: currently this form is updating the state, 
@@ -400,7 +394,7 @@ class Home extends Component {
           <ModalBody className="modal-body">
             <Container>
               <h2 className="alerts-label">Alerts</h2>
-              <form onSubmit={this.handleFormSubmit}>
+              <form onSubmit={ this.handleFormSubmit }>
                 <div className="form-group">
                   <label className="form-check-label alerts-label">BAC Emergency Alert Threshold</label>
                   <input
@@ -445,7 +439,7 @@ class Home extends Component {
           <ModalBody className="modal-body">
             <Container>
               <h2 className="settings-label">Settings</h2>
-              <form onSubmit={this.handleFormSubmit}>
+              <form onSubmit={ this.handleFormSubmit }>
                 <div className="form-group ">
                   <label className="form-check-label settings-label" for="settings-weight">Weight (lbs)</label>
                   <input type="number"
@@ -495,7 +489,7 @@ class Home extends Component {
                     value={ this.state.emergencyContactNumber }
                     onChange={ this.handleInputChange }
                     name="emergencyContactNumber"
-                    className="form-control" id="emergencyContactPhoneNumber"  placeholder="2522020784"></input>
+                    className="form-control" id="emergencyContactPhoneNumber" placeholder="2522020784"></input>
                 </div>
 
 
@@ -516,7 +510,7 @@ class Home extends Component {
           <ModalBody className="modal-body">
             <Container>
               <p>Input your phone number to receive location alerts</p>
-              <form onSubmit={this.handleFormSubmit}>
+              <form onSubmit={ this.handleFormSubmit }>
 
 
                 <div className="form-group">
