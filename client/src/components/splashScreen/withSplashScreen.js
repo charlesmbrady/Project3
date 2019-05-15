@@ -10,17 +10,19 @@ function LoadingMessage () {
       <div className="topbar topbar-splash">&nbsp;</div>
       <div id="splash-title">sipSpot</div>
       <div className="loading-dot">.</div>
-      <div className="splashscreen-container">
-        <p className="splashscreen-header"><em>Spot helps you:</em></p>
-        <ul className="splashscreen-list">
-          <li>remember your things</li>
-          <li>track your drinks</li>
-          <li>invite your friends</li>
-          <li>get home <em>safe!</em></li>
-        </ul>
-      </div>
-      <div>
-        <img id="superSip-splashscreen" src={ colorSuperSip } alt="super sip the beer bottle" width="80%" />
+      <p className="splashscreen-header"><em>Spot helps you:</em></p>
+      <div className="spot-and-splash-text">
+        <section className="superSip-container">
+          <img id="superSip-splashscreen" src={ colorSuperSip } alt="super sip the beer bottle" width="80%" />
+        </section>
+        <section className="splashscreen-list-container">
+          <ul className="splashscreen-list">
+            <li>remember your things</li>
+            <li>track your drinks</li>
+            <li>invite your friends</li>
+            <li>get home <em>safe!</em></li>
+          </ul>
+        </section>
       </div>
       <div className="bottombar bottombar-splash">&nbsp;</div>
     </div>
