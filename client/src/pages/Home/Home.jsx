@@ -69,7 +69,10 @@ class Home extends Component {
         counter++;
       }
       let zero = (counter / 60).toFixed(2);
-      this.setState({ numberOfDrinks: numberOfDrinksCopy, bac, zero });
+      //add all db vars to state on mount
+      this.setState({ emergencyContactNumber: res.data.emergencyContactNumber, weight: res.data.weight,
+        gender: res.data.gender, selfAlertThreshold: res.data.selfAlertThreshold, emergencyAlertThreshold: res.data.emergencyAlertThreshold, 
+        numberOfDrinks: numberOfDrinksCopy, bac, zero });
       this.interval = setInterval(() => { this.updateBac.bind(this); this.updateBac(); }, 60000);
     })
       .catch(err => console.log(err));
@@ -85,9 +88,13 @@ class Home extends Component {
     this._isMounted = false;
   }
 
-  calculateBac (drink, time, weight) {
-    //calculate BAC(using 130lbs as generic weight and r=0.55 for conservative estimate)
-    let bac = ((drink * 14) / ((weight * 453.592) * 0.55)) * 100;
+  calculateBac (drink, time, weight, gender) {
+    //calculate BAC(using 130lbs as generic weight and r=0.55 for conservative estimate if user does not give the data)
+    let r=0.55;
+    if(gender.toLowerCase==='m'){
+      r=0.68;
+    }
+    let bac = ((drink * 14) / ((weight * 453.592) * r)) * 100;
     //elapsed time 
     let first = (Date.parse(time)) / 3600000;
     let now = (Date.parse(new Date().toLocaleString())) / 3600000;
@@ -112,7 +119,8 @@ class Home extends Component {
     lastdrink.number = (numberOfDrinksCopy[ (numberOfDrinksCopy.length - 1) ].number) + 1;
     lastdrink.timeOfLastDrink = new Date().toLocaleString();
     numberOfDrinksCopy.push(lastdrink);
-    let bac = (parseFloat(this.calculateBac(1, lastdrink.timeOfLastDrink, this.state.weight)) + parseFloat(this.state.bac)).toFixed(5);
+    let bac = (parseFloat(this.calculateBac(1, lastdrink.timeOfLastDrink, this.state.weight, this.state.gender)) + 
+              parseFloat(this.state.bac)).toFixed(5);
     if (bac < 0) { bac = 0; }
     //measure the time based on current bac for it to get to 0
     let counter = 0, baczero = bac;
