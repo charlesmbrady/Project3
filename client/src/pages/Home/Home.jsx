@@ -199,6 +199,8 @@ class Home extends Component {
     this.storeCheckinLocation();
   };
 
+  // checkout function clears thecheckinlatitude and longitute back to 0
+  // so the correct "checkin/out" button renders at bottom of screen
   checkOut = (e) => {
     e.preventDefault();
     console.log("checked out");
