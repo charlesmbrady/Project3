@@ -44,6 +44,12 @@
     font-weight: bold;
 }
 
+.modal-footer .menu-button {
+    margin: 0;
+    position: relative;
+    left: -25px;
+}
+
 .menu-button:hover {
     cursor: pointer;
 }

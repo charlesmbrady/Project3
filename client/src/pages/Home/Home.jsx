@@ -382,18 +382,33 @@ class Home extends Component {
   }
 
   toggleAlerts = () => {
+    if (this.state.alertsModal === false) {
+      this.setState({ // close menu modal
+        modal: false
+      });
+    }
     this.setState(prevState => ({
       alertsModal: !prevState.alertsModal
     }));
   }
 
   toggleHistory = () => {
+    if (this.state.historyModal === false) {
+      this.setState({ // close menu modal
+        modal: false
+      });
+    }
     this.setState(prevState => ({
       historyModal: !prevState.historyModal
     }));
   }
 
   toggleSettings = () => {
+    if (this.state.settingsModal === false) {
+      this.setState({ // close menu modal
+        modal: false
+      });
+    }
     console.log('this too')
     this.setState(prevState => ({
       settingsModal: !prevState.settingsModal
