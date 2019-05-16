@@ -36,6 +36,7 @@ class Home extends Component {
       alertsModal: false,
       phoneModal: false,
       settingsModal: false,
+      logoutModal: false,
       quickstartModal: false,
       infoModal: false,
       infoModalBody: "",
@@ -165,30 +166,25 @@ class Home extends Component {
     if (this.state.userPhoneNumber === 0) {
       let userPhoneNumber = localStorage.getItem("userPhoneNumber");
       let emergencyContactNumber = localStorage.getItem("emergencyContactNumber");
+      let isLoggedIn = localStorage.getItem("isLoggedIn");
       if (userPhoneNumber !== null) {
         this.setState({ userPhoneNumber: userPhoneNumber }, () => { console.log("set userPhoneNumber from localStorage: " + this.state.userPhoneNumber); this.loadDrinks() });
       }
       if (emergencyContactNumber !== null) {
         this.setState({ emergencyContactNumber: emergencyContactNumber }, console.log("set emergencyContactNumber from localStorage: " + emergencyContactNumber));
       }
+      console.log("isLoggedIn: " + isLoggedIn);
     }
   };
 
   checkForNumbers = (callback) => {
-    if (this.state.userPhoneNumber === 0 || this.state.userPhoneNumber === null) {
-      let userPhoneNumber = localStorage.getItem("userPhoneNumber");
-      let emergencyContactNumber = localStorage.getItem("emergencyContactNumber");
-      let isLoggedIn = localStorage.getItem("isLoggedIn");
-      // var password;
-      console.log("numbers from localStorage - user: " + userPhoneNumber + ", emergency: " + emergencyContactNumber + ", isLoggedIn: " + isLoggedIn);
-      if (userPhoneNumber === null) {
-        this.togglePhone();
-      } else {
-        this.loadDrinks();
-      }
+    console.log(this.state.userPhoneNumber);
+    if (this.state.userPhoneNumber === 0 || this.state.userPhoneNumber === null || this.state.userPhoneNumber === "") {
+      this.togglePhone();
     } else {
-      if (typeof callback === "function") { callback() };
+      this.loadDrinks();
     }
+    if (typeof callback === "function") { callback() };
   };
 
   storeCheckinLocation = () => {
@@ -433,6 +429,10 @@ class Home extends Component {
     }))
   }
 
+  toggleLogout = () => { // doesn't really toggle, just logs out
+    this.handleLogout();
+  }
+
   handleLogout = () => {
     this.clearLocalStorage();
     this.resetState();
@@ -469,6 +469,7 @@ class Home extends Component {
       alertsModal: false,
       phoneModal: false,
       settingsModal: false,
+      logoutModal: false,
       quickstartModal: false,
       infoModal: false,
       infoModalBody: "",
@@ -488,7 +489,7 @@ class Home extends Component {
         </div>
         <Container className="home">
           <MenuModal user={ this.state.firstName } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) }
-            toggleAlerts={ this.toggleAlerts } toggleHistory={ this.toggleHistory } toggleSettings={ this.toggleSettings }>
+            toggleAlerts={ this.toggleAlerts } toggleHistory={ this.toggleHistory } toggleSettings={ this.toggleSettings } toggleLogout={ this.toggleLogout }>
           </MenuModal>
           <Row>
             <Col>
