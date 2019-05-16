@@ -27,7 +27,7 @@ const PostDrink = (props) => {
     minutes = (minutes < 10) ? "0" + minutes : minutes;
     // console.log('delta in hours/decimal mins: ' + hours + "." + parseInt(minutes / 0.6));
     let hoursSinceLastDrink = hours + "." + parseInt(minutes / 0.6, 10);
-    let backToZero = props.zero - hoursSinceLastDrink
+    let backToZero = (props.zero - hoursSinceLastDrink).toFixed(2);
     if (backToZero < 0) { backToZero = 0 };
     // console.log('back-to-zero: ' + backToZero);
 
@@ -36,9 +36,8 @@ const PostDrink = (props) => {
             { props.drinks.number > 0 ? (
                 <div>
 
-                    <p style={ msgdeco }>Last estimated BAC*: { props.bac } (Over 0.08 is  intoxicated)<br />
-                        Hours for your BAC to get back to ZERO: { backToZero }</p>
-                    <p className="drink-text">Drinks: { props.drinks.number }, Last added: { (props.drinks.timeOfLastDrink).toLocaleString() }</p>
+                    <p style={ msgdeco }>Last estimated BAC*: { props.bac }<br />(0.08 is  intoxicated)<br />
+                        Hours until BAC is ZERO: { backToZero }<br />{ props.drinks.number } drink(s) as of: { (props.drinks.timeOfLastDrink).toLocaleString() }</p>
                 </div>
             ) : (
                     <p>No drinks yet!</p>
