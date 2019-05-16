@@ -30,7 +30,7 @@ const MenuModal = (props) => {
                 </ModalBody>
                 <ModalFooter>
                     {/* TODO: Logout needs to be connected to the function handleLogout in Home.jsx */ }
-                    <button className="menu-button" data-test="menu-logout">Logout</button>
+                    <button className="menu-button" data-test="menu-logout" toggleLogout={ props.toggleLogout } onClick={ props.toggleLogout }>Logout</button>
                 </ModalFooter>
             </Modal>
         </div>
