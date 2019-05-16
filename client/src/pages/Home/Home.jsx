@@ -7,6 +7,7 @@ import './Home.css';
 import API from "../../utils/API";
 import colorSuperSip from '../../images/colorSuperSip.gif';
 import AUTH from '../../utils/AUTH';
+import { List, ListItem } from "../../components/List";
 
 class Home extends Component {
   constructor (props) {
@@ -38,6 +39,7 @@ class Home extends Component {
       infoModal: false,
       infoModalBody: "",
       modal: false,
+      drinks: [],
       toggle () {
         this.setState(prevState => ({
           modal: !prevState.modal
@@ -73,7 +75,7 @@ class Home extends Component {
       this.setState({
         emergencyContactNumber: res.data.emergencyContactNumber, weight: res.data.weight,
         gender: res.data.gender, selfAlertThreshold: res.data.selfAlertThreshold, emergencyAlertThreshold: res.data.emergencyAlertThreshold,
-        numberOfDrinks: numberOfDrinksCopy, bac, zero
+        numberOfDrinks: numberOfDrinksCopy, bac, zero, drinks: res.data.drinks
       });
       this.interval = setInterval(() => { this.updateBac.bind(this); this.updateBac(); }, 60000);
     })
@@ -314,12 +316,6 @@ class Home extends Component {
     event.preventDefault();
     if (this.state.settingsModal) {
       this.toggleSettings();
-      // TODO: @Marcia, this is where we need to update db from state. The settings
-      // values are already in state because they've been updated by handleInputChange.
-      // just update weight, gender, and phone numbers if there are valid values in
-      // those states.
-      console.log("update db with this.state");
-      console.log(this.state);
       AUTH.userUpdate({
         userPhoneNumber: this.state.userPhoneNumber,
         emergencyContactNumber: this.state.emergencyContactNumber,
@@ -360,6 +356,9 @@ class Home extends Component {
     if (this.state.alertsModal) {
       this.toggleAlerts();
     }
+    if (this.state.historyModal) {
+      this.toggleHistory();
+    }
   };
 
   changePhoneNotification = () => {
@@ -374,6 +373,12 @@ class Home extends Component {
   toggleAlerts = () => {
     this.setState(prevState => ({
       alertsModal: !prevState.alertsModal
+    }));
+  }
+
+  toggleHistory = () => {
+    this.setState(prevState => ({
+      historyModal: !prevState.historyModal
     }));
   }
 
@@ -435,6 +440,7 @@ class Home extends Component {
       zero: new Date().toLocaleString(),
       interval: "",
       alertsModal: false,
+      historyModal: false,
       phoneModal: false,
       settingsModal: false,
       quickstartModal: false,
@@ -448,10 +454,15 @@ class Home extends Component {
     return (
       <div>
         <div className="topbar">
-          <MenuModal user={ this.state.firstName } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) } toggleAlerts={ this.toggleAlerts } toggleSettings={ this.toggleSettings }></MenuModal><button className="cntrl-btn" data-test="menu-quickstart" onClick={ this.toggleQuickstart }>Quick Start</button>
+          <MenuModal user={ this.state.firstName } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) } 
+          toggleAlerts={ this.toggleAlerts } toggleHistory={ this.toggleHistory } toggleSettings={ this.toggleSettings }>
+          </MenuModal>
+          <button className="cntrl-btn" data-test="menu-quickstart" onClick={ this.toggleQuickstart }>Quick Start</button>
         </div>
         <Container className="home">
-          <MenuModal user={ this.state.firstName } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) } toggleAlerts={ this.toggleAlerts } toggleSettings={ this.toggleSettings }></MenuModal>
+          <MenuModal user={ this.state.firstName } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) } 
+          toggleAlerts={ this.toggleAlerts } toggleHistory={ this.toggleHistory } toggleSettings={ this.toggleSettings }>
+          </MenuModal>
           <Row>
             <Col>
               <div id="title">sipSpot</div>
@@ -504,6 +515,27 @@ class Home extends Component {
           <ModalFooter>
             {/* <Button color="secondary" onClick={ props.toggle }>Close</Button> */ }
           </ModalFooter>
+        </Modal>
+        {/* History Modal */}
+        <Modal isOpen={ this.state.historyModal } toggleSettings={ this.toggleHistory } className="history">
+          <ModalHeader toggle={ this.toggleHistory }>
+          </ModalHeader>
+          <ModalBody className="modal-body">
+            <Container>
+                <h2 className="history-label">Drinks History</h2>
+                {this.state.drinks.length ? (
+                  <List>
+                    {this.state.drinks.map((drink, index) => (
+                      <ListItem >
+                          {index+1}. BAC: {drink.bac}, DateTime: {(new Date(drink.timeOfLastDrink)).toLocaleString()} 
+                      </ListItem>
+                    ))}
+                  </List>
+                ) : (
+                    <h3 style={{color: "yellow"}}>No Drink history to Display</h3>
+                )}
+            </Container>
+          </ModalBody>
         </Modal>
         {/* Settings Modal */ }
         <Modal isOpen={ this.state.settingsModal } toggleSettings={ this.toggleSettings } className="settings">

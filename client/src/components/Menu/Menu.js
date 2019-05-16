@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Container, Row, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import './menu.css';
 
@@ -19,7 +18,7 @@ const MenuModal = (props) => {
                         </Row>
                         <Row>
                             <Col>
-                                <Link to='/history' className="menu-button" data-test="menu-history">History</Link>
+                                <button className="menu-button" data-test="menu-history" toggleHistory={ props.toggleHistory } onClick={ props.toggleHistory }>History</button>
                             </Col>
                         </Row>
                         <Row>
