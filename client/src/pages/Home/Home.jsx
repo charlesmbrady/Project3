@@ -510,14 +510,16 @@ class Home extends Component {
                     onChange={ this.handleInputChange }
                     value={ this.state.emergencyAlertThreshold }
                     name="emergencyAlertThreshold"
-                    type="number" className="form-control" id="settings-bac-threshold" placeholder="Ex. .08"></input>
+                    type="number" step="0.01"
+                    className="form-control" id="settings-bac-threshold" placeholder="Ex. .08"></input>
                 </div>
                 <div className="form-group">
                   <label className="alerts-label">BAC Self Alert Threshold *0.08 is intoxicated, 0.1 is more intoxicated</label>
-                  <input type="number"
+                  <input
                     onChange={ this.handleInputChange }
                     value={ this.state.selfAlertThreshold }
                     name="selfAlertThreshold"
+                    type="number" step="0.01"
                     className="form-control" id="drinkCountThreshold" placeholder="Ex. 5"></input>
                 </div>
                 <button type="submit" className="btn">Submit</button>
