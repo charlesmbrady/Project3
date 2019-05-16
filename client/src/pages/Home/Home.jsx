@@ -80,7 +80,7 @@ class Home extends Component {
       //remove duplicates dates
       dateArr.sort(function(a, b){return a-b});
       let uniqueDate = dateArr.filter(function(item, pos) {
-          return dateArr.indexOf(item) == pos;
+          return dateArr.indexOf(item) === pos;
       });
       //count the nuber of drinks for each day
       let drinkSum=[];
