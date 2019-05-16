@@ -3,19 +3,18 @@
     z-index: 2;
     top: 0;
     left: 0;
-    background-color: #68a6bd;
-    color: #121212;
-    box-shadow: 3px 3px 3px #121212;
-}
-
-.menu-btn:hover {
-    background-color: #fff10a;
+    border: none;
+    border-radius: 0;
+    height: 40px;
+    width: 50%;
+    background-color: #121212;
+    color: white;
 }
 
 .menu {
     position: absolute;
-    z-index: 2;
-    top: -10px;
+    z-index: 99;
+    top: -30px;
     left: -10px;
 }
 
@@ -45,6 +44,10 @@
     font-weight: bold;
 }
 
+.menu-button:hover {
+    cursor: pointer;
+}
+
 .quickstart {
     text-align: center;
     margin-left: 10px;
@@ -56,6 +59,11 @@
 }
 
 a {
+    color: #121212;
+}
+
+a:hover {
+    text-decoration: none;
     color: #121212;
 }
 

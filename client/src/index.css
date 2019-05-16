@@ -2,28 +2,164 @@
 
 body {
   background-image: linear-gradient(to right, #121212, #0095cc);
-  /* color: #dcbfff; */
   font-family: Arial, Helvetica, sans-serif;
   margin: 0 auto;
   text-align: center;
 }
 
-.cntrl-btn {
-  background-color: #68a6bd;
-  color: #121212;
-  box-shadow: 3px 3px 3px #121212;
+p {
+  color: white;
 }
 
-.controls-container {
-  position: fixed;
-  bottom: 5%;
-  width: 80%;
-  margin-left: 10%;
+.splashscreen-header {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  text-shadow: 2px 2px 5px black;
+  margin: 0;
+  padding: 0;
 }
+
+#superSip {
+  position: relative;
+  height: 20%;
+  margin: -5%;
+  left: 4%;
+}
+
+.spot-and-splash-text {
+  width: 25rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.superSip-container {
+  width: 25%;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+#superSip-splashscreen {
+  z-index: -99;
+  width: 350%;
+  position: relative;
+  right: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.splashscreen-list-container {
+  width: 75%;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.splashscreen-list {
+  text-align: left;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-shadow: 2px 2px 5px black;
+}
+
+@media only screen and (max-width: 400px) {
+  .spot-and-splash-text {
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .splashscreen-header {
+    font-size: 1.5rem;
+  }
+  .splashscreen-list {
+    text-align: left;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 5px black;
+  }
+  #superSip-splashscreen {
+    width: 250%;
+    right: 50%;
+  }
+  .modal-text {
+    font-size: small;
+  }
+}
+
+.topbar, .bottombar {
+  z-index: 999;
+  position: fixed;
+  width: 100%;
+  text-align: center;
+}
+
+.topbar {
+  top: 0;
+}
+
+.bottombar {
+  bottom: 0;
+}
+
+.topbar-splash, .bottombar-splash {
+  background-color: #121212;
+  height: 40px;
+}
+
+.topbar-splash {
+  margin-bottom: 20px;
+}
+
+.bottombar-splash {
+  margin-top: 20px;
+}
+
+.topbar>a, .topbar>button, .bottombar>a, .bottombar>button {
+  background-color: #121212;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  display: inline-block;
+  display: -moz-inline-box;
+  width: 25%;
+  padding: 10px;
+}
+
+.btn {
+  /* this is necessary to override Bootstrap */
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+}
+
+.topbar>a, .topbar>button {
+  width: 50%;
+  float: right;
+}
+
+.bottombar>a, .bottombar>button {
+  width: 25%;
+}
+
+.cntrl-btn, .menu-settings {
+  height: 40px;
+  vertical-align: middle;
+}
+
+.menu-btn:hover, .topbar>a:hover, .topbar>button:hover, .bottombar>a:hover, .bottombar>button:hover {
+  background-color: #fff10a;
+  color: #121212;
+}
+
+.menu-settings {}
 
 #how-to {
-  color: #dcbfff;
+  color: white;
   padding: 2%;
+}
+
+#how-to li {
+  margin: 5% 2%;
 }
 
 #test-display {
@@ -46,17 +182,20 @@ body {
   font-weight: bold;
 }
 
-#title {
+#title, #splash-title {
   font-family: 'Black And White Picture', sans-serif;
   font-size: 5em;
   text-align: center;
   color: #fff10a;
+  text-shadow: 2px 2px 5px black;
+  margin: -10px;
+}
+
+#splash-title {
+  margin: 30px;
 }
 
 .cntrl-btn:hover {
-  background-color: #fff10a;
-}
-
-#superSip {
-  height: 20%;
+  background-color: #121212;
+  cursor: pointer;
 }
