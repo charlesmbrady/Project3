@@ -3,7 +3,7 @@ import React from 'react';
 import HomeButton from '../../components/HomeButton/HomeButton';
 import './History.css';
 
-function History() {
+const History = (props) => {
 
   return (
     <div>

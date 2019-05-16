@@ -4,7 +4,6 @@ import LoginForm from './pages/Auth/LoginForm';
 import SignupForm from './pages/Auth/SignupForm';
 import NoMatch from "./pages/NoMatch";
 import AUTH from './utils/AUTH';
-import History from './pages/History/History';
 import Friends from './pages/Friends/Friends';
 import Home from './pages/Home/Home';
 import './index.css';
@@ -73,7 +72,6 @@ class App extends Component {
 						<div className="main-view">
 							<Switch>
 								<Route exact path="/" component={ () => <Home user={ this.state.user } logout={ this.logout }></Home> } />
-								<Route exact path="/history" component={ History } />
 								<Route exact path="/friends" component={ Friends } />
 								<Route component={ NoMatch } />
 							</Switch>
@@ -84,7 +82,6 @@ class App extends Component {
 					<div>
 						<div className="auth-wrapper" style={ { paddingTop: 40 } }>
 							<Route exact path="/" component={ () => <Home /> } />
-							<Route exact path="/history" component={ History } />
 							<Route exact path="/friends" component={ Friends } />
 							<Route exact path="/login" component={ () => <LoginForm login={ this.login } /> } />
 							<Route exact path="/signup" component={ SignupForm } />

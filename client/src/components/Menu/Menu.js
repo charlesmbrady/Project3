@@ -19,7 +19,7 @@ const MenuModal = (props) => {
                         </Row>
                         <Row>
                             <Col>
-                                <Link to='/history' className="menu-button" data-test="menu-history">History</Link>
+                                <button className="menu-button" data-test="menu-history" toggleHistory={ props.toggleHistory } onClick={ props.toggleHistory }>History</button>
                             </Col>
                         </Row>
                         <Row>
