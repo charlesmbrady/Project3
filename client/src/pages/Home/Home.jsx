@@ -73,11 +73,39 @@ class Home extends Component {
         counter++;
       }
       let zero = (counter / 60).toFixed(2);
+
+      if (bac < 0) { zero=0;}
+
+      //Begin calculate history summary based on date
+      let dateArr=[];
+      for(let i=0;i<res.data.drinks.length;i++){
+        dateArr.push((new Date(res.data.drinks[i].timeOfLastDrink).toLocaleDateString()));
+      }
+      //remove duplicates dates
+      dateArr.sort(function(a, b){return a-b});
+      let uniqueDate = dateArr.filter(function(item, pos) {
+          return dateArr.indexOf(item) === pos;
+      });
+      //count the nuber of drinks for each day
+      let drinkSum=[];
+      for(let i=0;i<uniqueDate.length;i++){
+        let dateOfDrink,count=0;
+        for(let j=0;j<res.data.drinks.length;j++){
+          if((new Date(res.data.drinks[j].timeOfLastDrink).toLocaleDateString())===uniqueDate[i]){
+            count++;
+            dateOfDrink=uniqueDate[i];
+          }
+         }
+         if(count>0){
+          drinkSum.push({dateOfDrink:dateOfDrink,count:count});
+        }
+      }
+      //End of calculate history summary based on date
       //add all db vars to state on mount
       this.setState({
         emergencyContactNumber: res.data.emergencyContactNumber, weight: res.data.weight,
         gender: res.data.gender, selfAlertThreshold: res.data.selfAlertThreshold, emergencyAlertThreshold: res.data.emergencyAlertThreshold,
-        numberOfDrinks: numberOfDrinksCopy, bac, zero, drinks: res.data.drinks
+        numberOfDrinks: numberOfDrinksCopy, bac, zero, drinks: drinkSum
       });
       this.interval = setInterval(() => { this.updateBac.bind(this); this.updateBac(); }, 60000);
     })
@@ -113,7 +141,15 @@ class Home extends Component {
   updateBac () {
     let bac = (this.state.bac - ((1 / 60) * .015)).toFixed(5);
     if (bac < 0) { bac = 0; }
-    this.setState({ bac });
+    //measure the time based on current bac for it to get to 0
+    let counter = 0, baczero = bac;
+    while (baczero > 0) {
+      baczero = baczero - ((1 / 60) * .015);
+      counter++;
+    }
+    let zero = (counter / 60).toFixed(2);
+    if (bac < 0) { zero=0;}
+    this.setState({ bac, zero });
   }
 
   drinkTracker = (e) => {
@@ -136,6 +172,7 @@ class Home extends Component {
         counter++;
       }
       let zero = (counter / 60).toFixed(2);
+      if (bac < 0) { zero=0; }
       this.setState({ numberOfDrinks: numberOfDrinksCopy, bac, zero },
         () => this.checkBeforeSendAutomaticText());
       //push drinks to db
@@ -552,18 +589,18 @@ class Home extends Component {
           </ModalHeader>
           <ModalBody className="modal-body">
             <Container>
-              <h2 className="history-label">Drinks History</h2>
-              { this.state.drinks.length ? (
-                <List>
-                  { this.state.drinks.map((drink, index) => (
-                    <ListItem >
-                      { index + 1 }. BAC: { drink.bac }, DateTime: { (new Date(drink.timeOfLastDrink)).toLocaleString() }
-                    </ListItem>
-                  )) }
-                </List>
-              ) : (
-                  <h3 style={ { color: "yellow" } }>No Drink history to Display</h3>
-                ) }
+                <h2 className="history-label">Drinks History</h2>
+                {this.state.drinks.length ? (
+                  <List>
+                    {this.state.drinks.map((drink, index) => (
+                      <ListItem >
+                          Date: {drink.dateOfDrink}, Number Of Drinks: {drink.count}
+                      </ListItem>
+                    ))}
+                  </List>
+                ) : (
+                    <h3 style={{color: "yellow"}}>No Drink history to Display</h3>
+                )}
             </Container>
           </ModalBody>
         </Modal>
