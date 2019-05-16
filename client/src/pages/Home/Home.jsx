@@ -73,6 +73,8 @@ class Home extends Component {
       }
       let zero = (counter / 60).toFixed(2);
 
+      if (bac < 0) { zero=0;}
+
       //Begin calculate history summary based on date
       let dateArr=[];
       for(let i=0;i<res.data.drinks.length;i++){
@@ -138,7 +140,15 @@ class Home extends Component {
   updateBac () {
     let bac = (this.state.bac - ((1 / 60) * .015)).toFixed(5);
     if (bac < 0) { bac = 0; }
-    this.setState({ bac });
+    //measure the time based on current bac for it to get to 0
+    let counter = 0, baczero = bac;
+    while (baczero > 0) {
+      baczero = baczero - ((1 / 60) * .015);
+      counter++;
+    }
+    let zero = (counter / 60).toFixed(2);
+    if (bac < 0) { zero=0;}
+    this.setState({ bac, zero });
   }
 
   drinkTracker = (e) => {
@@ -161,6 +171,7 @@ class Home extends Component {
         counter++;
       }
       let zero = (counter / 60).toFixed(2);
+      if (bac < 0) { zero=0; }
       this.setState({ numberOfDrinks: numberOfDrinksCopy, bac, zero },
         () => this.checkBeforeSendAutomaticText());
       //push drinks to db
