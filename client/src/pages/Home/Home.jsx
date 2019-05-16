@@ -63,7 +63,7 @@ class Home extends Component {
       let now = new Date();
       let elapsedTime = (now - new Date(lastdrink.timeOfLastDrink)) / 60000;
       let bac = (res.data.drinks[ (res.data.drinks.length) - 1 ].bac - (elapsedTime * .00025)).toFixed(5);
-      if (bac < 0) { bac = 0; }
+      if (bac < 0) { bac = 0; zero=0;}
       //measure the time based on current bac for it to get to 0
       let counter = 0, baczero = bac;
       while (baczero > 0) {
@@ -136,8 +136,15 @@ class Home extends Component {
   //update BAC every minute
   updateBac () {
     let bac = (this.state.bac - ((1 / 60) * .015)).toFixed(5);
-    if (bac < 0) { bac = 0; }
-    this.setState({ bac });
+    if (bac < 0) { bac = 0; zero=0;}
+    //measure the time based on current bac for it to get to 0
+    let counter = 0, baczero = bac;
+    while (baczero > 0) {
+      baczero = baczero - ((1 / 60) * .015);
+      counter++;
+    }
+    let zero = (counter / 60).toFixed(2);
+    this.setState({ bac, zero });
   }
 
   drinkTracker = (e) => {
@@ -152,7 +159,7 @@ class Home extends Component {
       numberOfDrinksCopy.push(lastdrink);
       let bac = (parseFloat(this.calculateBac(1, lastdrink.timeOfLastDrink, this.state.weight, this.state.gender)) +
         parseFloat(this.state.bac)).toFixed(5);
-      if (bac < 0) { bac = 0; }
+      if (bac < 0) { bac = 0; zero=0;}
       //measure the time based on current bac for it to get to 0
       let counter = 0, baczero = bac;
       while (baczero > 0) {
