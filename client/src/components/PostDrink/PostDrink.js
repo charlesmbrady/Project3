@@ -27,7 +27,7 @@ const PostDrink = (props) => {
     minutes = (minutes < 10) ? "0" + minutes : minutes;
     // console.log('delta in hours/decimal mins: ' + hours + "." + parseInt(minutes / 0.6));
     let hoursSinceLastDrink = hours + "." + parseInt(minutes / 0.6, 10);
-    let backToZero = props.zero - hoursSinceLastDrink;
+    let backToZero = (props.zero - hoursSinceLastDrink).toFixed(2);
     if (backToZero < 0) { backToZero = 0 };
     // console.log('back-to-zero: ' + backToZero);
 
