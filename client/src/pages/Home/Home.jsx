@@ -154,6 +154,7 @@ class Home extends Component {
 
   drinkTracker = (e) => {
     e.preventDefault();
+    document.activeElement.blur();
     this.checkForNumbers();
     if (this.state.userPhoneNumber !== 0) {
       clearInterval(this.interval);
@@ -196,6 +197,7 @@ class Home extends Component {
     e.preventDefault();
     this.checkForNumbers();
     this.storeCheckinLocation();
+    document.activeElement.blur();
   };
 
   checkOut = (e) => {
@@ -203,8 +205,9 @@ class Home extends Component {
     this.setState({
       theCheckinLatitude: 0,
       theCheckinLongitude: 0
-    })
-  }
+    });
+    document.activeElement.blur();
+  };
 
   checkLocalStorageOnMount = () => {
     if (this.state.userPhoneNumber === 0) {
@@ -264,6 +267,7 @@ class Home extends Component {
   };
 
   contactFriends = () => {
+    document.activeElement.blur();
     this.checkForNumbers(this.sendText);
   };
 
@@ -461,6 +465,7 @@ class Home extends Component {
   }
 
   toggleQuickstart = () => {
+    document.activeElement.blur();
     this.setState(prevState => ({
       quickstartModal: !prevState.quickstartModal
     }))
