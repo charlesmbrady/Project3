@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Container, Row, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import './menu.css';
 
@@ -19,7 +18,7 @@ const MenuModal = (props) => {
                         </Row>
                         <Row>
                             <Col>
-                                <Link to='/history' className="menu-button" data-test="menu-history">History</Link>
+                                <button className="menu-button" data-test="menu-history" toggleHistory={ props.toggleHistory } onClick={ props.toggleHistory }>History</button>
                             </Col>
                         </Row>
                         <Row>
@@ -31,7 +30,7 @@ const MenuModal = (props) => {
                 </ModalBody>
                 <ModalFooter>
                     {/* TODO: Logout needs to be connected to the function handleLogout in Home.jsx */ }
-                    <button className="menu-button" data-test="menu-logout">Logout</button>
+                    <button className="menu-button" data-test="menu-logout" toggleLogout={ props.toggleLogout } onClick={ props.toggleLogout }>Logout</button>
                 </ModalFooter>
             </Modal>
         </div>
