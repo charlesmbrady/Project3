@@ -74,30 +74,30 @@ class Home extends Component {
       }
       let zero = (counter / 60).toFixed(2);
 
-      if (bac < 0) { zero=0;}
+      if (bac < 0) { zero = 0; }
 
       //Begin calculate history summary based on date
-      let dateArr=[];
-      for(let i=0;i<res.data.drinks.length;i++){
-        dateArr.push((new Date(res.data.drinks[i].timeOfLastDrink).toLocaleDateString()));
+      let dateArr = [];
+      for (let i = 0; i < res.data.drinks.length; i++) {
+        dateArr.push((new Date(res.data.drinks[ i ].timeOfLastDrink).toLocaleDateString()));
       }
       //remove duplicates dates
-      dateArr.sort(function(a, b){return a-b});
-      let uniqueDate = dateArr.filter(function(item, pos) {
-          return dateArr.indexOf(item) === pos;
+      dateArr.sort(function (a, b) { return a - b });
+      let uniqueDate = dateArr.filter(function (item, pos) {
+        return dateArr.indexOf(item) === pos;
       });
       //count the nuber of drinks for each day
-      let drinkSum=[];
-      for(let i=0;i<uniqueDate.length;i++){
-        let dateOfDrink,count=0;
-        for(let j=0;j<res.data.drinks.length;j++){
-          if((new Date(res.data.drinks[j].timeOfLastDrink).toLocaleDateString())===uniqueDate[i]){
+      let drinkSum = [];
+      for (let i = 0; i < uniqueDate.length; i++) {
+        let dateOfDrink, count = 0;
+        for (let j = 0; j < res.data.drinks.length; j++) {
+          if ((new Date(res.data.drinks[ j ].timeOfLastDrink).toLocaleDateString()) === uniqueDate[ i ]) {
             count++;
-            dateOfDrink=uniqueDate[i];
+            dateOfDrink = uniqueDate[ i ];
           }
-         }
-         if(count>0){
-          drinkSum.push({dateOfDrink:dateOfDrink,count:count});
+        }
+        if (count > 0) {
+          drinkSum.push({ dateOfDrink: dateOfDrink, count: count });
         }
       }
       //End of calculate history summary based on date
@@ -148,12 +148,13 @@ class Home extends Component {
       counter++;
     }
     let zero = (counter / 60).toFixed(2);
-    if (bac < 0) { zero=0;}
+    if (bac < 0) { zero = 0; }
     this.setState({ bac, zero });
   }
 
   drinkTracker = (e) => {
     e.preventDefault();
+    document.activeElement.blur();
     this.checkForNumbers();
     if (this.state.userPhoneNumber !== 0) {
       clearInterval(this.interval);
@@ -172,7 +173,7 @@ class Home extends Component {
         counter++;
       }
       let zero = (counter / 60).toFixed(2);
-      if (bac < 0) { zero=0; }
+      if (bac < 0) { zero = 0; }
       this.setState({ numberOfDrinks: numberOfDrinksCopy, bac, zero },
         () => this.checkBeforeSendAutomaticText());
       //push drinks to db
@@ -194,21 +195,19 @@ class Home extends Component {
 
   checkIn = (e) => {
     e.preventDefault();
-    console.log("Check-In");
     this.checkForNumbers();
     this.storeCheckinLocation();
+    document.activeElement.blur();
   };
 
-  // checkout function clears thecheckinlatitude and longitute back to 0
-  // so the correct "checkin/out" button renders at bottom of screen
   checkOut = (e) => {
     e.preventDefault();
-    console.log("checked out");
     this.setState({
       theCheckinLatitude: 0,
       theCheckinLongitude: 0
-    })
-  }
+    });
+    document.activeElement.blur();
+  };
 
   checkLocalStorageOnMount = () => {
     if (this.state.userPhoneNumber === 0) {
@@ -226,7 +225,6 @@ class Home extends Component {
   };
 
   checkForNumbers = (callback) => {
-    console.log(this.state.userPhoneNumber);
     if (this.state.userPhoneNumber === 0 || this.state.userPhoneNumber === null || this.state.userPhoneNumber === "") {
       this.togglePhone();
     } else {
@@ -269,6 +267,7 @@ class Home extends Component {
   };
 
   contactFriends = () => {
+    document.activeElement.blur();
     this.checkForNumbers(this.sendText);
   };
 
@@ -466,6 +465,7 @@ class Home extends Component {
   }
 
   toggleQuickstart = () => {
+    document.activeElement.blur();
     this.setState(prevState => ({
       quickstartModal: !prevState.quickstartModal
     }))
@@ -557,13 +557,13 @@ class Home extends Component {
           </Row>
         </Container>
         <div className="bottombar">
-          
 
-          {this.state.theCheckinLatitude === 0 ? (
+
+          { this.state.theCheckinLatitude === 0 ? (
             <button className="cntrl-btn" data-test="controls-checkin" onClick={ this.checkIn }>CheckIn</button>
           ) : (
-            <button className="cntrl-btn" data-test="controls-checkin" onClick={ this.checkOut }>CheckOut</button>
-          )}
+              <button className="cntrl-btn" data-test="controls-checkin" onClick={ this.checkOut }>CheckOut</button>
+            ) }
 
           <button className="cntrl-btn" data-test="controls-drink" onClick={ this.drinkTracker }>+Drink</button>
           <a className="cntrl-btn" data-test="controls-uber" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location" target="_blank" rel="noopener noreferrer">Uber</a>
@@ -609,18 +609,18 @@ class Home extends Component {
           </ModalHeader>
           <ModalBody className="modal-body">
             <Container>
-                <h2 className="history-label">Drinks History</h2>
-                {this.state.drinks.length ? (
-                  <List>
-                    {this.state.drinks.map((drink, index) => (
-                      <ListItem >
-                          Date: {drink.dateOfDrink}, Number Of Drinks: {drink.count}
-                      </ListItem>
-                    ))}
-                  </List>
-                ) : (
-                    <h3 style={{color: "yellow"}}>No Drink history to Display</h3>
-                )}
+              <h2 className="history-label">Drinks History</h2>
+              { this.state.drinks.length ? (
+                <List>
+                  { this.state.drinks.map((drink, index) => (
+                    <ListItem >
+                      Date: { drink.dateOfDrink }, Number Of Drinks: { drink.count }
+                    </ListItem>
+                  )) }
+                </List>
+              ) : (
+                  <h3 style={ { color: "yellow" } }>No Drink history to Display</h3>
+                ) }
             </Container>
           </ModalBody>
         </Modal>
