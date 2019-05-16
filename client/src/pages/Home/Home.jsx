@@ -52,11 +52,9 @@ class Home extends Component {
 
   //grab previous drink info from db
   loadDrinks = () => {
-    console.log('load drinks ' + this.state.userPhoneNumber);
     AUTH.getUserDrinks({
       userPhoneNumber: this.state.userPhoneNumber
     }).then(res => {
-      console.log(res.data.drinks[ 0 ]);
       clearInterval(this.interval);
       let lastdrink = {};
       let numberOfDrinksCopy = this.state.numberOfDrinks;
@@ -201,9 +199,12 @@ class Home extends Component {
   };
 
   checkOut = (e) => {
-    console.log('checkout');
     e.preventDefault();
-  };
+    this.setState({
+      theCheckinLatitude: 0,
+      theCheckinLongitude: 0
+    })
+  }
 
   checkLocalStorageOnMount = () => {
     if (this.state.userPhoneNumber === 0) {
@@ -221,7 +222,6 @@ class Home extends Component {
   };
 
   checkForNumbers = (callback) => {
-    console.log(this.state.userPhoneNumber);
     if (this.state.userPhoneNumber === 0 || this.state.userPhoneNumber === null || this.state.userPhoneNumber === "") {
       this.togglePhone();
     } else {
@@ -550,7 +550,14 @@ class Home extends Component {
           </Row>
         </Container>
         <div className="bottombar">
-          <button className="cntrl-btn" data-test="controls-checkin" onClick={ this.checkIn }>CheckIn</button>
+
+
+          { this.state.theCheckinLatitude === 0 ? (
+            <button className="cntrl-btn" data-test="controls-checkin" onClick={ this.checkIn }>CheckIn</button>
+          ) : (
+              <button className="cntrl-btn" data-test="controls-checkin" onClick={ this.checkOut }>CheckOut</button>
+            ) }
+
           <button className="cntrl-btn" data-test="controls-drink" onClick={ this.drinkTracker }>+Drink</button>
           <a className="cntrl-btn" data-test="controls-uber" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location" target="_blank" rel="noopener noreferrer">Uber</a>
           <button className="cntrl-btn" data-test="controls-friends" onClick={ this.contactFriends }>Friends</button>
