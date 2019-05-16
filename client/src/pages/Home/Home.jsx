@@ -20,14 +20,15 @@ class Home extends Component {
       isLoggedIn: false,
       weight: 130,
       gender: 'f',
-      selfAlertThreshold: 1,
-      emergencyAlertThreshold: 1,
+      selfAlertThreshold: 0.1,
+      emergencyAlertThreshold: 0.1,
       latitude: 0,
       longitude: 0,
       theCheckinLatitude: 0,
       theCheckinLongitude: 0,
       proximityAlertSent: false,
-      emergencyNotificationSent: false,
+      selfAlertSent: false,
+      emergencyAlertSent: false,
       watchID: 0,
       bac: 0,
       zero: new Date().toLocaleString(),
@@ -143,7 +144,7 @@ class Home extends Component {
   drinkTracker = (e) => {
     e.preventDefault();
     this.checkForNumbers();
-    if(this.state.userPhoneNumber !== 0){
+    if (this.state.userPhoneNumber !== 0) {
       clearInterval(this.interval);
       let lastdrink = {};
       let numberOfDrinksCopy = this.state.numberOfDrinks;
@@ -217,7 +218,7 @@ class Home extends Component {
   };
 
   storeCheckinLocation = () => {
-    this.setState({ theCheckinLatitude: this.state.latitude, theCheckinLongitude: this.state.longitude, proximityAlertSent: false, emergencyNotificationSent: false }, this.watchLocation);
+    this.setState({ theCheckinLatitude: this.state.latitude, theCheckinLongitude: this.state.longitude, proximityAlertSent: false, emergencyAlertSent: false }, this.watchLocation);
     document.getElementById("test-display").innerText = "Check-In location: " + this.state.latitude + ", " + this.state.longitude + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
   };
 
@@ -276,9 +277,15 @@ class Home extends Component {
   };
 
   checkBeforeSendAutomaticText = () => {
-    if (this.state.bac > 0.1 && this.state.emergencyNotificationSent === false) {
-      console.log("Sending emergency text to " + this.state.emergencyContactNumber);
-      this.sendAutomaticText();
+    if (this.state.selfAlertSent === false) {
+      if (this.state.bac > this.state.selfAlertThreshold) {
+        this.sendAutomaticText('self');
+      }
+    }
+    if (this.state.emergencyAlertSent === false) {
+      if (this.state.bac > this.state.emergencyAlertThreshold) {
+        this.sendAutomaticText();
+      }
     }
   };
 
@@ -308,16 +315,20 @@ class Home extends Component {
     }
   };
 
-  sendAutomaticText = () => {
-    this.setState({ emergencyNotificationSent: true });
+  sendAutomaticText = (self) => {
+    if (self === 'self') {
+      this.setState({ selfAlertSent: true });
+    } else {
+      this.setState({ emergencyAlertSent: true });
+    }
     let theUrl = `https://www.google.com/maps/dir/?api=1&destination=${this.state.latitude},${this.state.longitude}`;
     let theMessage = "Please come give me a ride; I have had too much to drink. Here is a Google Maps link to my location. (This message *auto-generated* by sipSpot) " + theUrl;
-    if (this.state.emergencyContactNumber === this.state.userPhoneNumber || this.state.emergencyContactNumber === 0) {
+    if (this.state.emergencyContactNumber === this.state.userPhoneNumber || this.state.emergencyContactNumber === 0 || self === 'self') {
       theUrl = "https://m.uber.com/ul/?action=setPickup&pickup=my_location"
       theMessage = "It looks like you have had a lot to drink. Please get a ride home or get an Uber, for your own safety and for the safety of others. Here's a link to Uber: (This message *auto-generated* by sipSpot) " + theUrl;
     }
     let theNumber;
-    if (this.state.emergencyContactNumber === 0 || this.state.emergencyContactNumber === null) {
+    if (this.state.emergencyContactNumber === 0 || this.state.emergencyContactNumber === null || self === 'self') {
       theNumber = this.state.userPhoneNumber;
     } else {
       theNumber = this.state.emergencyContactNumber;
@@ -453,26 +464,27 @@ class Home extends Component {
       isLoggedIn: false,
       weight: 130,
       gender: 'f',
-      selfAlertThreshold: 1,
-      emergencyAlertThreshold: 1,
+      selfAlertThreshold: 0.1,
+      emergencyAlertThreshold: 0.1,
       latitude: 0,
       longitude: 0,
       theCheckinLatitude: 0,
       theCheckinLongitude: 0,
       proximityAlertSent: false,
-      emergencyNotificationSent: false,
+      selfAlertSent: false,
+      emergencyAlertSent: false,
       watchID: 0,
       bac: 0,
       zero: new Date().toLocaleString(),
       interval: "",
       alertsModal: false,
-      historyModal: false,
       phoneModal: false,
       settingsModal: false,
       quickstartModal: false,
       infoModal: false,
       infoModalBody: "",
       modal: false,
+      drinks: []
     })
   }
 
@@ -480,14 +492,14 @@ class Home extends Component {
     return (
       <div>
         <div className="topbar">
-          <MenuModal user={ this.state.firstName } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) } 
-          toggleAlerts={ this.toggleAlerts } toggleHistory={ this.toggleHistory } toggleSettings={ this.toggleSettings }>
+          <MenuModal user={ this.state.firstName } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) }
+            toggleAlerts={ this.toggleAlerts } toggleHistory={ this.toggleHistory } toggleSettings={ this.toggleSettings }>
           </MenuModal>
           <button className="cntrl-btn" data-test="menu-quickstart" onClick={ this.toggleQuickstart }>Quick Start</button>
         </div>
         <Container className="home">
-          <MenuModal user={ this.state.firstName } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) } 
-          toggleAlerts={ this.toggleAlerts } toggleHistory={ this.toggleHistory } toggleSettings={ this.toggleSettings }>
+          <MenuModal user={ this.state.firstName } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) }
+            toggleAlerts={ this.toggleAlerts } toggleHistory={ this.toggleHistory } toggleSettings={ this.toggleSettings }>
           </MenuModal>
           <Row>
             <Col>
@@ -519,19 +531,21 @@ class Home extends Component {
               <h2 className="alerts-label">Alerts</h2>
               <form onSubmit={ this.handleFormSubmit }>
                 <div className="form-group">
-                  <label className="form-check-label alerts-label">BAC Emergency Alert Threshold</label>
+                  <label className="form-check-label alerts-label">BAC Emergency Alert Threshold *0.08 is intoxicated, 0.1 is more intoxicated</label>
                   <input
                     onChange={ this.handleInputChange }
                     value={ this.state.emergencyAlertThreshold }
                     name="emergencyAlertThreshold"
-                    type="number" className="form-control" id="settings-bac-threshold" placeholder="Ex. .08"></input>
+                    type="number" step="0.01"
+                    className="form-control" id="settings-bac-threshold" placeholder="Ex. .08"></input>
                 </div>
                 <div className="form-group">
-                  <label className="alerts-label">BAC Self Alert Threshold</label>
-                  <input type="number"
+                  <label className="alerts-label">BAC Self Alert Threshold *0.08 is intoxicated, 0.1 is more intoxicated</label>
+                  <input
                     onChange={ this.handleInputChange }
                     value={ this.state.selfAlertThreshold }
                     name="selfAlertThreshold"
+                    type="number" step="0.01"
                     className="form-control" id="drinkCountThreshold" placeholder="Ex. 5"></input>
                 </div>
                 <button type="submit" className="btn">Submit</button>
@@ -542,7 +556,7 @@ class Home extends Component {
             {/* <Button color="secondary" onClick={ props.toggle }>Close</Button> */ }
           </ModalFooter>
         </Modal>
-        {/* History Modal */}
+        {/* History Modal */ }
         <Modal isOpen={ this.state.historyModal } toggleSettings={ this.toggleHistory } className="history">
           <ModalHeader toggle={ this.toggleHistory }>
           </ModalHeader>
