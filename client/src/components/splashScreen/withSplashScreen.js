@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './splash-screen.css';
 import "../../../src/index.css";
-import colorSuperSip from '../../images/colorSuperSip.gif';
+import superSpot from '../../images/superSpot.gif';
 
 function LoadingMessage () {
   return (
@@ -12,7 +12,7 @@ function LoadingMessage () {
       <p className="splashscreen-header"><em>Spot helps you:</em></p>
       <div className="spot-and-splash-text">
         <section className="superSip-container">
-          <img id="superSip-splashscreen" src={ colorSuperSip } alt="super sip the beer bottle" width="80%" />
+          <img id="superSip-splashscreen" src={ superSpot } alt="Super Spot the beer bottle" width="80%" />
         </section>
         <section className="splashscreen-list-container">
           <ul className="splashscreen-list">
