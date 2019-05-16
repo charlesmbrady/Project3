@@ -115,38 +115,40 @@ class Home extends Component {
   drinkTracker = (e) => {
     e.preventDefault();
     this.checkForNumbers();
-    clearInterval(this.interval);
-    let lastdrink = {};
-    let numberOfDrinksCopy = this.state.numberOfDrinks;
-    lastdrink.number = (numberOfDrinksCopy[ (numberOfDrinksCopy.length - 1) ].number) + 1;
-    lastdrink.timeOfLastDrink = new Date().toLocaleString();
-    numberOfDrinksCopy.push(lastdrink);
-    let bac = (parseFloat(this.calculateBac(1, lastdrink.timeOfLastDrink, this.state.weight, this.state.gender)) +
-      parseFloat(this.state.bac)).toFixed(5);
-    if (bac < 0) { bac = 0; }
-    //measure the time based on current bac for it to get to 0
-    let counter = 0, baczero = bac;
-    while (baczero > 0) {
-      baczero = baczero - ((1 / 60) * .015);
-      counter++;
+    if(this.state.userPhoneNumber !== 0){
+      clearInterval(this.interval);
+      let lastdrink = {};
+      let numberOfDrinksCopy = this.state.numberOfDrinks;
+      lastdrink.number = (numberOfDrinksCopy[ (numberOfDrinksCopy.length - 1) ].number) + 1;
+      lastdrink.timeOfLastDrink = new Date().toLocaleString();
+      numberOfDrinksCopy.push(lastdrink);
+      let bac = (parseFloat(this.calculateBac(1, lastdrink.timeOfLastDrink, this.state.weight, this.state.gender)) +
+        parseFloat(this.state.bac)).toFixed(5);
+      if (bac < 0) { bac = 0; }
+      //measure the time based on current bac for it to get to 0
+      let counter = 0, baczero = bac;
+      while (baczero > 0) {
+        baczero = baczero - ((1 / 60) * .015);
+        counter++;
+      }
+      let zero = (counter / 60).toFixed(2);
+      this.setState({ numberOfDrinks: numberOfDrinksCopy, bac, zero },
+        () => this.checkBeforeSendAutomaticText());
+      //push drinks to db
+      if (this.state.userPhoneNumber !== 0) {
+        API.saveDrink({
+          userPhoneNumber: this.state.userPhoneNumber,
+          numberOfDrinks: lastdrink.number,
+          bac: bac,
+          timeOfLastDrink: lastdrink.timeOfLastDrink,
+          latitude: this.state.theCheckinLatitude,
+          longitude: this.state.theCheckinLongitude
+        }).then((result) => {
+          console.log("drinks added");
+        }).catch(err => console.log(err));
+      }
+      this.interval = setInterval(() => { this.updateBac.bind(this); this.updateBac(); }, 60000);
     }
-    let zero = (counter / 60).toFixed(2);
-    this.setState({ numberOfDrinks: numberOfDrinksCopy, bac, zero },
-      () => this.checkBeforeSendAutomaticText());
-    //push drinks to db
-    if (this.state.userPhoneNumber !== 0) {
-      API.saveDrink({
-        userPhoneNumber: this.state.userPhoneNumber,
-        numberOfDrinks: lastdrink.number,
-        bac: bac,
-        timeOfLastDrink: lastdrink.timeOfLastDrink,
-        latitude: this.state.theCheckinLatitude,
-        longitude: this.state.theCheckinLongitude
-      }).then((result) => {
-        console.log("drinks added");
-      }).catch(err => console.log(err));
-    }
-    this.interval = setInterval(() => { this.updateBac.bind(this); this.updateBac(); }, 60000);
   };
 
   checkIn = (e) => {
