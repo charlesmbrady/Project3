@@ -88,30 +88,30 @@ class Home extends Component {
       }
       let zero = (counter / 60).toFixed(2);
 
-      if (bac < 0) { zero=0;}
+      if (bac < 0) { zero = 0; }
 
       //Begin calculate history summary based on date
-      let dateArr=[];
-      for(let i=0;i<res.data[0].drinks.length;i++){
-        dateArr.push((new Date(res.data[0].drinks[i].timeOfLastDrink).toLocaleDateString()));
+      let dateArr = [];
+      for (let i = 0; i < res.data.drinks.length; i++) {
+        dateArr.push((new Date(res.data.drinks[ i ].timeOfLastDrink).toLocaleDateString()));
       }
       //remove duplicates dates
-      dateArr.sort(function(a, b){return a-b});
-      let uniqueDate = dateArr.filter(function(item, pos) {
-          return dateArr.indexOf(item) === pos;
+      dateArr.sort(function (a, b) { return a - b });
+      let uniqueDate = dateArr.filter(function (item, pos) {
+        return dateArr.indexOf(item) === pos;
       });
       //count the nuber of drinks for each day
-      let drinkSum=[];
-      for(let i=0;i<uniqueDate.length;i++){
-        let dateOfDrink,count=0;
-        for(let j=0;j<res.data[0].drinks.length;j++){
-          if((new Date(res.data[0].drinks[j].timeOfLastDrink).toLocaleDateString())===uniqueDate[i]){
+      let drinkSum = [];
+      for (let i = 0; i < uniqueDate.length; i++) {
+        let dateOfDrink, count = 0;
+        for (let j = 0; j < res.data.drinks.length; j++) {
+          if ((new Date(res.data.drinks[ j ].timeOfLastDrink).toLocaleDateString()) === uniqueDate[ i ]) {
             count++;
-            dateOfDrink=uniqueDate[i];
+            dateOfDrink = uniqueDate[ i ];
           }
-         }
-         if(count>0){
-          drinkSum.push({dateOfDrink:dateOfDrink,count:count});
+        }
+        if (count > 0) {
+          drinkSum.push({ dateOfDrink: dateOfDrink, count: count });
         }
       }
       //End of calculate history summary based on date
@@ -162,13 +162,13 @@ class Home extends Component {
       counter++;
     }
     let zero = (counter / 60).toFixed(2);
-    if (bac < 0) { zero=0;}
+    if (bac < 0) { zero = 0; }
     this.setState({ bac, zero });
   }
 
   drinkTracker = (e) => {
     e.preventDefault();
-    console.log("drink tracker clicked");
+    document.activeElement.blur();
     if (this.state.userPhoneNumber !== 0) {
       clearInterval(this.interval);
       let lastdrink = {};
@@ -187,7 +187,7 @@ class Home extends Component {
         counter++;
       }
       let zero = (counter / 60).toFixed(2);
-      if (bac < 0) { zero=0; }
+      if (bac < 0) { zero = 0; }
       this.setState({ numberOfDrinks: numberOfDrinksCopy, bac, zero },
         () => this.checkBeforeSendAutomaticText());
       //push drinks to db
@@ -210,9 +210,18 @@ class Home extends Component {
 
   checkIn = (e) => {
     e.preventDefault();
-    console.log("Check-In");
     this.checkForNumbers();
     this.storeCheckinLocation();
+    document.activeElement.blur();
+  };
+
+  checkOut = (e) => {
+    e.preventDefault();
+    this.setState({
+      theCheckinLatitude: 0,
+      theCheckinLongitude: 0
+    });
+    document.activeElement.blur();
   };
 
   checkLocalStorageOnMount = () => {
@@ -226,12 +235,15 @@ class Home extends Component {
       if (emergencyContactNumber !== null) {
         this.setState({ emergencyContactNumber: emergencyContactNumber }, console.log("set emergencyContactNumber from localStorage: " + emergencyContactNumber));
       }
-      console.log("isLoggedIn: " + isLoggedIn);
+      if (isLoggedIn !== null) {
+        this.setState({ isLoggedIn: isLoggedIn }, () => { console.log("isLoggedIn: " + this.state.isLoggedIn) });
+      } else {
+        this.setState({ isLoggedIn: false }, () => { console.log("isLoggedIn: " + this.state.isLoggedIn) });
+      }
     }
   };
 
   checkForNumbers = (callback) => {
-    console.log(this.state.userPhoneNumber);
     if (this.state.userPhoneNumber === 0 || this.state.userPhoneNumber === null || this.state.userPhoneNumber === "") {
       this.togglePhone();
     } else {
@@ -274,6 +286,7 @@ class Home extends Component {
   };
 
   contactFriends = () => {
+    document.activeElement.blur();
     this.checkForNumbers(this.sendText);
   };
 
@@ -442,13 +455,10 @@ class Home extends Component {
   }
 
   toggleHistory = () => {
-    if (this.state.historyModal === false) {
-      this.setState({ // close menu modal
-        modal: false
-      });
-    }
+    
     this.setState(prevState => ({
-      historyModal: !prevState.historyModal
+      historyModal: !prevState.historyModal,
+      modal: false
     }));
   }
 
@@ -465,12 +475,18 @@ class Home extends Component {
   }
 
   togglePhone = () => {
+    if (this.state.phoneModal === false) {
+      this.setState({ // close menu modal
+        modal: false
+      });
+    }
     this.setState(prevState => ({
-      phoneModal: !prevState.phoneModal
+      phoneModal: !prevState.phoneModal,
     }))
   }
 
   toggleQuickstart = () => {
+    document.activeElement.blur();
     this.setState(prevState => ({
       quickstartModal: !prevState.quickstartModal
     }))
@@ -484,6 +500,11 @@ class Home extends Component {
 
   toggleLogout = () => { // doesn't really toggle, just logs out
     this.handleLogout();
+    if (this.state.modal === true) {
+      this.setState({ // close menu modal
+        modal: false
+      });
+    }
   }
 
   handleLogout = () => {
@@ -536,13 +557,13 @@ class Home extends Component {
       <div>
         <div className="topbar">
           <MenuModal user={ this.state.firstName } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) }
-            toggleAlerts={ this.toggleAlerts } toggleHistory={ this.toggleHistory } toggleSettings={ this.toggleSettings }>
+            toggleAlerts={ this.toggleAlerts } toggleHistory={ this.toggleHistory } toggleSettings={ this.toggleSettings } togglePhone={ this.togglePhone }>
           </MenuModal>
           <button className="cntrl-btn" data-test="menu-quickstart" onClick={ this.toggleQuickstart }>Quick Start</button>
         </div>
         <Container className="home">
-          <MenuModal user={ this.state.firstName } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) }
-            toggleAlerts={ this.toggleAlerts } toggleHistory={ this.toggleHistory } toggleSettings={ this.toggleSettings } toggleLogout={ this.toggleLogout }>
+          <MenuModal isLoggedIn={this.state.isLoggedIn} user={ this.state.firstName } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) }
+            toggleAlerts={ this.toggleAlerts } toggleHistory={ this.toggleHistory } toggleSettings={ this.toggleSettings } toggleLogout={ this.toggleLogout } togglePhone={ this.togglePhone }>
           </MenuModal>
           <Row>
             <Col>
@@ -560,7 +581,14 @@ class Home extends Component {
           </Row>
         </Container>
         <div className="bottombar">
-          <button className="cntrl-btn" data-test="controls-checkin" onClick={ this.checkIn }>CheckIn</button>
+
+
+          { this.state.theCheckinLatitude === 0 ? (
+            <button className="cntrl-btn" data-test="controls-checkin" onClick={ this.checkIn }>CheckIn</button>
+          ) : (
+              <button className="cntrl-btn" data-test="controls-checkin" onClick={ this.checkOut }>CheckOut</button>
+            ) }
+
           <button className="cntrl-btn" data-test="controls-drink" onClick={ this.drinkTracker }>+Drink</button>
           <a className="cntrl-btn" data-test="controls-uber" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location" target="_blank" rel="noopener noreferrer">Uber</a>
           <button className="cntrl-btn" data-test="controls-friends" onClick={ this.contactFriends }>Friends</button>
@@ -591,7 +619,7 @@ class Home extends Component {
                     type="number" step="0.01"
                     className="form-control" id="drinkCountThreshold" placeholder="Ex. 5"></input>
                 </div>
-                <button type="submit" className="btn">Submit</button>
+                <button type="submit" className="btn btn-style">Submit</button>
               </form>
             </Container>
           </ModalBody>
@@ -675,7 +703,7 @@ class Home extends Component {
                   name="emergencyContactNumber"
                   className="form-control modal-text" id="emergencyContactPhoneNumber" placeholder=""></input>
                 {/* </div> */ }
-                <button type="submit" className="btn">Submit</button>
+                <button type="submit" className="btn btn-style">Submit</button>
               </form>
             </Container>
           </ModalBody>
