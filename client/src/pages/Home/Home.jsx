@@ -597,7 +597,7 @@ class Home extends Component {
                     type="number" step="0.01"
                     className="form-control" id="drinkCountThreshold" placeholder="Ex. 5"></input>
                 </div>
-                <button type="submit" className="btn">Submit</button>
+                <button type="submit" className="btn btn-style">Submit</button>
               </form>
             </Container>
           </ModalBody>
@@ -681,7 +681,7 @@ class Home extends Component {
                   name="emergencyContactNumber"
                   className="form-control modal-text" id="emergencyContactPhoneNumber" placeholder=""></input>
                 {/* </div> */ }
-                <button type="submit" className="btn">Submit</button>
+                <button type="submit" className="btn btn-style">Submit</button>
               </form>
             </Container>
           </ModalBody>
