@@ -220,7 +220,11 @@ class Home extends Component {
       if (emergencyContactNumber !== null) {
         this.setState({ emergencyContactNumber: emergencyContactNumber }, console.log("set emergencyContactNumber from localStorage: " + emergencyContactNumber));
       }
-      console.log("isLoggedIn: " + isLoggedIn);
+      if (isLoggedIn !== null) {
+        this.setState({ isLoggedIn: isLoggedIn }, () => { console.log("isLoggedIn: " + this.state.isLoggedIn) });
+      } else {
+        this.setState({ isLoggedIn: false }, () => { console.log("isLoggedIn: " + this.state.isLoggedIn) });
+      }
     }
   };
 
