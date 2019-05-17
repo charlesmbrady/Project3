@@ -199,3 +199,7 @@ p {
   background-color: #121212;
   cursor: pointer;
 }
+
+.cntrl-btn:focus {
+  border: 5px solid white;
+}
