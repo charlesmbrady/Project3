@@ -56,29 +56,29 @@ class Home extends Component {
       userPhoneNumber: this.state.userPhoneNumber
     }).then(res => {
       clearInterval(this.interval);
-      if(when==='on login'){
+      if (when === 'on login') {
         let lastdrink = {}, numberOfDrinks = [];
-        lastdrink.number = res.data[0].drinks[ (res.data[0].drinks.length) - 1 ].numberOfDrinks;
-        lastdrink.timeOfLastDrink = (new Date(res.data[0].drinks[ (res.data[0].drinks.length) - 1 ].timeOfLastDrink)).toLocaleString();
+        lastdrink.number = res.data[ 0 ].drinks[ (res.data[ 0 ].drinks.length) - 1 ].numberOfDrinks;
+        lastdrink.timeOfLastDrink = (new Date(res.data[ 0 ].drinks[ (res.data[ 0 ].drinks.length) - 1 ].timeOfLastDrink)).toLocaleString();
         numberOfDrinks.push(lastdrink);
-        console.log("numberOfDrinks");console.log(numberOfDrinks);
+        console.log("numberOfDrinks"); console.log(numberOfDrinks);
         this.setState({
-          emergencyContactNumber: res.data[0].emergencyContactNumber, weight: res.data[0].weight,
-          gender: res.data[0].gender, selfAlertThreshold: res.data[0].selfAlertThreshold, emergencyAlertThreshold: res.data[0].emergencyAlertThreshold,
-          numberOfDrinks: numberOfDrinks, bac:res.data[0].drinks[ (res.data[0].drinks.length) - 1 ].bac
+          emergencyContactNumber: res.data[ 0 ].emergencyContactNumber, weight: res.data[ 0 ].weight,
+          gender: res.data[ 0 ].gender, selfAlertThreshold: res.data[ 0 ].selfAlertThreshold, emergencyAlertThreshold: res.data[ 0 ].emergencyAlertThreshold,
+          numberOfDrinks: numberOfDrinks, bac: res.data[ 0 ].drinks[ (res.data[ 0 ].drinks.length) - 1 ].bac
         });
       }
       let lastdrink = {};
       let numberOfDrinksCopy = this.state.numberOfDrinks;
-      if(res.data[0].drinks.length > 0){
-        lastdrink.number = res.data[0].drinks[ (res.data[0].drinks.length) - 1 ].numberOfDrinks;
-        lastdrink.timeOfLastDrink = (new Date(res.data[0].drinks[ (res.data[0].drinks.length) - 1 ].timeOfLastDrink)).toLocaleString();
+      if (res.data[ 0 ].drinks.length > 0) {
+        lastdrink.number = res.data[ 0 ].drinks[ (res.data[ 0 ].drinks.length) - 1 ].numberOfDrinks;
+        lastdrink.timeOfLastDrink = (new Date(res.data[ 0 ].drinks[ (res.data[ 0 ].drinks.length) - 1 ].timeOfLastDrink)).toLocaleString();
         numberOfDrinksCopy.push(lastdrink);
       }
       //elapsed time in minutes since last recorded drink
       let now = new Date();
       let elapsedTime = (now - new Date(lastdrink.timeOfLastDrink)) / 60000;
-      let bac = (res.data[0].drinks[ (res.data[0].drinks.length) - 1 ].bac - (elapsedTime * .00025)).toFixed(5);
+      let bac = (res.data[ 0 ].drinks[ (res.data[ 0 ].drinks.length) - 1 ].bac - (elapsedTime * .00025)).toFixed(5);
       if (bac < 0) { bac = 0; }
       //measure the time based on current bac for it to get to 0
       let counter = 0, baczero = bac;
@@ -92,8 +92,8 @@ class Home extends Component {
 
       //Begin calculate history summary based on date
       let dateArr = [];
-      for (let i = 0; i < res.data[0].drinks.length; i++) {
-        dateArr.push((new Date(res.data[0].drinks[ i ].timeOfLastDrink).toLocaleDateString()));
+      for (let i = 0; i < res.data[ 0 ].drinks.length; i++) {
+        dateArr.push((new Date(res.data[ 0 ].drinks[ i ].timeOfLastDrink).toLocaleDateString()));
       }
       //remove duplicates dates
       dateArr.sort(function (a, b) { return a - b });
@@ -104,8 +104,8 @@ class Home extends Component {
       let drinkSum = [];
       for (let i = 0; i < uniqueDate.length; i++) {
         let dateOfDrink, count = 0;
-        for (let j = 0; j < res.data[0].drinks.length; j++) {
-          if ((new Date(res.data[0].drinks[ j ].timeOfLastDrink).toLocaleDateString()) === uniqueDate[ i ]) {
+        for (let j = 0; j < res.data[ 0 ].drinks.length; j++) {
+          if ((new Date(res.data[ 0 ].drinks[ j ].timeOfLastDrink).toLocaleDateString()) === uniqueDate[ i ]) {
             count++;
             dateOfDrink = uniqueDate[ i ];
           }
@@ -117,8 +117,8 @@ class Home extends Component {
       //End of calculate history summary based on date
       //add all db vars to state on mount
       this.setState({
-        emergencyContactNumber: res.data[0].emergencyContactNumber, weight: res.data[0].weight,
-        gender: res.data[0].gender, selfAlertThreshold: res.data[0].selfAlertThreshold, emergencyAlertThreshold: res.data[0].emergencyAlertThreshold,
+        emergencyContactNumber: res.data[ 0 ].emergencyContactNumber, weight: res.data[ 0 ].weight,
+        gender: res.data[ 0 ].gender, selfAlertThreshold: res.data[ 0 ].selfAlertThreshold, emergencyAlertThreshold: res.data[ 0 ].emergencyAlertThreshold,
         numberOfDrinks: numberOfDrinksCopy, bac, zero, drinks: drinkSum
       });
       this.interval = setInterval(() => { this.updateBac.bind(this); this.updateBac(); }, 60000);
@@ -172,7 +172,7 @@ class Home extends Component {
     if (this.state.userPhoneNumber !== 0) {
       clearInterval(this.interval);
       let lastdrink = {};
-      console.log("testing line 163");console.log(this.state.numberOfDrinks);
+      console.log("testing line 163"); console.log(this.state.numberOfDrinks);
       let numberOfDrinksCopy = this.state.numberOfDrinks;
       lastdrink.number = (numberOfDrinksCopy[ (numberOfDrinksCopy.length - 1) ].number) + 1;
       lastdrink.timeOfLastDrink = new Date().toLocaleString();
@@ -205,7 +205,7 @@ class Home extends Component {
         }).catch(err => console.log(err));
       }
       this.interval = setInterval(() => { this.updateBac.bind(this); this.updateBac(); }, 60000);
-    }else{
+    } else {
       this.togglePhone();
     }
   };
@@ -231,14 +231,14 @@ class Home extends Component {
       let userPhoneNumber = localStorage.getItem("userPhoneNumber");
       let emergencyContactNumber = localStorage.getItem("emergencyContactNumber");
       let isLoggedIn = localStorage.getItem("isLoggedIn");
-      if (userPhoneNumber !== null) {
-        this.setState({ userPhoneNumber: userPhoneNumber }, () => { console.log("set userPhoneNumber from localStorage: " + this.state.userPhoneNumber); console.log("line 214 loaddrinks");this.loadDrinks() });
+      if (userPhoneNumber > 0) {
+        this.setState({ userPhoneNumber: userPhoneNumber }, () => { console.log("set userPhoneNumber from localStorage: " + this.state.userPhoneNumber); console.log("line 214 loaddrinks"); this.loadDrinks() });
       }
-      if (emergencyContactNumber !== null) {
+      if (emergencyContactNumber > 0) {
         this.setState({ emergencyContactNumber: emergencyContactNumber }, console.log("set emergencyContactNumber from localStorage: " + emergencyContactNumber));
       }
-      if (isLoggedIn !== null) {
-        this.setState({ isLoggedIn: isLoggedIn }, () => { console.log("isLoggedIn: " + this.state.isLoggedIn) });
+      if (isLoggedIn === "true") {
+        this.setState({ isLoggedIn: true }, () => { console.log("isLoggedIn: " + this.state.isLoggedIn) });
       } else {
         this.setState({ isLoggedIn: false }, () => { console.log("isLoggedIn: " + this.state.isLoggedIn) });
       }
@@ -249,7 +249,7 @@ class Home extends Component {
     if (this.state.userPhoneNumber === 0 || this.state.userPhoneNumber === null || this.state.userPhoneNumber === "") {
       this.togglePhone();
     } else {
-      console.log("line 228 loaddrinks");this.loadDrinks();
+      console.log("line 228 loaddrinks"); this.loadDrinks();
     }
     if (typeof callback === "function") { callback() };
   };
@@ -401,10 +401,6 @@ class Home extends Component {
       });
     }
     if (this.state.phoneModal) {
-      localStorage.setItem("userPhoneNumber", this.state.userPhoneNumber);
-      localStorage.setItem("emergencyContactNumber", this.state.emergencyContactNumber);
-      localStorage.setItem("isLoggedIn", true);
-      this.setState({ isLoggedIn: true });
       AUTH.signup({
         userPhoneNumber: this.state.userPhoneNumber,
         emergencyContactNumber: this.state.emergencyContactNumber,
@@ -416,12 +412,16 @@ class Home extends Component {
           this.setState({
             redirectTo: '/'
           });
+          localStorage.setItem("userPhoneNumber", this.state.userPhoneNumber);
+          localStorage.setItem("emergencyContactNumber", this.state.emergencyContactNumber);
+          localStorage.setItem("isLoggedIn", true);
+          this.setState({ isLoggedIn: true });
         } else if (response.data.error === 'Phone number exists') {
           console.log('duplicate');
-          console.log("line 396 loaddrinks");this.loadDrinks('on login');
+          console.log("line 396 loaddrinks"); this.loadDrinks('on login');
         } else if (response.data.error === 'Password does not match') {
           console.log('wrong password');
-          alert("Password does not match, Please enter the right password");
+          alert("Password does not match, Please enter the correct password");
           this.setState({ userPhoneNumber: 0, emergencyContactNumber: 0 });
           localStorage.clear();
         }
@@ -457,7 +457,7 @@ class Home extends Component {
   }
 
   toggleHistory = () => {
-    
+
     this.setState(prevState => ({
       historyModal: !prevState.historyModal,
       modal: false
@@ -564,7 +564,7 @@ class Home extends Component {
           <button className="cntrl-btn" data-test="menu-quickstart" onClick={ this.toggleQuickstart }>Quick Start</button>
         </div>
         <Container className="home">
-          <MenuModal isLoggedIn={this.state.isLoggedIn} user={ this.state.firstName } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) }
+          <MenuModal isLoggedIn={ this.state.isLoggedIn } user={ this.state.firstName } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) }
             toggleAlerts={ this.toggleAlerts } toggleHistory={ this.toggleHistory } toggleSettings={ this.toggleSettings } toggleLogout={ this.toggleLogout } togglePhone={ this.togglePhone }>
           </MenuModal>
           <Row>
@@ -635,18 +635,18 @@ class Home extends Component {
           </ModalHeader>
           <ModalBody className="modal-body">
             <Container>
-                <h2 className="history-label">Drinks History</h2>
-                {this.state.drinks.length ? (
-                  <List>
-                    {this.state.drinks.map((drink, index) => (
-                      <ListItem key={index}>
-                          Date: {drink.dateOfDrink}, Number Of Drinks: {drink.count}
-                      </ListItem>
-                    ))}
-                  </List>
-                ) : (
-                    <h3 style={{color: "yellow"}}>No Drink history to Display</h3>
-                )}
+              <h2 className="history-label">Drinks History</h2>
+              { this.state.drinks.length ? (
+                <List>
+                  { this.state.drinks.map((drink, index) => (
+                    <ListItem key={ index }>
+                      Date: { drink.dateOfDrink }, Number Of Drinks: { drink.count }
+                    </ListItem>
+                  )) }
+                </List>
+              ) : (
+                  <h3 style={ { color: "yellow" } }>No Drink history to Display</h3>
+                ) }
             </Container>
           </ModalBody>
         </Modal>
