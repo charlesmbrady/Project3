@@ -440,13 +440,10 @@ class Home extends Component {
   }
 
   toggleHistory = () => {
-    if (this.state.historyModal === false) {
-      this.setState({ // close menu modal
-        modal: false
-      });
-    }
+    
     this.setState(prevState => ({
-      historyModal: !prevState.historyModal
+      historyModal: !prevState.historyModal,
+      modal: false
     }));
   }
 
@@ -463,8 +460,13 @@ class Home extends Component {
   }
 
   togglePhone = () => {
+    if (this.state.phoneModal === false) {
+      this.setState({ // close menu modal
+        modal: false
+      });
+    }
     this.setState(prevState => ({
-      phoneModal: !prevState.phoneModal
+      phoneModal: !prevState.phoneModal,
     }))
   }
 
@@ -483,6 +485,11 @@ class Home extends Component {
 
   toggleLogout = () => { // doesn't really toggle, just logs out
     this.handleLogout();
+    if (this.state.modal === true) {
+      this.setState({ // close menu modal
+        modal: false
+      });
+    }
   }
 
   handleLogout = () => {
