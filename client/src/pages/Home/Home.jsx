@@ -154,6 +154,7 @@ class Home extends Component {
 
   drinkTracker = (e) => {
     e.preventDefault();
+    document.activeElement.blur();
     this.checkForNumbers();
     if (this.state.userPhoneNumber !== 0) {
       clearInterval(this.interval);
@@ -194,9 +195,18 @@ class Home extends Component {
 
   checkIn = (e) => {
     e.preventDefault();
-    console.log("Check-In");
     this.checkForNumbers();
     this.storeCheckinLocation();
+    document.activeElement.blur();
+  };
+
+  checkOut = (e) => {
+    e.preventDefault();
+    this.setState({
+      theCheckinLatitude: 0,
+      theCheckinLongitude: 0
+    });
+    document.activeElement.blur();
   };
 
   checkLocalStorageOnMount = () => {
@@ -215,7 +225,6 @@ class Home extends Component {
   };
 
   checkForNumbers = (callback) => {
-    console.log(this.state.userPhoneNumber);
     if (this.state.userPhoneNumber === 0 || this.state.userPhoneNumber === null || this.state.userPhoneNumber === "") {
       this.togglePhone();
     } else {
@@ -258,6 +267,7 @@ class Home extends Component {
   };
 
   contactFriends = () => {
+    document.activeElement.blur();
     this.checkForNumbers(this.sendText);
   };
 
@@ -455,6 +465,7 @@ class Home extends Component {
   }
 
   toggleQuickstart = () => {
+    document.activeElement.blur();
     this.setState(prevState => ({
       quickstartModal: !prevState.quickstartModal
     }))
@@ -545,7 +556,14 @@ class Home extends Component {
           </Row>
         </Container>
         <div className="bottombar">
-          <button className="cntrl-btn" data-test="controls-checkin" onClick={this.checkIn}>CheckIn</button>
+
+
+          {this.state.theCheckinLatitude === 0 ? (
+            <button className="cntrl-btn" data-test="controls-checkin" onClick={this.checkIn}>CheckIn</button>
+          ) : (
+              <button className="cntrl-btn" data-test="controls-checkin" onClick={this.checkOut}>CheckOut</button>
+            )}
+
           <button className="cntrl-btn" data-test="controls-drink" onClick={this.drinkTracker}>+Drink</button>
           <a className="cntrl-btn" data-test="controls-uber" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location" target="_blank" rel="noopener noreferrer">Uber</a>
           <button className="cntrl-btn" data-test="controls-friends" onClick={this.contactFriends}>Friends</button>
