@@ -4,7 +4,6 @@ const db = require("../models");
 module.exports = {
   getUser: (req, res, next) => {
     console.log('===== user!!======');
-    console.log(req.user);
     if (req.user) {
       return res.json({ user: req.user });
     } else {
@@ -72,7 +71,7 @@ module.exports = {
     db.User.find({userPhoneNumber: req.body.userPhoneNumber})
     // Specify that we want to populate the retrieved saved news with any associated notes
     .populate("drinks")
-    .then(userdrinks => res.json(userdrinks[0]))
+    .then(userdrinks => res.json(userdrinks))
     .catch(err => {
       // If an error occurs, send it back to the client
       res.json(err);

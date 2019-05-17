@@ -2,8 +2,8 @@ import axios from "axios";
 
 export default {
   // Gets all Drinks
-  getDrinks: function () {
-    return axios.get("/api/Drinks");
+  getDrinks: function (query) {
+    return axios.get("/api/Drinks",query);
   },
   // Gets the Drink with the given id
   getDrink: function (id) {
