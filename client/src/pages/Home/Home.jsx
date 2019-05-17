@@ -535,13 +535,13 @@ class Home extends Component {
       <div>
         <div className="topbar">
           <MenuModal user={ this.state.firstName } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) }
-            toggleAlerts={ this.toggleAlerts } toggleHistory={ this.toggleHistory } toggleSettings={ this.toggleSettings }>
+            toggleAlerts={ this.toggleAlerts } toggleHistory={ this.toggleHistory } toggleSettings={ this.toggleSettings } togglePhone={ this.togglePhone }>
           </MenuModal>
           <button className="cntrl-btn" data-test="menu-quickstart" onClick={ this.toggleQuickstart }>Quick Start</button>
         </div>
         <Container className="home">
-          <MenuModal user={ this.state.firstName } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) }
-            toggleAlerts={ this.toggleAlerts } toggleHistory={ this.toggleHistory } toggleSettings={ this.toggleSettings } toggleLogout={ this.toggleLogout }>
+          <MenuModal isLoggedIn={this.state.isLoggedIn} user={ this.state.firstName } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) }
+            toggleAlerts={ this.toggleAlerts } toggleHistory={ this.toggleHistory } toggleSettings={ this.toggleSettings } toggleLogout={ this.toggleLogout } togglePhone={ this.togglePhone }>
           </MenuModal>
           <Row>
             <Col>

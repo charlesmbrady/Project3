@@ -3,6 +3,7 @@ import { Container, Row, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter
 import './menu.css';
 
 const MenuModal = (props) => {
+    const isLoggedIn = props.isLoggedIn;
     return (
         <div>
             <Button onClick={ props.toggle } className="menu-btn" data-test="home-menu-button">Menu</Button>
@@ -29,8 +30,13 @@ const MenuModal = (props) => {
                     </Container>
                 </ModalBody>
                 <ModalFooter>
-                    {/* TODO: Logout needs to be connected to the function handleLogout in Home.jsx */ }
-                    <button className="menu-button" data-test="menu-logout" toggleLogout={ props.toggleLogout } onClick={ props.toggleLogout }>Logout</button>
+                    {isLoggedIn === "true" ? (
+                        <button className="menu-button" data-test="menu-logout" toggleLogout={ props.toggleLogout } onClick={ props.toggleLogout }>Logout</button>
+                    ) 
+                    : (
+                        <button togglePhone={ props.togglePhone } onClick={ props.togglePhone }>register/login</button>
+                    )}
+                    
                 </ModalFooter>
             </Modal>
         </div>
