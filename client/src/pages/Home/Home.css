@@ -10,3 +10,7 @@ a:hover {
     cursor: pointer;
     background: none;
 }
+
+.mobile-test {
+    border: 5px solid white;
+}

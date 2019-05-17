@@ -146,10 +146,10 @@ p {
   vertical-align: middle;
 }
 
-.menu-btn:hover, .topbar>a:hover, .topbar>button:hover, .bottombar>a:hover, .bottombar>button:hover {
+/* .menu-btn:hover, .topbar>a:hover, .topbar>button:hover, .bottombar>a:hover, .bottombar>button:hover {
   background-color: #fff10a;
   color: #121212;
-}
+} */
 
 .menu-settings {}
 

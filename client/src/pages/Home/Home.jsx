@@ -12,6 +12,7 @@ import { List, ListItem } from "../../components/List";
 class Home extends Component {
   constructor (props) {
     super(props);
+    this.buttonRef = React.createRef();
     this.state = {
       numberOfDrinks: [ { number: 0, timeOfLastDrink: [ new Date().toLocaleString() ] } ],
       userPhoneNumber: 0,
@@ -527,6 +528,7 @@ class Home extends Component {
   }
 
   render () {
+    console.log(this.buttonRef.current,'buttonref')
     return (
       <div>
         <div className="topbar">
@@ -558,9 +560,12 @@ class Home extends Component {
           
 
           {this.state.theCheckinLatitude === 0 ? (
-            <button className="cntrl-btn" data-test="controls-checkin" onClick={ this.checkIn }>CheckIn</button>
+            <button ref={this.buttonRef}
+            onTouchStart={() => this.buttonRef.current.classList.add('.mobile-test')}
+            onTouchEnd={() => this.buttonRef.current.classList.add('.mobile-test')}
+            className="cntrl-btn" data-test="controls-checkin" onClick={this.state.theCheckinLatitude}>CheckIn</button>
           ) : (
-            <button className="cntrl-btn" data-test="controls-checkin" onClick={ this.checkOut }>CheckOut</button>
+            <button ref={this.buttonRef} className="cntrl-btn" data-test="controls-checkin" onClick={ this.checkOut }>CheckOut</button>
           )}
 
           <button className="cntrl-btn" data-test="controls-drink" onClick={ this.drinkTracker }>+Drink</button>
