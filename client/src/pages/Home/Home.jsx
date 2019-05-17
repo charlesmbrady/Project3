@@ -92,8 +92,8 @@ class Home extends Component {
 
       //Begin calculate history summary based on date
       let dateArr = [];
-      for (let i = 0; i < res.data.drinks.length; i++) {
-        dateArr.push((new Date(res.data.drinks[ i ].timeOfLastDrink).toLocaleDateString()));
+      for (let i = 0; i < res.data[0].drinks.length; i++) {
+        dateArr.push((new Date(res.data[0].drinks[ i ].timeOfLastDrink).toLocaleDateString()));
       }
       //remove duplicates dates
       dateArr.sort(function (a, b) { return a - b });
@@ -104,8 +104,8 @@ class Home extends Component {
       let drinkSum = [];
       for (let i = 0; i < uniqueDate.length; i++) {
         let dateOfDrink, count = 0;
-        for (let j = 0; j < res.data.drinks.length; j++) {
-          if ((new Date(res.data.drinks[ j ].timeOfLastDrink).toLocaleDateString()) === uniqueDate[ i ]) {
+        for (let j = 0; j < res.data[0].drinks.length; j++) {
+          if ((new Date(res.data[0].drinks[ j ].timeOfLastDrink).toLocaleDateString()) === uniqueDate[ i ]) {
             count++;
             dateOfDrink = uniqueDate[ i ];
           }
