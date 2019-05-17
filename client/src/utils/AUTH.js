@@ -19,7 +19,7 @@ export default {
   },
   // Gets user drinks info
   getUserDrinks: function(userPhone) {
-    return axios.post('/auth/userdrinks',userPhone);
+    return axios.post('/auth/userdrinks', userPhone);
   },
   // update user info
   userUpdate: function(userData) {
