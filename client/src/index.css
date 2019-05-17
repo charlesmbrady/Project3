@@ -200,6 +200,6 @@ p {
   cursor: pointer;
 }
 
-.cntrl-btn:focus {
+.cntrl-btn:active {
   border: 5px solid white;
 }
