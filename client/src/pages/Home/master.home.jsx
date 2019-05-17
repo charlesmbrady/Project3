@@ -10,10 +10,10 @@ import AUTH from '../../utils/AUTH';
 import { List, ListItem } from "../../components/List";
 
 class Home extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
-      numberOfDrinks: [{ number: 0, timeOfLastDrink: [new Date().toLocaleString()] }],
+      numberOfDrinks: [ { number: 0, timeOfLastDrink: [ new Date().toLocaleString() ] } ],
       userPhoneNumber: 0,
       emergencyContactNumber: 0,
       password: '',
@@ -42,7 +42,7 @@ class Home extends Component {
       infoModalBody: "",
       modal: false,
       drinks: [],
-      toggle() {
+      toggle () {
         this.setState(prevState => ({
           modal: !prevState.modal
         }));
@@ -58,13 +58,13 @@ class Home extends Component {
       clearInterval(this.interval);
       let lastdrink = {};
       let numberOfDrinksCopy = this.state.numberOfDrinks;
-      lastdrink.number = res.data.drinks[(res.data.drinks.length) - 1].numberOfDrinks;
-      lastdrink.timeOfLastDrink = (new Date(res.data.drinks[(res.data.drinks.length) - 1].timeOfLastDrink)).toLocaleString();
+      lastdrink.number = res.data.drinks[ (res.data.drinks.length) - 1 ].numberOfDrinks;
+      lastdrink.timeOfLastDrink = (new Date(res.data.drinks[ (res.data.drinks.length) - 1 ].timeOfLastDrink)).toLocaleString();
       numberOfDrinksCopy.push(lastdrink);
       //elapsed time in minutes since last recorded drink
       let now = new Date();
       let elapsedTime = (now - new Date(lastdrink.timeOfLastDrink)) / 60000;
-      let bac = (res.data.drinks[(res.data.drinks.length) - 1].bac - (elapsedTime * .00025)).toFixed(5);
+      let bac = (res.data.drinks[ (res.data.drinks.length) - 1 ].bac - (elapsedTime * .00025)).toFixed(5);
       if (bac < 0) { bac = 0; }
       //measure the time based on current bac for it to get to 0
       let counter = 0, baczero = bac;
@@ -74,30 +74,30 @@ class Home extends Component {
       }
       let zero = (counter / 60).toFixed(2);
 
-      if (bac < 0) { zero = 0; }
+      if (bac < 0) { zero=0;}
 
       //Begin calculate history summary based on date
-      let dateArr = [];
-      for (let i = 0; i < res.data.drinks.length; i++) {
+      let dateArr=[];
+      for(let i=0;i<res.data.drinks.length;i++){
         dateArr.push((new Date(res.data.drinks[i].timeOfLastDrink).toLocaleDateString()));
       }
       //remove duplicates dates
-      dateArr.sort(function (a, b) { return a - b });
-      let uniqueDate = dateArr.filter(function (item, pos) {
-        return dateArr.indexOf(item) === pos;
+      dateArr.sort(function(a, b){return a-b});
+      let uniqueDate = dateArr.filter(function(item, pos) {
+          return dateArr.indexOf(item) === pos;
       });
       //count the nuber of drinks for each day
-      let drinkSum = [];
-      for (let i = 0; i < uniqueDate.length; i++) {
-        let dateOfDrink, count = 0;
-        for (let j = 0; j < res.data.drinks.length; j++) {
-          if ((new Date(res.data.drinks[j].timeOfLastDrink).toLocaleDateString()) === uniqueDate[i]) {
+      let drinkSum=[];
+      for(let i=0;i<uniqueDate.length;i++){
+        let dateOfDrink,count=0;
+        for(let j=0;j<res.data.drinks.length;j++){
+          if((new Date(res.data.drinks[j].timeOfLastDrink).toLocaleDateString())===uniqueDate[i]){
             count++;
-            dateOfDrink = uniqueDate[i];
+            dateOfDrink=uniqueDate[i];
           }
-        }
-        if (count > 0) {
-          drinkSum.push({ dateOfDrink: dateOfDrink, count: count });
+         }
+         if(count>0){
+          drinkSum.push({dateOfDrink:dateOfDrink,count:count});
         }
       }
       //End of calculate history summary based on date
@@ -112,17 +112,17 @@ class Home extends Component {
       .catch(err => console.log(err));
   };
 
-  componentDidMount() {
+  componentDidMount () {
     this._isMounted = true;
     this.checkLocalStorageOnMount();
     this.watchLocation();
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     this._isMounted = false;
   }
 
-  calculateBac(drink, time, weight, gender) {
+  calculateBac (drink, time, weight, gender) {
     //calculate BAC(using 130lbs as generic weight and r=0.55 for conservative estimate if user does not give the data)
     let r = 0.55;
     if (gender.toLowerCase === 'm') {
@@ -138,7 +138,7 @@ class Home extends Component {
   }
 
   //update BAC every minute
-  updateBac() {
+  updateBac () {
     let bac = (this.state.bac - ((1 / 60) * .015)).toFixed(5);
     if (bac < 0) { bac = 0; }
     //measure the time based on current bac for it to get to 0
@@ -148,7 +148,7 @@ class Home extends Component {
       counter++;
     }
     let zero = (counter / 60).toFixed(2);
-    if (bac < 0) { zero = 0; }
+    if (bac < 0) { zero=0;}
     this.setState({ bac, zero });
   }
 
@@ -159,7 +159,7 @@ class Home extends Component {
       clearInterval(this.interval);
       let lastdrink = {};
       let numberOfDrinksCopy = this.state.numberOfDrinks;
-      lastdrink.number = (numberOfDrinksCopy[(numberOfDrinksCopy.length - 1)].number) + 1;
+      lastdrink.number = (numberOfDrinksCopy[ (numberOfDrinksCopy.length - 1) ].number) + 1;
       lastdrink.timeOfLastDrink = new Date().toLocaleString();
       numberOfDrinksCopy.push(lastdrink);
       let bac = (parseFloat(this.calculateBac(1, lastdrink.timeOfLastDrink, this.state.weight, this.state.gender)) +
@@ -172,7 +172,7 @@ class Home extends Component {
         counter++;
       }
       let zero = (counter / 60).toFixed(2);
-      if (bac < 0) { zero = 0; }
+      if (bac < 0) { zero=0; }
       this.setState({ numberOfDrinks: numberOfDrinksCopy, bac, zero },
         () => this.checkBeforeSendAutomaticText());
       //push drinks to db
@@ -303,7 +303,7 @@ class Home extends Component {
       if (theMessage.indexOf("Uber") > -1) { // this removes the Uber link
         theMessage = "It looks like you have had a lot to drink. Please get a ride home or get an Uber, for your own safety and for the safety of others."
       }
-      window.navigator.vibrate([500, 200, 500]);
+      window.navigator.vibrate([ 500, 200, 500 ]);
       setTimeout(function () {
         alert(theMessage);
       }, 800);
@@ -350,7 +350,7 @@ class Home extends Component {
     const name = event.target.name;
     // Updating the input's state
     this.setState({
-      [name]: value
+      [ name ]: value
     });
   };
 
@@ -483,7 +483,7 @@ class Home extends Component {
 
   resetState = () => {
     this.setState({
-      numberOfDrinks: [{ number: 0, timeOfLastDrink: [new Date().toLocaleString()] }],
+      numberOfDrinks: [ { number: 0, timeOfLastDrink: [ new Date().toLocaleString() ] } ],
       userPhoneNumber: 0,
       emergencyContactNumber: 0,
       password: '',
@@ -515,19 +515,18 @@ class Home extends Component {
     })
   }
 
-  render() {
-    console.log(this.state.drinks)
+  render () {
     return (
       <div>
         <div className="topbar">
-          <MenuModal user={this.state.firstName} modal={this.state.modal} toggle={this.state.toggle.bind(this)}
-            toggleAlerts={this.toggleAlerts} toggleHistory={this.toggleHistory} toggleSettings={this.toggleSettings}>
+          <MenuModal user={ this.state.firstName } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) }
+            toggleAlerts={ this.toggleAlerts } toggleHistory={ this.toggleHistory } toggleSettings={ this.toggleSettings }>
           </MenuModal>
-          <button className="cntrl-btn" data-test="menu-quickstart" onClick={this.toggleQuickstart}>Quick Start</button>
+          <button className="cntrl-btn" data-test="menu-quickstart" onClick={ this.toggleQuickstart }>Quick Start</button>
         </div>
         <Container className="home">
-          <MenuModal user={this.state.firstName} modal={this.state.modal} toggle={this.state.toggle.bind(this)}
-            toggleAlerts={this.toggleAlerts} toggleHistory={this.toggleHistory} toggleSettings={this.toggleSettings} toggleLogout={this.toggleLogout}>
+          <MenuModal user={ this.state.firstName } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) }
+            toggleAlerts={ this.toggleAlerts } toggleHistory={ this.toggleHistory } toggleSettings={ this.toggleSettings } toggleLogout={ this.toggleLogout }>
           </MenuModal>
           <Row>
             <Col>
@@ -537,32 +536,32 @@ class Home extends Component {
           <Row>
             <Col>
               <div id="test-display">test display</div>
-              <PostDrink drinks={this.state.numberOfDrinks[((this.state.numberOfDrinks).length) - 1]} bac={this.state.bac} zero={this.state.zero}></PostDrink>
+              <PostDrink drinks={ this.state.numberOfDrinks[ ((this.state.numberOfDrinks).length) - 1 ] } bac={ this.state.bac } zero={ this.state.zero }></PostDrink>
               <div>
-                <img id="superSip" src={colorSuperSip} alt="Spot" width="80%" />
+                <img id="superSip" src={ colorSuperSip } alt="Spot" width="80%" />
               </div>
             </Col>
           </Row>
         </Container>
         <div className="bottombar">
-          <button className="cntrl-btn" data-test="controls-checkin" onClick={this.checkIn}>CheckIn</button>
-          <button className="cntrl-btn" data-test="controls-drink" onClick={this.drinkTracker}>+Drink</button>
+          <button className="cntrl-btn" data-test="controls-checkin" onClick={ this.checkIn }>CheckIn</button>
+          <button className="cntrl-btn" data-test="controls-drink" onClick={ this.drinkTracker }>+Drink</button>
           <a className="cntrl-btn" data-test="controls-uber" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location" target="_blank" rel="noopener noreferrer">Uber</a>
-          <button className="cntrl-btn" data-test="controls-friends" onClick={this.contactFriends}>Friends</button>
+          <button className="cntrl-btn" data-test="controls-friends" onClick={ this.contactFriends }>Friends</button>
         </div>
-        {/* Alerts Modal */}
-        <Modal isOpen={this.state.alertsModal} toggleAlerts={this.toggleAlerts} className="alerts">
-          <ModalHeader toggle={this.toggleAlerts}>
+        {/* Alerts Modal */ }
+        <Modal isOpen={ this.state.alertsModal } toggleAlerts={ this.toggleAlerts } className="alerts">
+          <ModalHeader toggle={ this.toggleAlerts }>
           </ModalHeader>
           <ModalBody className="modal-body">
             <Container>
               <h2 className="alerts-label">Alerts</h2>
-              <form onSubmit={this.handleFormSubmit}>
+              <form onSubmit={ this.handleFormSubmit }>
                 <div className="form-group">
                   <label className="form-check-label alerts-label">BAC Emergency Alert Threshold *0.08 is intoxicated, 0.1 is more intoxicated</label>
                   <input
-                    onChange={this.handleInputChange}
-                    value={this.state.emergencyAlertThreshold}
+                    onChange={ this.handleInputChange }
+                    value={ this.state.emergencyAlertThreshold }
                     name="emergencyAlertThreshold"
                     type="number" step="0.01"
                     className="form-control" id="settings-bac-threshold" placeholder="Ex. .08"></input>
@@ -570,65 +569,65 @@ class Home extends Component {
                 <div className="form-group">
                   <label className="alerts-label">BAC Self Alert Threshold *0.08 is intoxicated, 0.1 is more intoxicated</label>
                   <input
-                    onChange={this.handleInputChange}
-                    value={this.state.selfAlertThreshold}
+                    onChange={ this.handleInputChange }
+                    value={ this.state.selfAlertThreshold }
                     name="selfAlertThreshold"
                     type="number" step="0.01"
                     className="form-control" id="drinkCountThreshold" placeholder="Ex. 5"></input>
                 </div>
-                <button type="submit" class="btn btn-style">Submit</button>
+                <button type="submit" className="btn">Submit</button>
               </form>
             </Container>
           </ModalBody>
           <ModalFooter>
-            {/* <Button color="secondary" onClick={ props.toggle }>Close</Button> */}
+            {/* <Button color="secondary" onClick={ props.toggle }>Close</Button> */ }
           </ModalFooter>
         </Modal>
-        {/* History Modal */}
-        <Modal isOpen={this.state.historyModal} toggleSettings={this.toggleHistory} className="history">
-          <ModalHeader toggle={this.toggleHistory}>
+        {/* History Modal */ }
+        <Modal isOpen={ this.state.historyModal } toggleSettings={ this.toggleHistory } className="history">
+          <ModalHeader toggle={ this.toggleHistory }>
           </ModalHeader>
           <ModalBody className="modal-body">
             <Container>
-              <h2 className="history-label">Drinks History</h2>
-              {this.state.drinks.length ? (
-                <List>
-                  {this.state.drinks.map((drink, index) => (
-                    <ListItem >
-                      Date: {drink.dateOfDrink}, Number Of Drinks: {drink.count}
-                    </ListItem>
-                  ))}
-                </List>
-              ) : (
-                  <h3 style={{ color: "yellow" }}>No Drink history to Display</h3>
+                <h2 className="history-label">Drinks History</h2>
+                {this.state.drinks.length ? (
+                  <List>
+                    {this.state.drinks.map((drink, index) => (
+                      <ListItem >
+                          Date: {drink.dateOfDrink}, Number Of Drinks: {drink.count}
+                      </ListItem>
+                    ))}
+                  </List>
+                ) : (
+                    <h3 style={{color: "yellow"}}>No Drink history to Display</h3>
                 )}
             </Container>
           </ModalBody>
         </Modal>
-        {/* Settings Modal */}
-        <Modal isOpen={this.state.settingsModal} toggleSettings={this.toggleSettings} className="settings">
-          <ModalHeader toggle={this.toggleSettings}>
+        {/* Settings Modal */ }
+        <Modal isOpen={ this.state.settingsModal } toggleSettings={ this.toggleSettings } className="settings">
+          <ModalHeader toggle={ this.toggleSettings }>
           </ModalHeader>
           <ModalBody className="modal-body">
             <Container>
               <p className="modal-text">Settings: Enter your weight and gender below to more-accurately calculate Blood Alcohol Concentration (BAC). You can also optionally change your emergency contact number and password here.</p>
-              <form onSubmit={this.handleFormSubmit}>
-                {/* <div className="form-group "> */}
+              <form onSubmit={ this.handleFormSubmit }>
+                {/* <div className="form-group "> */ }
                 <label className="form-check-label settings-label modal-text" for="settings-weight">Weight in pounds:</label>
                 <input type="number"
-                  onChange={this.handleInputChange}
-                  value={this.state.weight}
+                  onChange={ this.handleInputChange }
+                  value={ this.state.weight }
                   name="weight"
                   className="form-control modal-text" id="settings-weight" placeholder="Ex. 130"></input>
                 {/* </div>
                 <div className="form-group"> */}
                 <label className="settings-label modal-text">Gender:</label>
-                {/* TODO: need to make this so only one gender can be selected */}
+                {/* TODO: need to make this so only one gender can be selected */ }
                 <div className="form-group">
                   <div className="form-check form-check-inline">
 
                     <input className="form-check-input modal-text"
-                      onChange={this.handleInputChange}
+                      onChange={ this.handleInputChange }
                       name="gender"
                       type="checkbox" id="inputeGenderMale" value="m"></input>
                     <label className="form-check-label settings-label modal-text" for="inlineCheckbox1">M</label>
@@ -637,7 +636,7 @@ class Home extends Component {
                 {/* </div>
                 <div className="form-check form-check-inline"> */}
                 <input className="form-check-input modal-text"
-                  onChange={this.handleInputChange}
+                  onChange={ this.handleInputChange }
                   name="gender"
                   type="checkbox" id="inputGenderFemale" value="f"></input>
                 <label className="form-check-label settings-label modal-text" for="inlineCheckbox2">F</label>
@@ -649,52 +648,52 @@ class Home extends Component {
                   value=""
                   type="number"
                   name="userPhoneNumber"
-                  onClick={this.changePhoneNotification}
-                  className="form-control modal-text" id="settings-user-phone-number" placeholder={this.state.userPhoneNumber}></input>
+                  onClick={ this.changePhoneNotification }
+                  className="form-control modal-text" id="settings-user-phone-number" placeholder={ this.state.userPhoneNumber }></input>
                 {/* </div>
                 <div className="form-group"> */}
                 <label className="form-check-label settings-label modal-text" for="emergencyContactPhoneNumber">Emergency Contact Number:</label>
                 <input type="number"
-                  value={this.state.emergencyContactNumber < 1 ? "" : this.state.emergencyContactNumber}
-                  onChange={this.handleInputChange}
+                  value={ this.state.emergencyContactNumber < 1 ? "" : this.state.emergencyContactNumber }
+                  onChange={ this.handleInputChange }
                   name="emergencyContactNumber"
                   className="form-control modal-text" id="emergencyContactPhoneNumber" placeholder=""></input>
-                {/* </div> */}
-                <button type="submit" class="btn btn-style">Submit</button>
+                {/* </div> */ }
+                <button type="submit" className="btn">Submit</button>
               </form>
             </Container>
           </ModalBody>
           <ModalFooter>
-            {/* <Button color="secondary" onClick={ props.toggle }>Close</Button> */}
+            {/* <Button color="secondary" onClick={ props.toggle }>Close</Button> */ }
           </ModalFooter>
         </Modal>
-        {/* Phone Modal */}
-        <Modal isOpen={this.state.phoneModal} togglePhone={this.togglePhone} className="settings">
-          <ModalHeader toggle={this.togglePhone}>
+        {/* Phone Modal */ }
+        <Modal isOpen={ this.state.phoneModal } togglePhone={ this.togglePhone } className="settings">
+          <ModalHeader toggle={ this.togglePhone }>
           </ModalHeader>
           <ModalBody className="modal-body">
             <Container>
               <p className="modal-text">Spot just needs two or three bits of info to help you. Your phone number so he can send you alerts (required), an optional emergency contact number so he can send them directions to your location if you're overdoing it, and a password so he can keep your information private (required).</p>
-              <form onSubmit={this.handleFormSubmit}>
+              <form onSubmit={ this.handleFormSubmit }>
                 <div className="form-group">
                   <label className="form-check-label settings-label modal-text" for="settings-user-phone-number">Phone Number:</label>
                   <input
-                    value={this.state.userPhoneNumber === 0 ? "" : this.state.userPhoneNumber}
-                    onChange={this.handleInputChange}
+                    value={ this.state.userPhoneNumber === 0 ? "" : this.state.userPhoneNumber }
+                    onChange={ this.handleInputChange }
                     type="number"
                     name="userPhoneNumber"
                     className="form-control modal-text" id="settings-user-phone-number" placeholder="9195551212"></input><br />
                   <label className="form-check-label settings-label modal-text" for="settings-emergency-contact-number">Emergency Contact Number (optional):</label>
                   <input
-                    value={this.state.emergencyContactNumber === 0 ? "" : this.state.emergencyContactNumber}
-                    onChange={this.handleInputChange}
+                    value={ this.state.emergencyContactNumber === 0 ? "" : this.state.emergencyContactNumber }
+                    onChange={ this.handleInputChange }
                     type="number"
                     name="emergencyContactNumber"
                     className="form-control modal-text" id="settings-emergency-contact-number" placeholder="9195551212"></input><br />
                   <label className="form-check-label settings-label modal-text" for="settings-password">Password:</label>
                   <input
-                    value={this.state.password}
-                    onChange={this.handleInputChange}
+                    value={ this.state.password }
+                    onChange={ this.handleInputChange }
                     type="text"
                     name="password"
                     className="form-control modal-text" id="settings-password" placeholder=""></input>
@@ -704,9 +703,9 @@ class Home extends Component {
             </Container>
           </ModalBody>
         </Modal>
-        {/* Quickstart Modal */}
-        <Modal isOpen={this.state.quickstartModal} toggleQuickstart={this.toggleQuickstart} className="settings">
-          <ModalHeader toggle={this.toggleQuickstart}>
+        {/* Quickstart Modal */ }
+        <Modal isOpen={ this.state.quickstartModal } toggleQuickstart={ this.toggleQuickstart } className="settings">
+          <ModalHeader toggle={ this.toggleQuickstart }>
           </ModalHeader>
           <ModalBody className="modal-body">
             <Container>
@@ -721,13 +720,13 @@ class Home extends Component {
             </Container>
           </ModalBody>
         </Modal>
-        {/* Info Modal */}
-        <Modal isOpen={this.state.infoModal} toggleInfoModal={this.toggleInfoModal} className="settings">
-          <ModalHeader toggle={this.toggleInfoModal}>
+        {/* Info Modal */ }
+        <Modal isOpen={ this.state.infoModal } toggleInfoModal={ this.toggleInfoModal } className="settings">
+          <ModalHeader toggle={ this.toggleInfoModal }>
           </ModalHeader>
           <ModalBody className="modal-body">
             <Container>
-              <p className="modal-text">{this.state.infoModalBody}</p>
+              <p className="modal-text">{ this.state.infoModalBody }</p>
             </Container>
           </ModalBody>
         </Modal>
