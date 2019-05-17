@@ -31,7 +31,9 @@ const MenuModal = (props) => {
                 </ModalBody>
                 <ModalFooter>
                     {!Boolean(isLoggedIn)? (
-                        <button togglePhone={ props.togglePhone } onClick={ props.togglePhone }>register/login</button>
+                        
+                        <button className="menu-button" togglePhone={ props.togglePhone } onClick={ props.togglePhone }>Login</button>
+                        
                     ) 
                     : (
                         
