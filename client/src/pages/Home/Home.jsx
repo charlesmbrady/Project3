@@ -205,6 +205,8 @@ class Home extends Component {
         }).catch(err => console.log(err));
       }
       this.interval = setInterval(() => { this.updateBac.bind(this); this.updateBac(); }, 60000);
+    }else{
+      this.togglePhone();
     }
   };
 
