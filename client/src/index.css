@@ -199,7 +199,3 @@ p {
   background-color: #121212;
   cursor: pointer;
 }
-
-.cntrl-btn:active {
-  border: 5px solid white;
-}
