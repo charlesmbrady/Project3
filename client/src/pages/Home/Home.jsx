@@ -198,9 +198,16 @@ class Home extends Component {
 
   checkIn = (e) => {
     e.preventDefault();
-    document.getElementById("test-display").innerText = "Current lat/long: " + this.state.latitude + ", " + this.state.longitude + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
     this.checkForNumbers();
-    this.storeCheckinLocation();
+    if (this.state.latitude < 1) {
+      const theInformation = "Your phone is not reporting your location. Location is required for sipSpot to send you proximity notices. Please check to see if you have location services turned on and try again."
+      this.setState(prevState => ({
+        infoModal: !prevState.infoModal,
+        infoModalBody: theInformation
+      }));
+    } else {
+      this.storeCheckinLocation();
+    };
     document.activeElement.blur();
   };
 
@@ -254,9 +261,8 @@ class Home extends Component {
   };
 
   checkLocation = (position) => {
-    // if (this.state.latitude === 0) {
+    // document.getElementById("test-display").innerText = "*Check* location: " + this.state.latitude + ", " + this.state.longitude + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
     this._isMounted && this.setState({ latitude: position.coords.latitude, longitude: position.coords.longitude });
-    // }
     if (this.state.theCheckinLatitude !== 0) {
       let theDifferenceLatitude = (Math.abs(position.coords.latitude - this.state.theCheckinLatitude)).toFixed(6);
       let theDifferenceLongitude = (Math.abs(position.coords.longitude - this.state.theCheckinLongitude)).toFixed(6);
