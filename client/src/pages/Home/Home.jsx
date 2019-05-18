@@ -578,7 +578,7 @@ class Home extends Component {
           { this.state.theCheckinLatitude === 0 ? (
             <button className="cntrl-btn" data-test="controls-checkin" onClick={ this.checkIn }>CheckIn</button>
           ) : (
-              <button className="cntrl-btn" data-test="controls-checkin" onClick={ this.checkOut }>CheckOut</button>
+              <button className="cntrl-btn" data-test="controls-checkin" onClick={ this.checkOut }>ChkOut</button>
             ) }
 
           <button className="cntrl-btn" data-test="controls-drink" onClick={ this.drinkTracker }>+Drink</button>
