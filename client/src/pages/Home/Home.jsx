@@ -198,6 +198,7 @@ class Home extends Component {
 
   checkIn = (e) => {
     e.preventDefault();
+    document.getElementById("test-display").innerText = "Current lat/long: " + this.state.latitude + ", " + this.state.longitude + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
     this.checkForNumbers();
     this.storeCheckinLocation();
     document.activeElement.blur();
