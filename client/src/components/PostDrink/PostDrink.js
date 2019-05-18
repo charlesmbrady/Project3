@@ -8,13 +8,17 @@ const PostDrink = (props) => {
         msgdeco = {
             color: "red",
             textAlign: "center",
-            fontWeight: "bold"
-        }
+            fontWeight: "bold",
+            borderRadius: "10px",
+            backgroundImage: 'linear-gradient( to right, #dcbfff, yellow)',
+            }
     } else {
         msgdeco = {
             color: "green",
             textAlign: "center",
-            fontWeight: "bold"
+            fontWeight: "bold",
+            backgroundImage: 'linear-gradient( to right, #dcbfff, lightGreen)',
+            borderRadius: "10px"
         }
     }
 
