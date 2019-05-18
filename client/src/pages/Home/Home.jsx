@@ -5,7 +5,7 @@ import MenuModal from '../../components/Menu';
 import PostDrink from '../../components/PostDrink';
 import './Home.css';
 import API from "../../utils/API";
-import colorSuperSip from '../../images/colorSuperSip.gif';
+import superSpot from '../../images/superSpot.gif';
 import AUTH from '../../utils/AUTH';
 import { List, ListItem } from "../../components/List";
 
@@ -567,7 +567,7 @@ class Home extends Component {
               <div id="test-display">test display</div>
               <PostDrink drinks={ this.state.numberOfDrinks[ ((this.state.numberOfDrinks).length) - 1 ] } bac={ this.state.bac } zero={ this.state.zero }></PostDrink>
               <div>
-                <img id="superSip" src={ colorSuperSip } alt="Spot" width="80%" />
+                <img id="superSip" src={ superSpot } alt="super sip the beer bottle" width="40%" />
               </div>
             </Col>
           </Row>
