@@ -393,15 +393,19 @@ class Home extends Component {
         password: this.state.password
       }).then(response => {
         console.log("user: " + this.state.userPhoneNumber + ", emerg: " + this.state.emergencyContactNumber + ", pass: " + this.state.password);
+        if (response.data.error !== 'Password does not match') {
+          this.setState({
+            isLoggedIn: true
+          });
+          localStorage.setItem("userPhoneNumber", this.state.userPhoneNumber);
+          localStorage.setItem("emergencyContactNumber", this.state.emergencyContactNumber);
+          localStorage.setItem("isLoggedIn", true);
+        }
         if (response.data.error !== 'Phone number exists' && response.data.error !== 'Password does not match') {
           console.log('youre registered');
           this.setState({
             redirectTo: '/'
           });
-          localStorage.setItem("userPhoneNumber", this.state.userPhoneNumber);
-          localStorage.setItem("emergencyContactNumber", this.state.emergencyContactNumber);
-          localStorage.setItem("isLoggedIn", true);
-          this.setState({ isLoggedIn: true });
         } else if (response.data.error === 'Phone number exists') {
           console.log('duplicate');
           this.loadDrinks('on login');
@@ -508,7 +512,7 @@ class Home extends Component {
 
   resetState = () => {
     this.setState({
-      numberOfDrinks: [ { number: 0, timeOfLastDrink:  new Date() } ],
+      numberOfDrinks: [ { number: 0, timeOfLastDrink: new Date() } ],
       userPhoneNumber: 0,
       emergencyContactNumber: 0,
       password: '',
