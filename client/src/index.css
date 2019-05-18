@@ -23,10 +23,8 @@ p {
 #superSip {
   position: relative;
   height: 20%;
-  /*margin: -5%;
-  left: 1%;*/
-  margin-left: auto;
-  margin-right: auto;
+  margin: -1%;
+  left: 1%;
 }
 
 .spot-and-splash-text {
