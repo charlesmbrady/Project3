@@ -734,7 +734,7 @@ class Home extends Component {
                     name="password"
                     className="form-control modal-text" id="settings-password" placeholder=""></input>
                 </div>
-                <button type="submit" className="btn">Submit</button>
+                <button type="submit" className="btn btn-style">Submit</button>
               </form>
             </Container>
           </ModalBody>
