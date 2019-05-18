@@ -27,7 +27,7 @@ const PostDrink = (props) => {
             { props.drinks.number > 0 ? (
                 <div>
 
-                    <p style={ msgdeco }>Last estimated BAC*: { props.bac }<br />(0.08 is  intoxicated)<br />
+                    <p style={ msgdeco }>Estimated BAC*: { props.bac }<br />(0.08 is  intoxicated)<br />
                         Hours until BAC is ZERO: { props.zero }<br />{ props.drinks.number } drink(s) as of: { (props.drinks.timeOfLastDrink).toLocaleString() }</p>
                 </div>
             ) : (
