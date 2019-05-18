@@ -618,7 +618,9 @@ class Home extends Component {
                     type="number" step="0.01"
                     className="form-control" id="drinkCountThreshold" placeholder="Ex. 5"></input>
                 </div>
-                <button type="submit" className="btn btn-style">Submit</button>
+                <div className="button-container">
+                  <button type="submit" className="btn btn-style">Submit</button>
+                </div>
               </form>
             </Container>
           </ModalBody>
@@ -702,7 +704,9 @@ class Home extends Component {
                   name="emergencyContactNumber"
                   className="form-control modal-text" id="emergencyContactPhoneNumber" placeholder=""></input>
                 {/* </div> */ }
-                <button type="submit" className="btn btn-style">Submit</button>
+                <div className="button-container">
+                  <button type="submit" className="btn btn-style">Submit</button>
+                </div>
               </form>
             </Container>
           </ModalBody>
@@ -741,7 +745,9 @@ class Home extends Component {
                     name="password"
                     className="form-control modal-text" id="settings-password" placeholder=""></input>
                 </div>
-                <button type="submit" className="btn btn-style">Submit</button>
+                <div className="button-container">
+                  <button type="submit" className="btn btn-style">Submit</button>
+                </div>
               </form>
             </Container>
           </ModalBody>
@@ -752,14 +758,17 @@ class Home extends Component {
           </ModalHeader>
           <ModalBody className="modal-body">
             <Container>
-              <ul id="how-to" className="modal-text">
+              <ul id="how-to" className="modal-text modal-text-shadow">
                 <li>Click <em><strong>CheckIn</strong></em> to keep track of where your stuff is (your credit card on a bar tab, your jacket, your friends).</li>
                 <li>Click <em><strong>+Drink</strong></em> to keep track of your drinks over time to get a rough estimate of your blood-alcohol level.</li>
                 <li>Click <em><strong>Uber</strong></em> to get a safe ride home.</li>
                 <li>Click <em><strong>Friends</strong></em> to send a link to your location to friends.</li>
                 <li>Click <em><strong>Menu</strong></em> at the top left to change thresholds for Alerts, view History, or change your Settings.</li>
               </ul>
-              <p className="modal-text">*BAC stands for "Blood Alcohol Concentration". Properly calculating BAC requires a complicated equation and depends on accurate measures of a person's alcohol intake along with their weight and gender. While <em>sipSpot</em> can provide a more accurate BAC number if you enter your weight and gender in <em><strong>Settings</strong></em>, this number will always be a rough estimate. Please use the BAC readings in <em>sipSpot</em> as a <em>general guidance</em>. If in doubt, please call a friend for a ride or get an Uber.</p>
+              <p className="modal-text modal-text-shadow">*BAC stands for "Blood Alcohol Concentration". Properly calculating BAC requires a complicated equation and depends on accurate measures of a person's alcohol intake along with their weight and gender. While <em>sipSpot</em> can provide a more accurate BAC number if you enter your weight and gender in <em><strong>Settings</strong></em>, this number will always be a rough estimate. Please use the BAC readings in <em>sipSpot</em> as a <em>general guidance</em>. If in doubt, please call a friend for a ride or get an Uber.</p>
+              <div className="button-container">
+                <button type="" className="btn btn-style" onClick={ this.toggleQuickstart }>OK</button>
+              </div>
             </Container>
           </ModalBody>
         </Modal>
@@ -770,6 +779,9 @@ class Home extends Component {
           <ModalBody className="modal-body">
             <Container>
               <p className="modal-text">{ this.state.infoModalBody }</p>
+              <div className="button-container">
+                <button type="" className="btn btn-style" onClick={ this.toggleInfoModal }>OK</button>
+              </div>
             </Container>
           </ModalBody>
         </Modal>

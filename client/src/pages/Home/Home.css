@@ -18,6 +18,10 @@ a:hover {
     color: white;
 }
 
+.button-container {
+    text-align: right;
+}
+
 .btn-style:hover {
     margin-top: 10px;
     border: 2px solid white;
