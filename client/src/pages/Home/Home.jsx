@@ -13,7 +13,7 @@ class Home extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      numberOfDrinks: [ { number: 0, timeOfLastDrink: new Date().toLocaleString() } ],
+      numberOfDrinks: [ { number: 0, timeOfLastDrink: new Date() } ],
       userPhoneNumber: 0,
       emergencyContactNumber: 0,
       password: '',
@@ -31,7 +31,7 @@ class Home extends Component {
       emergencyAlertSent: false,
       watchID: 0,
       bac: 0,
-      zero: new Date().toLocaleString(),
+      zero: new Date(),
       interval: "",
       alertsModal: false,
       phoneModal: false,
@@ -56,23 +56,11 @@ class Home extends Component {
       userPhoneNumber: this.state.userPhoneNumber
     }).then(res => {
       clearInterval(this.interval);
-      if (when === 'on login') {
-        let lastdrink = {}, numberOfDrinks = [];
-        lastdrink.number = res.data[ 0 ].drinks[ (res.data[ 0 ].drinks.length) - 1 ].numberOfDrinks;
-        lastdrink.timeOfLastDrink = (new Date(res.data[ 0 ].drinks[ (res.data[ 0 ].drinks.length) - 1 ].timeOfLastDrink)).toLocaleString();
-        numberOfDrinks.push(lastdrink);
-        console.log("numberOfDrinks"); console.log(numberOfDrinks);
-        this.setState({
-          emergencyContactNumber: res.data[ 0 ].emergencyContactNumber, weight: res.data[ 0 ].weight,
-          gender: res.data[ 0 ].gender, selfAlertThreshold: res.data[ 0 ].selfAlertThreshold, emergencyAlertThreshold: res.data[ 0 ].emergencyAlertThreshold,
-          numberOfDrinks: numberOfDrinks, bac: res.data[ 0 ].drinks[ (res.data[ 0 ].drinks.length) - 1 ].bac
-        });
-      }
       let lastdrink = {};
       let numberOfDrinksCopy = this.state.numberOfDrinks;
       if (res.data[ 0 ].drinks.length > 0) {
         lastdrink.number = res.data[ 0 ].drinks[ (res.data[ 0 ].drinks.length) - 1 ].numberOfDrinks;
-        lastdrink.timeOfLastDrink = (new Date(res.data[ 0 ].drinks[ (res.data[ 0 ].drinks.length) - 1 ].timeOfLastDrink)).toLocaleString();
+        lastdrink.timeOfLastDrink = (new Date(res.data[ 0 ].drinks[ (res.data[ 0 ].drinks.length) - 1 ].timeOfLastDrink));
         numberOfDrinksCopy.push(lastdrink);
       }
       //elapsed time in minutes since last recorded drink
@@ -93,7 +81,7 @@ class Home extends Component {
       //Begin calculate history summary based on date
       let dateArr = [];
       for (let i = 0; i < res.data[ 0 ].drinks.length; i++) {
-        dateArr.push((new Date(res.data[ 0 ].drinks[ i ].timeOfLastDrink).toLocaleDateString()));
+        dateArr.push((new Date(res.data[ 0 ].drinks[ i ].timeOfLastDrink)));
       }
       //remove duplicates dates
       dateArr.sort(function (a, b) { return a - b });
@@ -105,7 +93,7 @@ class Home extends Component {
       for (let i = 0; i < uniqueDate.length; i++) {
         let dateOfDrink, count = 0;
         for (let j = 0; j < res.data[ 0 ].drinks.length; j++) {
-          if ((new Date(res.data[ 0 ].drinks[ j ].timeOfLastDrink).toLocaleDateString()) === uniqueDate[ i ]) {
+          if ((new Date(res.data[ 0 ].drinks[ j ].timeOfLastDrink)) === uniqueDate[ i ]) {
             count++;
             dateOfDrink = uniqueDate[ i ];
           }
@@ -145,7 +133,7 @@ class Home extends Component {
     let bac = ((drink * 14) / ((weight * 453.592) * r)) * 100;
     //elapsed time 
     let first = (Date.parse(time)) / 3600000;
-    let now = (Date.parse(new Date().toLocaleString())) / 3600000;
+    let now = (Date.parse(new Date())) / 3600000;
     let elapsedTime = now - first;
     bac = (bac - (elapsedTime * 0.015)).toFixed(5);
     return bac;
@@ -172,10 +160,9 @@ class Home extends Component {
     if (this.state.userPhoneNumber !== 0) {
       clearInterval(this.interval);
       let lastdrink = {};
-      console.log("testing line 163"); console.log(this.state.numberOfDrinks);
       let numberOfDrinksCopy = this.state.numberOfDrinks;
       lastdrink.number = (numberOfDrinksCopy[ (numberOfDrinksCopy.length - 1) ].number) + 1;
-      lastdrink.timeOfLastDrink = new Date().toLocaleString();
+      lastdrink.timeOfLastDrink = new Date();
       numberOfDrinksCopy.push(lastdrink);
       let bac = (parseFloat(this.calculateBac(1, lastdrink.timeOfLastDrink, this.state.weight, this.state.gender)) +
         parseFloat(this.state.bac)).toFixed(5);
@@ -201,12 +188,11 @@ class Home extends Component {
           longitude: this.state.theCheckinLongitude
         }).then((result) => {
           console.log("drinks added");
-          this.loadDrinks();
         }).catch(err => console.log(err));
       }
       this.interval = setInterval(() => { this.updateBac.bind(this); this.updateBac(); }, 60000);
     } else {
-      this.togglePhone();
+      this.checkForNumbers();
     }
   };
 
@@ -418,7 +404,7 @@ class Home extends Component {
           this.setState({ isLoggedIn: true });
         } else if (response.data.error === 'Phone number exists') {
           console.log('duplicate');
-          console.log("line 396 loaddrinks"); this.loadDrinks('on login');
+          this.loadDrinks('on login');
         } else if (response.data.error === 'Password does not match') {
           console.log('wrong password');
           alert("Password does not match, Please enter the correct password");
@@ -522,7 +508,7 @@ class Home extends Component {
 
   resetState = () => {
     this.setState({
-      numberOfDrinks: [ { number: 0, timeOfLastDrink: [ new Date().toLocaleString() ] } ],
+      numberOfDrinks: [ { number: 0, timeOfLastDrink:  new Date() } ],
       userPhoneNumber: 0,
       emergencyContactNumber: 0,
       password: '',
@@ -540,7 +526,7 @@ class Home extends Component {
       emergencyAlertSent: false,
       watchID: 0,
       bac: 0,
-      zero: new Date().toLocaleString(),
+      zero: new Date(),
       interval: "",
       alertsModal: false,
       phoneModal: false,
