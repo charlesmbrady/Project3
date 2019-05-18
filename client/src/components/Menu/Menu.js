@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container, Row, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import './menu.css';
+import { generateKeyPair } from 'crypto';
 
 const MenuModal = (props) => {
     const { isLoggedIn } = props;
@@ -14,17 +15,29 @@ const MenuModal = (props) => {
                     <Container>
                         <Row>
                             <Col>
+                            { !isLoggedIn ? (
+                                <button className="menu-button" data-test="menu-alerts" inactive >Alerts</button>
+                            ) : (
                                 <button className="menu-button" data-test="menu-alerts" toggleAlerts={ props.toggleAlerts } onClick={ props.toggleAlerts }>Alerts</button>
+                            ) }
                             </Col>
                         </Row>
                         <Row>
                             <Col>
+                            { !isLoggedIn ? (
+                                <button className="menu-button" data-test="menu-history" inactive >History</button>
+                            ) : (
                                 <button className="menu-button" data-test="menu-history" toggleHistory={ props.toggleHistory } onClick={ props.toggleHistory }>History</button>
+                            ) }
                             </Col>
                         </Row>
                         <Row>
                             <Col>
+                            { !isLoggedIn ? (
+                                <button className="menu-button" data-test="menu-settings" inactive >Settings</button>
+                            ) : (
                                 <button className="menu-button" data-test="menu-settings" toggleSettings={ props.toggleSettings } onClick={ props.toggleSettings }>Settings</button>
+                            ) }
                             </Col>
                         </Row>
                     </Container>
