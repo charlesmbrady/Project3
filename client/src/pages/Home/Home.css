@@ -10,3 +10,17 @@ a:hover {
     cursor: pointer;
     background: none;
 }
+
+.btn-style {
+    margin-top: 10px;
+    border: 2px solid #212121;
+    background-color: blue;
+    color: white;
+}
+
+.btn-style:hover {
+    margin-top: 10px;
+    border: 2px solid white;
+    background-color: #63D537;
+    color: black;
+}
