@@ -62,6 +62,10 @@ p {
   text-shadow: 2px 2px 5px black;
 }
 
+.modal-text-shadow {
+  text-shadow: 1px 1px 1px black;
+}
+
 @media only screen and (max-width: 400px) {
   .spot-and-splash-text {
     width: 100%;
@@ -156,6 +160,7 @@ p {
 }
 
 /*can we delete this?*/
+
 .menu-settings {}
 
 #how-to {
@@ -179,7 +184,7 @@ p {
   text-align: center;
   border-radius: 10px;
   width: 100%;
-  }
+}
 
 .drink-text {
   color: #121212;
