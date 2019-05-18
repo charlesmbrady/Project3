@@ -1,7 +1,6 @@
 import React from 'react';
 import { Container, Row, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import './menu.css';
-import { generateKeyPair } from 'crypto';
 
 const MenuModal = (props) => {
     const { isLoggedIn } = props;
