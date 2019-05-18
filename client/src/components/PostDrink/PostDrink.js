@@ -11,6 +11,7 @@ const PostDrink = (props) => {
             fontWeight: "bold",
             borderRadius: "10px",
             backgroundImage: 'linear-gradient( to right, #dcbfff, yellow)',
+            textShadow: "none"
             }
     } else {
         msgdeco = {
@@ -18,7 +19,8 @@ const PostDrink = (props) => {
             textAlign: "center",
             fontWeight: "bold",
             backgroundImage: 'linear-gradient( to right, #dcbfff, lightGreen)',
-            borderRadius: "10px"
+            borderRadius: "10px",
+            textShadow: "none"
         }
     }
 
