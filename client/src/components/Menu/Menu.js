@@ -14,44 +14,44 @@ const MenuModal = (props) => {
                     <Container>
                         <Row>
                             <Col>
-                            { !isLoggedIn ? (
-                                <button className="menu-button" data-test="menu-alerts" inactive >Alerts</button>
-                            ) : (
-                                <button className="menu-button" data-test="menu-alerts" toggleAlerts={ props.toggleAlerts } onClick={ props.toggleAlerts }>Alerts</button>
-                            ) }
+                                { !isLoggedIn ? (
+                                    <button className="menu-button" data-test="menu-alerts" disabled >Alerts</button>
+                                ) : (
+                                        <button className="menu-button" data-test="menu-alerts" toggleAlerts={ props.toggleAlerts } onClick={ props.toggleAlerts }>Alerts</button>
+                                    ) }
                             </Col>
                         </Row>
                         <Row>
                             <Col>
-                            { !isLoggedIn ? (
-                                <button className="menu-button" data-test="menu-history" inactive >History</button>
-                            ) : (
-                                <button className="menu-button" data-test="menu-history" toggleHistory={ props.toggleHistory } onClick={ props.toggleHistory }>History</button>
-                            ) }
+                                { !isLoggedIn ? (
+                                    <button className="menu-button" data-test="menu-history" disabled >History</button>
+                                ) : (
+                                        <button className="menu-button" data-test="menu-history" toggleHistory={ props.toggleHistory } onClick={ props.toggleHistory }>History</button>
+                                    ) }
                             </Col>
                         </Row>
                         <Row>
                             <Col>
-                            { !isLoggedIn ? (
-                                <button className="menu-button" data-test="menu-settings" inactive >Settings</button>
-                            ) : (
-                                <button className="menu-button" data-test="menu-settings" toggleSettings={ props.toggleSettings } onClick={ props.toggleSettings }>Settings</button>
-                            ) }
+                                { !isLoggedIn ? (
+                                    <button className="menu-button" data-test="menu-settings" disabled >Settings</button>
+                                ) : (
+                                        <button className="menu-button" data-test="menu-settings" toggleSettings={ props.toggleSettings } onClick={ props.toggleSettings }>Settings</button>
+                                    ) }
                             </Col>
                         </Row>
                     </Container>
                 </ModalBody>
                 <ModalFooter>
-                    {!Boolean(isLoggedIn)? (
-                        
+                    { !Boolean(isLoggedIn) ? (
+
                         <button className="menu-button" togglePhone={ props.togglePhone } onClick={ props.togglePhone }>Login</button>
-                        
-                    ) 
-                    : (
-                        
-                        <button className="menu-button" data-test="menu-logout" toggleLogout={ props.toggleLogout } onClick={ props.toggleLogout }>Logout</button>
-                    )}
-                    
+
+                    )
+                        : (
+
+                            <button className="menu-button" data-test="menu-logout" toggleLogout={ props.toggleLogout } onClick={ props.toggleLogout }>Logout</button>
+                        ) }
+
                 </ModalFooter>
             </Modal>
         </div>

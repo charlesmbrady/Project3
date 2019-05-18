@@ -54,6 +54,10 @@
     cursor: pointer;
 }
 
+.menu-button:disabled {
+    cursor: unset;
+}
+
 .quickstart {
     text-align: center;
     margin-left: 10px;
