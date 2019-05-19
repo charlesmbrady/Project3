@@ -59,19 +59,19 @@ class Home extends Component {
       //Begin calculate history summary based on date  
       let dateArr = [];
       for (let i = 0; i < res.data[ 0 ].drinks.length; i++) {
-        dateArr.push((new Date(res.data[ 0 ].drinks[ i ].timeOfLastDrink).getMonth()+1+"/"+
-        new Date(res.data[ 0 ].drinks[ i ].timeOfLastDrink).getDate()+'/'+
-        new Date(res.data[ 0 ].drinks[ i ].timeOfLastDrink).getFullYear()));
-        
+        dateArr.push((new Date(res.data[ 0 ].drinks[ i ].timeOfLastDrink).getMonth() + 1 + "/" +
+          new Date(res.data[ 0 ].drinks[ i ].timeOfLastDrink).getDate() + '/' +
+          new Date(res.data[ 0 ].drinks[ i ].timeOfLastDrink).getFullYear()));
+
       }
-      
+
       //remove duplicates dates
       dateArr.sort(function (a, b) { return a - b });
       let uniqueDate = dateArr.filter(function (item, pos) {
         return dateArr.indexOf(item) === pos;
       });
-      dateArr=dateArr.reverse();
-      uniqueDate=uniqueDate.reverse();
+      dateArr = dateArr.reverse();
+      uniqueDate = uniqueDate.reverse();
       //count the nuber of drinks for each day
       let drinkSum = [];
       for (let i = 0; i < uniqueDate.length; i++) {
@@ -85,12 +85,12 @@ class Home extends Component {
         if (count > 0) {
           drinkSum.push({ dateOfDrink: dateOfDrink, count: count });
         }
-    }
-    
-    //End of calculate history summary based on date
-    this.setState({drinks: drinkSum});
+      }
+
+      //End of calculate history summary based on date
+      this.setState({ drinks: drinkSum });
     })
-    .catch(err => console.log(err));
+      .catch(err => console.log(err));
   }
 
   //grab previous drink info from db
@@ -111,8 +111,8 @@ class Home extends Component {
       let elapsedTime = (now - new Date(lastdrink.timeOfLastDrink)) / 60000;
       let bac = 0;
       if (res.data[ 0 ].drinks.length > 0) {
-          bac = (res.data[ 0 ].drinks[ (res.data[ 0 ].drinks.length) - 1 ].bac - (elapsedTime * .00025)).toFixed(4);
-        }
+        bac = (res.data[ 0 ].drinks[ (res.data[ 0 ].drinks.length) - 1 ].bac - (elapsedTime * .00025)).toFixed(4);
+      }
       if (bac < 0.005) { bac = 0; }
       //measure the time based on current bac for it to get to 0
       let counter = 0, baczero = bac;
@@ -131,7 +131,7 @@ class Home extends Component {
         numberOfDrinks: numberOfDrinksCopy, bac, zero
       });
       this.interval = setInterval(() => { this.updateBac.bind(this); this.updateBac(); }, 60000);
-      if(this.state.addDrinkFlag === 1){
+      if (this.state.addDrinkFlag === 1) {
         this.drinkTracker();
       }
     })
@@ -179,7 +179,7 @@ class Home extends Component {
   }
 
   drinkTracker = (e) => {
-    if(this.state.addDrinkFlag !== 1){
+    if (this.state.addDrinkFlag !== 1) {
       e.preventDefault();
     }
     document.activeElement.blur();
@@ -218,7 +218,7 @@ class Home extends Component {
       }
       this.interval = setInterval(() => { this.updateBac.bind(this); this.updateBac(); }, 60000);
     } else {
-      this.setState({ addDrinkFlag: 1 },() => {this.checkForNumbers.bind(this);this.checkForNumbers();})
+      this.setState({ addDrinkFlag: 1 }, () => { this.checkForNumbers.bind(this); this.checkForNumbers(); })
     }
   };
 
@@ -436,9 +436,9 @@ class Home extends Component {
         }
         if (response.data.error !== 'Phone number exists' && response.data.error !== 'Password does not match') {
           console.log('youre registered');
-          if(this.state.addDrinkFlag === 1){
+          if (this.state.addDrinkFlag === 1) {
             this.drinkTracker();
-          }else{
+          } else {
             this.setState({
               redirectTo: '/'
             });
@@ -579,7 +579,7 @@ class Home extends Component {
       infoModalBody: "",
       modal: false,
       drinks: [],
-      addDrinkFlag:0
+      addDrinkFlag: 0
     })
   }
 
@@ -630,10 +630,10 @@ class Home extends Component {
           </ModalHeader>
           <ModalBody className="modal-body">
             <Container>
-              <h2 className="alerts-label">Alerts</h2>
+              <p className="modal-text modal-text-shadow">Alerts: Set alert thresholds to remind yourself or to alert a friend if your BAC goes above the level you choose. Perhaps you want to remind yourself if your BAC gets up to 0.07 and you want to tell a friend if it gets up to 0.09. Alerts are sent to your phone or your friend's phone as text messages.</p>
               <form onSubmit={ this.handleFormSubmit }>
                 <div className="form-group">
-                  <label className="form-check-label alerts-label">BAC Emergency Alert Threshold *0.08 is intoxicated, 0.1 is more intoxicated</label>
+                  <label className="form-check-label alerts-label modal-text modal-text-shadow">BAC Emergency Alert Threshold *0.08 is intoxicated, 0.1 is more intoxicated</label>
                   <input
                     onChange={ this.handleInputChange }
                     value={ this.state.emergencyAlertThreshold }
@@ -642,7 +642,7 @@ class Home extends Component {
                     className="form-control" id="settings-bac-threshold" placeholder="Ex. .08"></input>
                 </div>
                 <div className="form-group">
-                  <label className="alerts-label">BAC Self Alert Threshold *0.08 is intoxicated, 0.1 is more intoxicated</label>
+                  <label className="alerts-label modal-text modal-text-shadow">BAC Self Alert Threshold *0.08 is intoxicated, 0.1 is more intoxicated</label>
                   <input
                     onChange={ this.handleInputChange }
                     value={ this.state.selfAlertThreshold }
@@ -666,7 +666,7 @@ class Home extends Component {
           </ModalHeader>
           <ModalBody className="modal-body">
             <Container>
-              <h2 className="history-label">Drinks History</h2>
+              <p className="modal-text modal-text-shadow">History: The number of drinks you added using the "+Drink" button per day.</p>
               { this.state.drinks.length ? (
                 <List>
                   { this.state.drinks.map((drink, index) => (
@@ -690,47 +690,47 @@ class Home extends Component {
               <p className="modal-text">Settings: Enter your weight and gender below to more-accurately calculate Blood Alcohol Concentration (BAC). You can also optionally change your emergency contact number and password here.</p>
               <form onSubmit={ this.handleFormSubmit }>
                 <div className="form-group">
-                  <label className="form-check-label settings-label modal-text" for="settings-weight">Weight in pounds:</label>
+                  <label className="form-check-label settings-label modal-text modal-text-shadow" for="settings-weight">Weight in pounds (for BAC calculations):</label>
                   <input type="number"
                     onChange={ this.handleInputChange }
                     value={ this.state.weight }
                     name="weight"
-                    className="form-control modal-text" id="settings-weight" placeholder="Ex. 130"></input>
+                    className="form-control" id="settings-weight" placeholder="Ex. 130"></input>
                 </div>
                 <div className="form-group">
-                  <label className="settings-label modal-text">Gender:</label>
-                    <div className="form-group gender-selector">
-                      <div className="form-check form-check-inline">
-                       <input className="form-check-input modal-text"
+                  <label className="settings-label modal-text modal-text-shadow">Gender (for BAC calculations):</label>
+                  <div className="form-group gender-selector">
+                    <div className="form-check form-check-inline">
+                      <input className="form-check-input modal-text gender-radio-btn"
                         onChange={ this.handleInputChange }
                         name="gender"
-                        type="radio" id="inputeGenderMale" value="m"></input>
-                      <label className="form-check-label settings-label modal-text" for="inlineCheckbox1">M</label>
+                        type="radio" id="inputeGenderMale" value="m" checked={ this.state.gender === "m" }></input>
+                      <label className="form-check-label settings-label modal-text modal-text-shadow" for="inlineCheckbox1">Male</label>
                     </div>
                     <div className="form-check form-check-inline">
-                      <input className="form-check-input modal-text"
+                      <input className="form-check-input modal-text gender-radio-btn"
                         onChange={ this.handleInputChange }
                         name="gender"
-                        type="radio" id="inputGenderFemale" value="f"></input>
-                      <label className="form-check-label settings-label modal-text" for="inlineCheckbox2">F</label>
-                    </div>               
+                        type="radio" id="inputGenderFemale" value="f" checked={ this.state.gender === "f" }></input>
+                      <label className="form-check-label settings-label modal-text modal-text-shadow" for="inlineCheckbox2">Female</label>
+                    </div>
                   </div>
                 </div><div className="form-group">
-                  <label className="form-check-label settings-label modal-text" for="settings-user-phone-number">Phone Number</label>
+                  <label className="form-check-label settings-label modal-text modal-text-shadow" for="settings-user-phone-number">Phone Number:</label>
                   <input
                     value=""
                     type="number"
                     name="userPhoneNumber"
                     onClick={ this.changePhoneNotification }
-                    className="form-control modal-text" id="settings-user-phone-number" placeholder={ this.state.userPhoneNumber }></input>
+                    className="form-control" id="settings-user-phone-number" placeholder={ this.state.userPhoneNumber }></input>
                 </div>
                 <div className="form-group">
-                  <label className="form-check-label settings-label modal-text" for="emergencyContactPhoneNumber">Emergency Contact Number:</label>
+                  <label className="form-check-label settings-label modal-text modal-text-shadow" for="emergencyContactPhoneNumber">Emergency Contact Number:</label>
                   <input type="number"
                     value={ this.state.emergencyContactNumber < 1 ? "" : this.state.emergencyContactNumber }
                     onChange={ this.handleInputChange }
                     name="emergencyContactNumber"
-                    className="form-control modal-text" id="emergencyContactPhoneNumber" placeholder=""></input>
+                    className="form-control" id="emergencyContactPhoneNumber" placeholder=""></input>
                 </div>
                 <div className="button-container">
                   <button type="submit" className="btn btn-style">Submit</button>
@@ -758,21 +758,21 @@ class Home extends Component {
                     onChange={ this.handleInputChange }
                     type="number"
                     name="userPhoneNumber"
-                    className="form-control modal-text" id="settings-user-phone-number" placeholder="9195551212"></input><br />
+                    className="form-control" id="settings-user-phone-number" placeholder="9195551212"></input><br />
                   <label className="form-check-label settings-label modal-text" for="settings-emergency-contact-number">Emergency Contact Number (optional):</label>
                   <input
                     value={ this.state.emergencyContactNumber === 0 ? "" : this.state.emergencyContactNumber }
                     onChange={ this.handleInputChange }
                     type="number"
                     name="emergencyContactNumber"
-                    className="form-control modal-text" id="settings-emergency-contact-number" placeholder="9195551212"></input><br />
+                    className="form-control" id="settings-emergency-contact-number" placeholder="9195551212"></input><br />
                   <label className="form-check-label settings-label modal-text" for="settings-password">Password:</label>
                   <input
                     value={ this.state.password }
                     onChange={ this.handleInputChange }
                     type="text"
                     name="password"
-                    className="form-control modal-text" id="settings-password" placeholder=""></input>
+                    className="form-control" id="settings-password" placeholder=""></input>
                 </div>
                 <div className="button-container">
                   <button type="submit" className="btn btn-style">Submit</button>
