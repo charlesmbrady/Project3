@@ -689,53 +689,49 @@ class Home extends Component {
             <Container>
               <p className="modal-text">Settings: Enter your weight and gender below to more-accurately calculate Blood Alcohol Concentration (BAC). You can also optionally change your emergency contact number and password here.</p>
               <form onSubmit={ this.handleFormSubmit }>
-                {/* <div className="form-group "> */ }
-                <label className="form-check-label settings-label modal-text" for="settings-weight">Weight in pounds:</label>
-                <input type="number"
-                  onChange={ this.handleInputChange }
-                  value={ this.state.weight }
-                  name="weight"
-                  className="form-control modal-text" id="settings-weight" placeholder="Ex. 130"></input>
-                {/* </div>
-                <div className="form-group"> */}
-                <label className="settings-label modal-text">Gender:</label>
-                {/* TODO: need to make this so only one gender can be selected */ }
                 <div className="form-group">
-                  <div className="form-check form-check-inline">
-
-                    <input className="form-check-input modal-text"
-                      onChange={ this.handleInputChange }
-                      name="gender"
-                      type="checkbox" id="inputeGenderMale" value="m"></input>
-                    <label className="form-check-label settings-label modal-text" for="inlineCheckbox1">M</label>
-                  </div>
+                  <label className="form-check-label settings-label modal-text" for="settings-weight">Weight in pounds:</label>
+                  <input type="number"
+                    onChange={ this.handleInputChange }
+                    value={ this.state.weight }
+                    name="weight"
+                    className="form-control modal-text" id="settings-weight" placeholder="Ex. 130"></input>
                 </div>
-                {/* </div>
-                <div className="form-check form-check-inline"> */}
-                <input className="form-check-input modal-text"
-                  onChange={ this.handleInputChange }
-                  name="gender"
-                  type="checkbox" id="inputGenderFemale" value="f"></input>
-                <label className="form-check-label settings-label modal-text" for="inlineCheckbox2">F</label>
-                {/* </div>
-                <div className="form-group"> */}
-                <div />
-                <label className="form-check-label settings-label modal-text" for="settings-user-phone-number">Phone Number</label>
-                <input
-                  value=""
-                  type="number"
-                  name="userPhoneNumber"
-                  onClick={ this.changePhoneNotification }
-                  className="form-control modal-text" id="settings-user-phone-number" placeholder={ this.state.userPhoneNumber }></input>
-                {/* </div>
-                <div className="form-group"> */}
-                <label className="form-check-label settings-label modal-text" for="emergencyContactPhoneNumber">Emergency Contact Number:</label>
-                <input type="number"
-                  value={ this.state.emergencyContactNumber < 1 ? "" : this.state.emergencyContactNumber }
-                  onChange={ this.handleInputChange }
-                  name="emergencyContactNumber"
-                  className="form-control modal-text" id="emergencyContactPhoneNumber" placeholder=""></input>
-                {/* </div> */ }
+                <div className="form-group">
+                  <label className="settings-label modal-text">Gender:</label>
+                    <div className="form-group gender-selector">
+                      <div className="form-check form-check-inline">
+                       <input className="form-check-input modal-text"
+                        onChange={ this.handleInputChange }
+                        name="gender"
+                        type="radio" id="inputeGenderMale" value="m"></input>
+                      <label className="form-check-label settings-label modal-text" for="inlineCheckbox1">M</label>
+                    </div>
+                    <div className="form-check form-check-inline">
+                      <input className="form-check-input modal-text"
+                        onChange={ this.handleInputChange }
+                        name="gender"
+                        type="radio" id="inputGenderFemale" value="f"></input>
+                      <label className="form-check-label settings-label modal-text" for="inlineCheckbox2">F</label>
+                    </div>               
+                  </div>
+                </div><div className="form-group">
+                  <label className="form-check-label settings-label modal-text" for="settings-user-phone-number">Phone Number</label>
+                  <input
+                    value=""
+                    type="number"
+                    name="userPhoneNumber"
+                    onClick={ this.changePhoneNotification }
+                    className="form-control modal-text" id="settings-user-phone-number" placeholder={ this.state.userPhoneNumber }></input>
+                </div>
+                <div className="form-group">
+                  <label className="form-check-label settings-label modal-text" for="emergencyContactPhoneNumber">Emergency Contact Number:</label>
+                  <input type="number"
+                    value={ this.state.emergencyContactNumber < 1 ? "" : this.state.emergencyContactNumber }
+                    onChange={ this.handleInputChange }
+                    name="emergencyContactNumber"
+                    className="form-control modal-text" id="emergencyContactPhoneNumber" placeholder=""></input>
+                </div>
                 <div className="button-container">
                   <button type="submit" className="btn btn-style">Submit</button>
                 </div>
@@ -743,7 +739,8 @@ class Home extends Component {
             </Container>
           </ModalBody>
           <ModalFooter>
-            {/* <Button color="secondary" onClick={ props.toggle }>Close</Button> */ }
+            {/* <Button color="secondary" onClick={ props.toggle }>Close</Button>
+              Do we need this????? */ }
           </ModalFooter>
         </Modal>
         {/* Phone Modal */ }
