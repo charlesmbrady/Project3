@@ -695,7 +695,7 @@ class Home extends Component {
                     onChange={ this.handleInputChange }
                     value={ this.state.weight }
                     name="weight"
-                    className="form-control modal-text" id="settings-weight" placeholder="Ex. 130"></input>
+                    className="form-control" id="settings-weight" placeholder="Ex. 130"></input>
                 </div>
                 <div className="form-group">
                   <label className="settings-label modal-text modal-text-shadow">Gender (for BAC calculations):</label>
@@ -722,7 +722,7 @@ class Home extends Component {
                     type="number"
                     name="userPhoneNumber"
                     onClick={ this.changePhoneNotification }
-                    className="form-control modal-text" id="settings-user-phone-number" placeholder={ this.state.userPhoneNumber }></input>
+                    className="form-control" id="settings-user-phone-number" placeholder={ this.state.userPhoneNumber }></input>
                 </div>
                 <div className="form-group">
                   <label className="form-check-label settings-label modal-text modal-text-shadow" for="emergencyContactPhoneNumber">Emergency Contact Number:</label>
@@ -730,7 +730,7 @@ class Home extends Component {
                     value={ this.state.emergencyContactNumber < 1 ? "" : this.state.emergencyContactNumber }
                     onChange={ this.handleInputChange }
                     name="emergencyContactNumber"
-                    className="form-control modal-text" id="emergencyContactPhoneNumber" placeholder=""></input>
+                    className="form-control" id="emergencyContactPhoneNumber" placeholder=""></input>
                 </div>
                 <div className="button-container">
                   <button type="submit" className="btn btn-style">Submit</button>
@@ -758,21 +758,21 @@ class Home extends Component {
                     onChange={ this.handleInputChange }
                     type="number"
                     name="userPhoneNumber"
-                    className="form-control modal-text" id="settings-user-phone-number" placeholder="9195551212"></input><br />
+                    className="form-control" id="settings-user-phone-number" placeholder="9195551212"></input><br />
                   <label className="form-check-label settings-label modal-text" for="settings-emergency-contact-number">Emergency Contact Number (optional):</label>
                   <input
                     value={ this.state.emergencyContactNumber === 0 ? "" : this.state.emergencyContactNumber }
                     onChange={ this.handleInputChange }
                     type="number"
                     name="emergencyContactNumber"
-                    className="form-control modal-text" id="settings-emergency-contact-number" placeholder="9195551212"></input><br />
+                    className="form-control" id="settings-emergency-contact-number" placeholder="9195551212"></input><br />
                   <label className="form-check-label settings-label modal-text" for="settings-password">Password:</label>
                   <input
                     value={ this.state.password }
                     onChange={ this.handleInputChange }
                     type="text"
                     name="password"
-                    className="form-control modal-text" id="settings-password" placeholder=""></input>
+                    className="form-control" id="settings-password" placeholder=""></input>
                 </div>
                 <div className="button-container">
                   <button type="submit" className="btn btn-style">Submit</button>
