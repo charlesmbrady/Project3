@@ -42,6 +42,7 @@ class Home extends Component {
       infoModalBody: "",
       modal: false,
       drinks: [],
+      addDrinkFlag: 0,
       toggle () {
         this.setState(prevState => ({
           modal: !prevState.modal
@@ -66,7 +67,10 @@ class Home extends Component {
       //elapsed time in minutes since last recorded drink
       let now = new Date();
       let elapsedTime = (now - new Date(lastdrink.timeOfLastDrink)) / 60000;
-      let bac = (res.data[ 0 ].drinks[ (res.data[ 0 ].drinks.length) - 1 ].bac - (elapsedTime * .00025)).toFixed(5);
+      let bac = 0;
+      if (res.data[ 0 ].drinks.length > 0) {
+          bac = (res.data[ 0 ].drinks[ (res.data[ 0 ].drinks.length) - 1 ].bac - (elapsedTime * .00025)).toFixed(5);
+        }
       if (bac < 0) { bac = 0; }
       //measure the time based on current bac for it to get to 0
       let counter = 0, baczero = bac;
@@ -110,6 +114,9 @@ class Home extends Component {
         numberOfDrinks: numberOfDrinksCopy, bac, zero, drinks: drinkSum
       });
       this.interval = setInterval(() => { this.updateBac.bind(this); this.updateBac(); }, 60000);
+      if(this.state.addDrinkFlag === 1){
+        this.drinkTracker();
+      }
     })
       .catch(err => console.log(err));
   };
@@ -155,7 +162,9 @@ class Home extends Component {
   }
 
   drinkTracker = (e) => {
-    e.preventDefault();
+    if(this.state.addDrinkFlag !== 1){
+      e.preventDefault();
+    }
     document.activeElement.blur();
     if (this.state.userPhoneNumber !== 0) {
       clearInterval(this.interval);
@@ -175,7 +184,7 @@ class Home extends Component {
       }
       let zero = (counter / 60).toFixed(2);
       if (bac < 0) { zero = 0; }
-      this.setState({ numberOfDrinks: numberOfDrinksCopy, bac, zero },
+      this.setState({ numberOfDrinks: numberOfDrinksCopy, bac, zero, addDrinkFlag: 0 },
         () => this.checkBeforeSendAutomaticText());
       //push drinks to db
       if (this.state.userPhoneNumber !== 0) {
@@ -192,7 +201,7 @@ class Home extends Component {
       }
       this.interval = setInterval(() => { this.updateBac.bind(this); this.updateBac(); }, 60000);
     } else {
-      this.checkForNumbers();
+      this.setState({ addDrinkFlag: 1 },() => {this.checkForNumbers.bind(this);this.checkForNumbers();})
     }
   };
 
@@ -243,7 +252,7 @@ class Home extends Component {
     if (this.state.userPhoneNumber === 0 || this.state.userPhoneNumber === null || this.state.userPhoneNumber === "") {
       this.togglePhone();
     } else {
-      console.log("line 228 loaddrinks"); this.loadDrinks();
+      this.loadDrinks();
     }
     if (typeof callback === "function") { callback() };
   };
@@ -410,9 +419,13 @@ class Home extends Component {
         }
         if (response.data.error !== 'Phone number exists' && response.data.error !== 'Password does not match') {
           console.log('youre registered');
-          this.setState({
-            redirectTo: '/'
-          });
+          if(this.state.addDrinkFlag === 1){
+            this.drinkTracker();
+          }else{
+            this.setState({
+              redirectTo: '/'
+            });
+          }
         } else if (response.data.error === 'Phone number exists') {
           console.log('duplicate');
           this.loadDrinks('on login');
@@ -547,7 +560,8 @@ class Home extends Component {
       infoModal: false,
       infoModalBody: "",
       modal: false,
-      drinks: []
+      drinks: [],
+      addDrinkFlag:0
     })
   }
 
