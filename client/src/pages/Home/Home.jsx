@@ -51,6 +51,48 @@ class Home extends Component {
     };
   }
 
+  //Drink history summary
+  drinkHistory = () => {
+    AUTH.getUserDrinks({
+      userPhoneNumber: this.state.userPhoneNumber
+    }).then(res => {
+      //Begin calculate history summary based on date  
+      let dateArr = [];
+      for (let i = 0; i < res.data[ 0 ].drinks.length; i++) {
+        dateArr.push((new Date(res.data[ 0 ].drinks[ i ].timeOfLastDrink).getMonth()+1+"/"+
+        new Date(res.data[ 0 ].drinks[ i ].timeOfLastDrink).getDate()+'/'+
+        new Date(res.data[ 0 ].drinks[ i ].timeOfLastDrink).getFullYear()));
+        
+      }
+      
+      //remove duplicates dates
+      dateArr.sort(function (a, b) { return a - b });
+      let uniqueDate = dateArr.filter(function (item, pos) {
+        return dateArr.indexOf(item) === pos;
+      });
+      dateArr=dateArr.reverse();
+      uniqueDate=uniqueDate.reverse();
+      //count the nuber of drinks for each day
+      let drinkSum = [];
+      for (let i = 0; i < uniqueDate.length; i++) {
+        let dateOfDrink, count = 0;
+        for (let j = 0; j < res.data[ 0 ].drinks.length; j++) {
+          if (dateArr[ j ] === uniqueDate[ i ]) {
+            count++;
+            dateOfDrink = uniqueDate[ i ];
+          }
+        }
+        if (count > 0) {
+          drinkSum.push({ dateOfDrink: dateOfDrink, count: count });
+        }
+    }
+    
+    //End of calculate history summary based on date
+    this.setState({drinks: drinkSum});
+    })
+    .catch(err => console.log(err));
+  }
+
   //grab previous drink info from db
   loadDrinks = (when) => {
     AUTH.getUserDrinks({
@@ -82,36 +124,11 @@ class Home extends Component {
 
       if (bac < 0) { zero = 0; }
 
-      //Begin calculate history summary based on date
-      let dateArr = [];
-      for (let i = 0; i < res.data[ 0 ].drinks.length; i++) {
-        dateArr.push((new Date(res.data[ 0 ].drinks[ i ].timeOfLastDrink)));
-      }
-      //remove duplicates dates
-      dateArr.sort(function (a, b) { return a - b });
-      let uniqueDate = dateArr.filter(function (item, pos) {
-        return dateArr.indexOf(item) === pos;
-      });
-      //count the nuber of drinks for each day
-      let drinkSum = [];
-      for (let i = 0; i < uniqueDate.length; i++) {
-        let dateOfDrink, count = 0;
-        for (let j = 0; j < res.data[ 0 ].drinks.length; j++) {
-          if ((new Date(res.data[ 0 ].drinks[ j ].timeOfLastDrink)) === uniqueDate[ i ]) {
-            count++;
-            dateOfDrink = uniqueDate[ i ];
-          }
-        }
-        if (count > 0) {
-          drinkSum.push({ dateOfDrink: dateOfDrink, count: count });
-        }
-      }
-      //End of calculate history summary based on date
       //add all db vars to state on mount
       this.setState({
         emergencyContactNumber: res.data[ 0 ].emergencyContactNumber, weight: res.data[ 0 ].weight,
         gender: res.data[ 0 ].gender, selfAlertThreshold: res.data[ 0 ].selfAlertThreshold, emergencyAlertThreshold: res.data[ 0 ].emergencyAlertThreshold,
-        numberOfDrinks: numberOfDrinksCopy, bac, zero, drinks: drinkSum
+        numberOfDrinks: numberOfDrinksCopy, bac, zero
       });
       this.interval = setInterval(() => { this.updateBac.bind(this); this.updateBac(); }, 60000);
       if(this.state.addDrinkFlag === 1){
@@ -467,7 +484,8 @@ class Home extends Component {
   }
 
   toggleHistory = () => {
-
+    console.log("toggling history");
+    this.drinkHistory();
     this.setState(prevState => ({
       historyModal: !prevState.historyModal,
       modal: false
