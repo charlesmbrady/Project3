@@ -111,18 +111,18 @@ class Home extends Component {
       let elapsedTime = (now - new Date(lastdrink.timeOfLastDrink)) / 60000;
       let bac = 0;
       if (res.data[ 0 ].drinks.length > 0) {
-          bac = (res.data[ 0 ].drinks[ (res.data[ 0 ].drinks.length) - 1 ].bac - (elapsedTime * .00025)).toFixed(5);
+          bac = (res.data[ 0 ].drinks[ (res.data[ 0 ].drinks.length) - 1 ].bac - (elapsedTime * .00025)).toFixed(4);
         }
-      if (bac < 0) { bac = 0; }
+      if (bac < 0.005) { bac = 0; }
       //measure the time based on current bac for it to get to 0
       let counter = 0, baczero = bac;
-      while (baczero > 0) {
+      while (baczero > 0.005) {
         baczero = baczero - ((1 / 60) * .015);
         counter++;
       }
       let zero = (counter / 60).toFixed(2);
 
-      if (bac < 0) { zero = 0; }
+      if (bac < 0.005) { zero = 0; }
 
       //add all db vars to state on mount
       this.setState({
@@ -159,22 +159,22 @@ class Home extends Component {
     let first = (Date.parse(time)) / 3600000;
     let now = (Date.parse(new Date())) / 3600000;
     let elapsedTime = now - first;
-    bac = (bac - (elapsedTime * 0.015)).toFixed(5);
+    bac = (bac - (elapsedTime * 0.015)).toFixed(4);
     return bac;
   }
 
   //update BAC every minute
   updateBac () {
-    let bac = (this.state.bac - ((1 / 60) * .015)).toFixed(5);
-    if (bac < 0) { bac = 0; }
+    let bac = (this.state.bac - ((1 / 60) * .015)).toFixed(4);
+    if (bac < 0.005) { bac = 0; }
     //measure the time based on current bac for it to get to 0
     let counter = 0, baczero = bac;
-    while (baczero > 0) {
+    while (baczero > 0.005) {
       baczero = baczero - ((1 / 60) * .015);
       counter++;
     }
     let zero = (counter / 60).toFixed(2);
-    if (bac < 0) { zero = 0; }
+    if (bac < 0.005) { zero = 0; }
     this.setState({ bac, zero });
   }
 
@@ -191,16 +191,16 @@ class Home extends Component {
       lastdrink.timeOfLastDrink = new Date();
       numberOfDrinksCopy.push(lastdrink);
       let bac = (parseFloat(this.calculateBac(1, lastdrink.timeOfLastDrink, this.state.weight, this.state.gender)) +
-        parseFloat(this.state.bac)).toFixed(5);
-      if (bac < 0) { bac = 0; }
+        parseFloat(this.state.bac)).toFixed(4);
+      if (bac < 0.005) { bac = 0; }
       //measure the time based on current bac for it to get to 0
       let counter = 0, baczero = bac;
-      while (baczero > 0) {
+      while (baczero > 0.005) {
         baczero = baczero - ((1 / 60) * .015);
         counter++;
       }
       let zero = (counter / 60).toFixed(2);
-      if (bac < 0) { zero = 0; }
+      if (bac < 0.005) { zero = 0; }
       this.setState({ numberOfDrinks: numberOfDrinksCopy, bac, zero, addDrinkFlag: 0 },
         () => this.checkBeforeSendAutomaticText());
       //push drinks to db

@@ -26,7 +26,7 @@ const PostDrink = (props) => {
 
     return (
         <div className="drink-display">
-            { props.drinks.number > 0 ? (
+            { props.bac > 0.005 ? (
                 <div>
 
                     <p style={ msgdeco }>Estimated BAC*: { props.bac }<br />(0.08 is  intoxicated)<br />
