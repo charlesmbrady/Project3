@@ -116,7 +116,7 @@ class Home extends Component {
       if (bac < 0.005) { bac = 0; }
       //measure the time based on current bac for it to get to 0
       let counter = 0, baczero = bac;
-      while (baczero > 0.005) {
+      while (baczero >= 0.005) {
         baczero = baczero - ((1 / 60) * .015);
         counter++;
       }
@@ -169,7 +169,7 @@ class Home extends Component {
     if (bac < 0.005) { bac = 0; }
     //measure the time based on current bac for it to get to 0
     let counter = 0, baczero = bac;
-    while (baczero > 0.005) {
+    while (baczero >= 0.005) {
       baczero = baczero - ((1 / 60) * .015);
       counter++;
     }
@@ -195,7 +195,7 @@ class Home extends Component {
       if (bac < 0.005) { bac = 0; }
       //measure the time based on current bac for it to get to 0
       let counter = 0, baczero = bac;
-      while (baczero > 0.005) {
+      while (baczero >= 0.005) {
         baczero = baczero - ((1 / 60) * .015);
         counter++;
       }
