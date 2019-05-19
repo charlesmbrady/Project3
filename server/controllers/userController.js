@@ -16,6 +16,12 @@ module.exports = {
     // ADD VALIDATION
     db.User.findOne({ 'userPhoneNumber': userPhoneNumber }, (err, userMatch) => {
       if (userMatch) {
+        if(userMatch.emergencyContactNumber !== req.body.emergencyContactNumber){
+          db.User.findOneAndUpdate({ userPhoneNumber: req.body.userPhoneNumber }, 
+            {"emergencyContactNumber":req.body.emergencyContactNumber})
+              .then( console.log("new emergency contact number added") )
+              .catch(err => res.status(422).json(err));
+        }
         let msg=`Phone number exists`;
         //check for password
         if (!userMatch.checkPassword(req.body.password)){  
