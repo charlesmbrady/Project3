@@ -542,16 +542,6 @@ class Home extends Component {
     }))
   }
 
-  touchend = (event) => {
-    event.preventDefault();
-    document.getElementById("title").focus();
-    alert("touchend");
-  }
-
-  touchcancel = () => {
-    alert("touchcancel");
-  }
-
   toggleLogout = () => { // doesn't really toggle, just logs out
     this.handleLogout();
     if (this.state.modal === true) {
@@ -645,8 +635,8 @@ class Home extends Component {
             ) }
 
           <button className="cntrl-btn" data-test="controls-drink" onClick={ this.drinkTracker }>+Drink</button>
-          <a id="uber-button" className="cntrl-btn" data-test="controls-uber" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location" target="_blank" rel="noopener noreferrer" onTouchEnd={ this.touchend }>Uber</a>
-          <button id="friends-button" className="cntrl-btn" data-test="controls-friends" onClick={ this.contactFriends } onTouchEnd={ this.touchend }>Friends</button>
+          <a id="uber-button" className="cntrl-btn" data-test="controls-uber" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location" target="_blank" rel="noopener noreferrer">Uber</a>
+          <button id="friends-button" className="cntrl-btn" data-test="controls-friends" onClick={ this.contactFriends }>Friends</button>
         </div>
         {/* Alerts Modal */ }
         <Modal isOpen={ this.state.alertsModal } toggleAlerts={ this.toggleAlerts } className="alerts">
