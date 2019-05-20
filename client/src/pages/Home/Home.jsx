@@ -462,6 +462,13 @@ class Home extends Component {
     }
     if (this.state.alertsModal) {
       this.toggleAlerts();
+      AUTH.userUpdate({
+        userPhoneNumber: this.state.userPhoneNumber,
+        selfAlertThreshold: this.state.selfAlertThreshold,
+        emergencyAlertThreshold: this.state.emergencyAlertThreshold,
+      }).then(response => {
+        console.log("user info updated");
+      });
     }
     if (this.state.historyModal) {
       this.toggleHistory();

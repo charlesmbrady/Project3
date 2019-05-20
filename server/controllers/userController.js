@@ -84,8 +84,7 @@ module.exports = {
     });
   },
   update: function(req, res) {
-     db.User.findOneAndUpdate({ userPhoneNumber: req.body.userPhoneNumber }, 
-     {"weight":req.body.weight, "gender":req.body.gender, "emergencyContactNumber":req.body.emergencyContactNumber})
+     db.User.findOneAndUpdate({ userPhoneNumber: req.body.userPhoneNumber }, req.body)
        .then(dbModel => res.json(dbModel) )
        .catch(err => res.status(422).json(err));
   }
