@@ -9,6 +9,9 @@ import superSpot from '../../images/superSpot.gif';
 import AUTH from '../../utils/AUTH';
 import { List, ListItem } from "../../components/List";
 
+object.addEventListener("touchend", alert("touchend"));
+object.addEventListener("touchcancel", alert("touchcancel"));
+
 class Home extends Component {
   constructor (props) {
     super(props);
