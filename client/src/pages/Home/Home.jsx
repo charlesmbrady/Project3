@@ -309,6 +309,7 @@ class Home extends Component {
   contactFriends = () => {
     document.activeElement.blur();
     this.checkForNumbers(this.sendText);
+    document.getElementById("title").focus();
   };
 
   sendText = () => {
