@@ -9,9 +9,6 @@ import superSpot from '../../images/superSpot.gif';
 import AUTH from '../../utils/AUTH';
 import { List, ListItem } from "../../components/List";
 
-object.addEventListener("touchend", alert("touchend"));
-object.addEventListener("touchcancel", alert("touchcancel"));
-
 class Home extends Component {
   constructor (props) {
     super(props);
@@ -145,6 +142,10 @@ class Home extends Component {
     this._isMounted = true;
     this.checkLocalStorageOnMount();
     this.watchLocation();
+    getElementById("friends-button").addEventListener("touchend", alert("touchend"));
+    getElementById("friends-button").addEventListener("touchcancel", alert("touchcancel"));
+    getElementById("uber-button").addEventListener("touchend", alert("touchend"));
+    getElementById("uber-button").addEventListener("touchcancel", alert("touchcancel"));
   }
 
   componentWillUnmount () {
@@ -636,8 +637,8 @@ class Home extends Component {
             ) }
 
           <button className="cntrl-btn" data-test="controls-drink" onClick={ this.drinkTracker }>+Drink</button>
-          <a className="cntrl-btn" data-test="controls-uber" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location" target="_blank" rel="noopener noreferrer">Uber</a>
-          <button className="cntrl-btn" data-test="controls-friends" onClick={ this.contactFriends }>Friends</button>
+          <a id="uber-button" className="cntrl-btn" data-test="controls-uber" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location" target="_blank" rel="noopener noreferrer">Uber</a>
+          <button id="friends-button" className="cntrl-btn" data-test="controls-friends" onClick={ this.contactFriends }>Friends</button>
         </div>
         {/* Alerts Modal */ }
         <Modal isOpen={ this.state.alertsModal } toggleAlerts={ this.toggleAlerts } className="alerts">
