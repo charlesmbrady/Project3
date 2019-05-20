@@ -51,7 +51,7 @@ const PostDrink = (props) => {
                     </p>
                 </div>
             ) : (
-                    <p>No drinks yet!</p>
+                    <p>No recent drinks.<br />Estimated BAC &lt; 0.005.</p>
                 ) }
 
         </div>
