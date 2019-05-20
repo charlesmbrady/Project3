@@ -360,7 +360,7 @@ class Home extends Component {
           infoModalBody: theMessage
         }));
         // alert(theMessage);
-      }, 800);
+      }, 1200);
       document.getElementById("test-display").innerText = "Alerted message locally: " + theMessage;
     } else {
       TEXT.sendText({ to: toNumber, message: theMessage })
