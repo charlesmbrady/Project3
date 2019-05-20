@@ -540,6 +540,10 @@ class Home extends Component {
     }))
   }
 
+  touchEnd = () => {
+    document.getElementById("title").focus();
+  }
+
   touchCancel = () => {
     document.getElementById("title").focus();
   }
@@ -637,8 +641,8 @@ class Home extends Component {
             ) }
 
           <button className="cntrl-btn" data-test="controls-drink" onClick={ this.drinkTracker }>+Drink</button>
-          <a className="cntrl-btn" data-test="controls-uber" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location" target="_blank" rel="noopener noreferrer">Uber</a>
-          <button className="cntrl-btn" data-test="controls-friends" onClick={ this.contactFriends } ontouchcancel={ this.touchCancel }>Friends</button>
+          <a className="cntrl-btn" data-test="controls-uber" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location" target="_blank" rel="noopener noreferrer" onTouchCancel={ this.touchCancel }>Uber</a>
+          <button className="cntrl-btn" data-test="controls-friends" onClick={ this.contactFriends } onTouchEnd={ this.touchEnd }>Friends</button>
         </div>
         {/* Alerts Modal */ }
         <Modal isOpen={ this.state.alertsModal } toggleAlerts={ this.toggleAlerts } className="alerts">
