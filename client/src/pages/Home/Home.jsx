@@ -142,10 +142,6 @@ class Home extends Component {
     this._isMounted = true;
     this.checkLocalStorageOnMount();
     this.watchLocation();
-    this.getElementById("friends-button").addEventListener("touchend", alert("touchend"));
-    this.getElementById("friends-button").addEventListener("touchcancel", alert("touchcancel"));
-    this.getElementById("uber-button").addEventListener("touchend", alert("touchend"));
-    this.getElementById("uber-button").addEventListener("touchcancel", alert("touchcancel"));
   }
 
   componentWillUnmount () {
@@ -544,6 +540,14 @@ class Home extends Component {
     }))
   }
 
+  touchend = () => {
+    alert("touchend");
+  }
+
+  touchcancel = () => {
+    alert("touchcancel");
+  }
+
   toggleLogout = () => { // doesn't really toggle, just logs out
     this.handleLogout();
     if (this.state.modal === true) {
@@ -637,8 +641,8 @@ class Home extends Component {
             ) }
 
           <button className="cntrl-btn" data-test="controls-drink" onClick={ this.drinkTracker }>+Drink</button>
-          <a id="uber-button" className="cntrl-btn" data-test="controls-uber" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location" target="_blank" rel="noopener noreferrer">Uber</a>
-          <button id="friends-button" className="cntrl-btn" data-test="controls-friends" onClick={ this.contactFriends }>Friends</button>
+          <a id="uber-button" className="cntrl-btn" data-test="controls-uber" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location" target="_blank" rel="noopener noreferrer" onTouchCancel={ this.touchcancel }>Uber</a>
+          <button id="friends-button" className="cntrl-btn" data-test="controls-friends" onClick={ this.contactFriends } onTouchEnd={ this.touchend }>Friends</button>
         </div>
         {/* Alerts Modal */ }
         <Modal isOpen={ this.state.alertsModal } toggleAlerts={ this.toggleAlerts } className="alerts">
