@@ -62,7 +62,7 @@ userSchema.methods = {
 // Define hooks for pre-saving
 userSchema.pre('save', function (next) {
 	if (!this.password) {
-		console.log('No password provided!');
+		// no password provided
 		next();
 	} else {
 		this.password = this.hashPassword(this.password);
