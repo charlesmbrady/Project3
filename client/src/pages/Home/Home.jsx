@@ -49,7 +49,7 @@ class Home extends Component {
         }));
       }
     };
-  }
+  };
 
   //Drink history summary
   drinkHistory = () => {
@@ -62,9 +62,7 @@ class Home extends Component {
         dateArr.push((new Date(res.data[ 0 ].drinks[ i ].timeOfLastDrink).getMonth() + 1 + "/" +
           new Date(res.data[ 0 ].drinks[ i ].timeOfLastDrink).getDate() + '/' +
           new Date(res.data[ 0 ].drinks[ i ].timeOfLastDrink).getFullYear()));
-
       }
-
       //remove duplicates dates
       dateArr.sort(function (a, b) { return a - b });
       let uniqueDate = dateArr.filter(function (item, pos) {
@@ -86,12 +84,11 @@ class Home extends Component {
           drinkSum.push({ dateOfDrink: dateOfDrink, count: count });
         }
       }
-
       //End of calculate history summary based on date
       this.setState({ drinks: drinkSum });
     })
       .catch(err => console.log(err));
-  }
+  };
 
   //grab previous drink info from db
   loadDrinks = (when) => {
@@ -121,9 +118,7 @@ class Home extends Component {
         counter++;
       }
       let zero = (counter / 60).toFixed(2);
-
       if (bac < 0.005) { zero = 0; }
-
       //add all db vars to state on mount
       this.setState({
         emergencyContactNumber: res.data[ 0 ].emergencyContactNumber, weight: res.data[ 0 ].weight,
@@ -142,11 +137,11 @@ class Home extends Component {
     this._isMounted = true;
     this.checkLocalStorageOnMount();
     this.watchLocation();
-  }
+  };
 
   componentWillUnmount () {
     this._isMounted = false;
-  }
+  };
 
   calculateBac (drink, time, weight, gender) {
     //calculate BAC(using 130lbs as generic weight and r=0.55 for conservative estimate if user does not give the data)
@@ -161,7 +156,7 @@ class Home extends Component {
     let elapsedTime = now - first;
     bac = (bac - (elapsedTime * 0.015)).toFixed(4);
     return bac;
-  }
+  };
 
   //update BAC every minute
   updateBac () {
@@ -176,7 +171,7 @@ class Home extends Component {
     let zero = (counter / 60).toFixed(2);
     if (bac < 0.005) { zero = 0; }
     this.setState({ bac, zero });
-  }
+  };
 
   drinkTracker = (e) => {
     if (this.state.addDrinkFlag !== 1) {
@@ -252,15 +247,15 @@ class Home extends Component {
       let emergencyContactNumber = localStorage.getItem("emergencyContactNumber");
       let isLoggedIn = localStorage.getItem("isLoggedIn");
       if (userPhoneNumber > 0) {
-        this.setState({ userPhoneNumber: userPhoneNumber }, () => { console.log("set userPhoneNumber from localStorage: " + this.state.userPhoneNumber); console.log("line 214 loaddrinks"); this.loadDrinks() });
+        this.setState({ userPhoneNumber: userPhoneNumber });
       }
       if (emergencyContactNumber > 0) {
-        this.setState({ emergencyContactNumber: emergencyContactNumber }, console.log("set emergencyContactNumber from localStorage: " + emergencyContactNumber));
+        this.setState({ emergencyContactNumber: emergencyContactNumber });
       }
       if (isLoggedIn === "true") {
-        this.setState({ isLoggedIn: true }, () => { console.log("isLoggedIn: " + this.state.isLoggedIn) });
+        this.setState({ isLoggedIn: true });
       } else {
-        this.setState({ isLoggedIn: false }, () => { console.log("isLoggedIn: " + this.state.isLoggedIn) });
+        this.setState({ isLoggedIn: false });
       }
     }
   };
@@ -425,7 +420,6 @@ class Home extends Component {
         emergencyContactNumber: this.state.emergencyContactNumber,
         password: this.state.password
       }).then(response => {
-        console.log("user: " + this.state.userPhoneNumber + ", emerg: " + this.state.emergencyContactNumber + ", pass: " + this.state.password);
         if (response.data.error !== 'Password does not match') {
           this.setState({
             isLoggedIn: true
@@ -435,7 +429,6 @@ class Home extends Component {
           localStorage.setItem("isLoggedIn", true);
         }
         if (response.data.error !== 'Phone number exists' && response.data.error !== 'Password does not match') {
-          console.log('youre registered');
           if (this.state.addDrinkFlag === 1) {
             this.drinkTracker();
           } else {
@@ -444,10 +437,8 @@ class Home extends Component {
             });
           }
         } else if (response.data.error === 'Phone number exists') {
-          console.log('duplicate');
           this.loadDrinks('on login');
         } else if (response.data.error === 'Password does not match') {
-          console.log('wrong password');
           const theInformation = "Password does not match. Please enter the correct password."
           this.setState(prevState => ({
             infoModal: !prevState.infoModal,
@@ -476,7 +467,6 @@ class Home extends Component {
   };
 
   changePhoneNotification = () => {
-    console.log('change phone');
     const theInformation = "The only way to change your phone number is to Logout and then start fresh. If you do so, you will lose any drink history and settings you may have saved. For most people this is not a big deal; it is the only way to change your phone number."
     this.setState(prevState => ({
       infoModal: !prevState.infoModal,
@@ -500,12 +490,6 @@ class Home extends Component {
   }
 
   toggleHistory = () => {
-    // if (this.state.historyModal === false) {
-    //   document.getElementsByClassName("btn-style").focus();
-    //   this.setState({ // close menu modal
-    //     modal: false
-    //   });
-    // }
     this.drinkHistory();
     this.setState(prevState => ({
       historyModal: !prevState.historyModal,
@@ -522,12 +506,6 @@ class Home extends Component {
   }
 
   toggleSettings = () => {
-    // if (this.state.settingsModal === false) {
-    //   document.getElementsByClassName("btn-style").focus();
-    //   this.setState({ // close menu modal
-    //     modal: false
-    //   });
-    // }
     this.setState(prevState => ({
       settingsModal: !prevState.settingsModal,
       modal: false
@@ -619,7 +597,7 @@ class Home extends Component {
       drinks: [],
       addDrinkFlag: 0
     })
-  }
+  };
 
   render () {
     return (
@@ -650,14 +628,11 @@ class Home extends Component {
           </Row>
         </Container>
         <div className="bottombar">
-
-
           { this.state.theCheckinLatitude === 0 ? (
             <button className="cntrl-btn" data-test="controls-checkin" onClick={ this.checkIn }>CheckIn</button>
           ) : (
               <button className="cntrl-btn" data-test="controls-checkin" onClick={ this.checkOut }>ChkOut</button>
             ) }
-
           <button className="cntrl-btn" data-test="controls-drink" onClick={ this.drinkTracker }>+Drink</button>
           <a id="uber-button" className="cntrl-btn" data-test="controls-uber" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location" target="_blank" rel="noopener noreferrer">Uber</a>
           <button id="friends-button" className="cntrl-btn" data-test="controls-friends" onClick={ this.contactFriends }>Friends</button>
@@ -861,6 +836,6 @@ class Home extends Component {
       </div>
     );
   }
-}
+};
 
 export default Home;
