@@ -2,7 +2,7 @@ import React from "react";
 import './PostDrink.css';
 
 const PostDrink = (props) => {
-    
+
     //conditional styling for bac
     let msgdeco, bton;
     if (props.bac > .08) {
@@ -13,15 +13,15 @@ const PostDrink = (props) => {
             borderRadius: "10px",
             backgroundImage: 'linear-gradient( to right, #dcbfff, yellow)',
             textShadow: "none"
-            }
-        bton = {  
-            color: "red",   
+        }
+        bton = {
+            color: "red",
             fontWeight: "bold",
             backgroundColor: "Transparent",
             backgroundRepeat: "no-repeat",
             border: "none",
             cursor: "pointer",
-            overflow: "hidden"       
+            overflow: "hidden"
         }
     } else {
         msgdeco = {
@@ -32,24 +32,24 @@ const PostDrink = (props) => {
             borderRadius: "10px",
             textShadow: "none"
         }
-        bton = {  
-            color: "green", 
+        bton = {
+            color: "green",
             fontWeight: "bold",
             backgroundColor: "Transparent",
-            backgroundRepeat: "no-repeat",
-            border: "none",
-            cursor: "pointer",
-            overflow: "hidden"       
+            // backgroundRepeat: "no-repeat",
+            // border: "none",
+            cursor: "pointer"
+            // overflow: "hidden"
         }
     }
     return (
         <div className="drink-display">
             { props.bac >= 0.005 ? (
                 <div>
-                    <p style={ msgdeco } > Estimated BAC*: { props.bac }<br/>(0.08 is  intoxicated)<br/>
-                        Hours until BAC is ZERO: { props.zero }<br/>
-                        <button style={ bton } className="menu-button" data-test="menu-history" toggleHistory={ props.toggleHistory } onClick={ props.toggleHistory } >
-                            Last drink at: { (props.drinks.timeOfLastDrink).toLocaleString().replace(/:\d{2}\s/,' ') }
+                    <p style={ msgdeco } > Estimated BAC*: { props.bac }<br />(0.08 is  intoxicated)<br />
+                        Hours until BAC is ZERO: { props.zero }<br />
+                        <button style={ bton } data-test="menu-history" toggleHistory={ props.toggleHistory } onClick={ props.toggleHistory } >
+                            Last drink at: { (props.drinks.timeOfLastDrink).toLocaleString().replace(/:\d{2}\s/, ' ') }
                         </button>
                     </p>
                 </div>

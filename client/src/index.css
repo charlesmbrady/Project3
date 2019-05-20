@@ -21,6 +21,7 @@ p {
 }
 
 #superSip {
+  z-index: -99;
   position: relative;
   width: 70%;
   margin: -4%;
