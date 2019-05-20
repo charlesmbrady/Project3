@@ -306,8 +306,10 @@ class Home extends Component {
     }
   };
 
-  contactFriends = () => {
-    document.activeElement.blur();
+  contactFriends = (event) => {
+    event.preventDefault()
+    document.getElementById("title").focus();
+    // document.activeElement.blur();
     this.checkForNumbers(this.sendText);
   };
 
@@ -541,10 +543,12 @@ class Home extends Component {
   }
 
   touchEnd = () => {
+    event.preventDefault()
     document.getElementById("title").focus();
   }
 
-  touchCancel = () => {
+  touchCancel = (event) => {
+    event.preventDefault()
     document.getElementById("title").focus();
   }
 
@@ -642,7 +646,7 @@ class Home extends Component {
 
           <button className="cntrl-btn" data-test="controls-drink" onClick={ this.drinkTracker }>+Drink</button>
           <a className="cntrl-btn" data-test="controls-uber" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location" target="_blank" rel="noopener noreferrer" onTouchCancel={ this.touchCancel }>Uber</a>
-          <button className="cntrl-btn" data-test="controls-friends" onClick={ this.contactFriends } onTouchEnd={ this.touchEnd }>Friends</button>
+          <button className="cntrl-btn" data-test="controls-friends" onClick={ this.contactFriends }>Friends</button>
         </div>
         {/* Alerts Modal */ }
         <Modal isOpen={ this.state.alertsModal } toggleAlerts={ this.toggleAlerts } className="alerts">
