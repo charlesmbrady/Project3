@@ -16,6 +16,7 @@ a:hover {
     border: 2px solid #212121;
     background-color: blue;
     color: white;
+    float: right;
 }
 
 .button-container {

@@ -238,3 +238,16 @@ input[type='radio']:checked:after {
   visibility: visible;
   border: 3px solid white;
 }
+
+table {}
+
+tr {
+  width: 100%;
+}
+
+th, td {
+  width: 50%;
+  text-align: center;
+  color: white;
+  text-shadow: 1px 1px 1px black;
+}

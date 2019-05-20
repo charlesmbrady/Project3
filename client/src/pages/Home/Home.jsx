@@ -7,7 +7,7 @@ import './Home.css';
 import API from "../../utils/API";
 import superSpot from '../../images/superSpot.gif';
 import AUTH from '../../utils/AUTH';
-import { List, ListItem } from "../../components/List";
+import { List } from "../../components/List";
 
 class Home extends Component {
   constructor (props) {
@@ -485,35 +485,61 @@ class Home extends Component {
   }
 
   toggleAlerts = () => {
-    if (this.state.alertsModal === false) {
-      this.setState({ // close menu modal
-        modal: false
-      });
-    }
     this.setState(prevState => ({
-      alertsModal: !prevState.alertsModal
+      alertsModal: !prevState.alertsModal,
+      modal: false
     }));
+    setTimeout(function () {
+      try {
+        document.getElementById("btn-alerts").focus()
+      }
+      catch (err) {
+        console.log(err.message);
+      }
+    }, 500);
   }
 
   toggleHistory = () => {
-    console.log("toggling history");
+    // if (this.state.historyModal === false) {
+    //   document.getElementsByClassName("btn-style").focus();
+    //   this.setState({ // close menu modal
+    //     modal: false
+    //   });
+    // }
     this.drinkHistory();
     this.setState(prevState => ({
       historyModal: !prevState.historyModal,
       modal: false
     }));
+    setTimeout(function () {
+      try {
+        document.getElementById("btn-history").focus()
+      }
+      catch (err) {
+        console.log(err.message);
+      }
+    }, 500);
   }
 
   toggleSettings = () => {
-    if (this.state.settingsModal === false) {
-      this.setState({ // close menu modal
-        modal: false
-      });
-    }
-    console.log('this too')
+    // if (this.state.settingsModal === false) {
+    //   document.getElementsByClassName("btn-style").focus();
+    //   this.setState({ // close menu modal
+    //     modal: false
+    //   });
+    // }
     this.setState(prevState => ({
-      settingsModal: !prevState.settingsModal
+      settingsModal: !prevState.settingsModal,
+      modal: false
     }));
+    setTimeout(function () {
+      try {
+        document.getElementById("btn-settings").focus()
+      }
+      catch (err) {
+        console.log(err.message);
+      }
+    }, 500);
   }
 
   togglePhone = () => {
@@ -663,7 +689,7 @@ class Home extends Component {
                     className="form-control" id="drinkCountThreshold" placeholder="Ex. 5"></input>
                 </div>
                 <div className="button-container">
-                  <button type="submit" className="btn btn-style">Submit</button>
+                  <button id="btn-alerts" type="submit" className="btn btn-style">Submit</button>
                 </div>
               </form>
             </Container>
@@ -681,15 +707,23 @@ class Home extends Component {
               <p className="modal-text modal-text-shadow">History: The number of drinks you added using the "+Drink" button per day.</p>
               { this.state.drinks.length ? (
                 <List>
-                  { this.state.drinks.map((drink, index) => (
-                    <ListItem key={ index }>
-                      Date: { drink.dateOfDrink }, Number Of Drinks: { drink.count }
-                    </ListItem>
-                  )) }
+                  <table>
+                    <tr>
+                      <th>Date</th>
+                      <th>Number of Drinks</th>
+                    </tr>
+                    { this.state.drinks.map((drink, index) => (
+                      <tr key={ index }>
+                        <td>{ drink.dateOfDrink }</td>
+                        <td>{ drink.count }</td>
+                      </tr>
+                    )) }
+                  </table>
                 </List>
               ) : (
-                  <h3 style={ { color: "yellow" } }>No Drink history to Display</h3>
+                  <p className="modal-text modal-text-shadow">No drink history to display.</p>
                 ) }
+              <button id="btn-history" type="" className="btn btn-style" onClick={ this.toggleHistory }>OK</button>
             </Container>
           </ModalBody>
         </Modal>
@@ -745,14 +779,12 @@ class Home extends Component {
                     className="form-control" id="emergencyContactPhoneNumber" placeholder=""></input>
                 </div>
                 <div className="button-container">
-                  <button type="submit" className="btn btn-style">Submit</button>
+                  <button id="btn-settings" type="submit" className="btn btn-style">Submit</button>
                 </div>
               </form>
             </Container>
           </ModalBody >
           <ModalFooter>
-            {/* <Button color="secondary" onClick={ props.toggle }>Close</Button>
-          Do we need this????? */ }
           </ModalFooter>
         </Modal>
         {/* Phone Modal */ }
