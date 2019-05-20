@@ -353,12 +353,10 @@ class Home extends Component {
       if (theMessage.indexOf("Uber") > -1) { // this removes the Uber link
         theMessage = "It looks like you have had a lot to drink. Please get a ride home or get an Uber, for your own safety and for the safety of others."
       }
-      // window.navigator.vibrate([ 500, 200, 500 ]);
-      this.setState(prevState => ({
-        infoModal: !prevState.infoModal,
-        infoModalBody: theMessage
-      }));
-      // alert(theMessage);
+      window.navigator.vibrate([ 500, 200, 500 ]);
+      setTimeout(function () {
+        alert(theMessage);
+      }, 800);
       document.getElementById("test-display").innerText = "Alerted message locally: " + theMessage;
     } else {
       TEXT.sendText({ to: toNumber, message: theMessage })
