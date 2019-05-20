@@ -247,7 +247,7 @@ class Home extends Component {
       let emergencyContactNumber = localStorage.getItem("emergencyContactNumber");
       let isLoggedIn = localStorage.getItem("isLoggedIn");
       if (userPhoneNumber > 0) {
-        this.setState({ userPhoneNumber: userPhoneNumber });
+        this.setState({ userPhoneNumber: userPhoneNumber }, () => { this.loadDrinks() });
       }
       if (emergencyContactNumber > 0) {
         this.setState({ emergencyContactNumber: emergencyContactNumber });
@@ -620,8 +620,8 @@ class Home extends Component {
           <Row >
             <Col>
               <div id="test-display">test display</div>
-              <PostDrink drinks={ this.state.numberOfDrinks[ ((this.state.numberOfDrinks).length) - 1 ] } bac={ this.state.bac } 
-                         zero={ this.state.zero } drinkHistory={this.toggleHistory } >
+              <PostDrink drinks={ this.state.numberOfDrinks[ ((this.state.numberOfDrinks).length) - 1 ] } bac={ this.state.bac }
+                zero={ this.state.zero } drinkHistory={ this.toggleHistory } >
               </PostDrink>
               <div>
                 <img id="superSip" src={ superSpot } alt="super sip the beer bottle" width="40%" />
