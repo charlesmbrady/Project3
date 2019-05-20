@@ -142,10 +142,10 @@ class Home extends Component {
     this._isMounted = true;
     this.checkLocalStorageOnMount();
     this.watchLocation();
-    getElementById("friends-button").addEventListener("touchend", alert("touchend"));
-    getElementById("friends-button").addEventListener("touchcancel", alert("touchcancel"));
-    getElementById("uber-button").addEventListener("touchend", alert("touchend"));
-    getElementById("uber-button").addEventListener("touchcancel", alert("touchcancel"));
+    this.getElementById("friends-button").addEventListener("touchend", alert("touchend"));
+    this.getElementById("friends-button").addEventListener("touchcancel", alert("touchcancel"));
+    this.getElementById("uber-button").addEventListener("touchend", alert("touchend"));
+    this.getElementById("uber-button").addEventListener("touchcancel", alert("touchcancel"));
   }
 
   componentWillUnmount () {
