@@ -48,7 +48,7 @@ const PostDrink = (props) => {
                 <div>
                     <p style={ msgdeco } > Estimated BAC*: { props.bac }<br/>(0.08 is  intoxicated)<br/>
                         Hours until BAC is ZERO: { props.zero }<br/>
-                        <button style={ bton } onClick={ props.drinkHistory }>
+                        <button style={ bton } className="menu-button" data-test="menu-history" toggleHistory={ props.toggleHistory } onClick={ props.toggleHistory } >
                             Last drink at: { (props.drinks.timeOfLastDrink).toLocaleString().replace(/:\d{2}\s/,' ') }
                         </button>
                     </p>
