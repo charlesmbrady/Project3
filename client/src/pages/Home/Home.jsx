@@ -542,11 +542,6 @@ class Home extends Component {
     }))
   }
 
-  touchEnd = () => {
-    event.preventDefault()
-    document.getElementById("title").focus();
-  }
-
   touchCancel = (event) => {
     event.preventDefault()
     document.getElementById("title").focus();
