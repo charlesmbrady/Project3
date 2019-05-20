@@ -355,7 +355,11 @@ class Home extends Component {
       }
       window.navigator.vibrate([ 500, 200, 500 ]);
       setTimeout(function () {
-        alert(theMessage);
+        this.setState(prevState => ({
+          infoModal: !prevState.infoModal,
+          infoModalBody: theMessage
+        }));
+        // alert(theMessage);
       }, 800);
       document.getElementById("test-display").innerText = "Alerted message locally: " + theMessage;
     } else {
@@ -448,7 +452,12 @@ class Home extends Component {
           this.loadDrinks('on login');
         } else if (response.data.error === 'Password does not match') {
           console.log('wrong password');
-          alert("Password does not match, Please enter the correct password");
+          const theInformation = "Password does not match. Please enter the correct password."
+          this.setState(prevState => ({
+            infoModal: !prevState.infoModal,
+            infoModalBody: theInformation
+          }));
+          // alert("Password does not match, Please enter the correct password");
           this.setState({ userPhoneNumber: 0, emergencyContactNumber: 0 });
           localStorage.clear();
         }
