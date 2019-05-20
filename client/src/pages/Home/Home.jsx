@@ -540,7 +540,9 @@ class Home extends Component {
     }))
   }
 
-  touchend = () => {
+  touchend = (event) => {
+    event.preventDefault();
+    document.getElementById("title").focus();
     alert("touchend");
   }
 
@@ -641,7 +643,7 @@ class Home extends Component {
             ) }
 
           <button className="cntrl-btn" data-test="controls-drink" onClick={ this.drinkTracker }>+Drink</button>
-          <a id="uber-button" className="cntrl-btn" data-test="controls-uber" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location" target="_blank" rel="noopener noreferrer" onTouchCancel={ this.touchcancel }>Uber</a>
+          <a id="uber-button" className="cntrl-btn" data-test="controls-uber" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location" target="_blank" rel="noopener noreferrer" onTouchEnd={ this.touchend }>Uber</a>
           <button id="friends-button" className="cntrl-btn" data-test="controls-friends" onClick={ this.contactFriends } onTouchEnd={ this.touchend }>Friends</button>
         </div>
         {/* Alerts Modal */ }
