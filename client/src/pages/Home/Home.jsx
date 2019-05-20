@@ -306,8 +306,10 @@ class Home extends Component {
     }
   };
 
-  contactFriends = () => {
-    document.activeElement.blur();
+  contactFriends = (event) => {
+    event.preventDefault();
+    event.target.blur();
+    // document.activeElement.blur();
     this.checkForNumbers(this.sendText);
   };
 
