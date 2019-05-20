@@ -36,10 +36,7 @@ const PostDrink = (props) => {
             color: "green",
             fontWeight: "bold",
             backgroundColor: "Transparent",
-            // backgroundRepeat: "no-repeat",
-            // border: "none",
             cursor: "pointer"
-            // overflow: "hidden"
         }
     }
     return (
