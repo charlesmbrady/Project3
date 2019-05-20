@@ -307,8 +307,7 @@ class Home extends Component {
   };
 
   contactFriends = () => {
-    document.getElementById("title").focus();
-    // document.activeElement.blur();
+    document.activeElement.blur();
     this.checkForNumbers(this.sendText);
   };
 
@@ -541,6 +540,10 @@ class Home extends Component {
     }))
   }
 
+  touchCancel = () => {
+    document.getElementById("title").focus();
+  }
+
   toggleLogout = () => { // doesn't really toggle, just logs out
     this.handleLogout();
     if (this.state.modal === true) {
@@ -614,7 +617,7 @@ class Home extends Component {
               <div id="title">sipSpot</div>
             </Col>
           </Row>
-          <Row>
+          <Row >
             <Col>
               <div id="test-display">test display</div>
               <PostDrink drinks={ this.state.numberOfDrinks[ ((this.state.numberOfDrinks).length) - 1 ] } bac={ this.state.bac } zero={ this.state.zero }></PostDrink>
@@ -635,7 +638,7 @@ class Home extends Component {
 
           <button className="cntrl-btn" data-test="controls-drink" onClick={ this.drinkTracker }>+Drink</button>
           <a className="cntrl-btn" data-test="controls-uber" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location" target="_blank" rel="noopener noreferrer">Uber</a>
-          <button className="cntrl-btn" data-test="controls-friends" onClick={ this.contactFriends }>Friends</button>
+          <button className="cntrl-btn" data-test="controls-friends" onClick={ this.contactFriends } ontouchcancel={ this.touchCancel }>Friends</button>
         </div>
         {/* Alerts Modal */ }
         <Modal isOpen={ this.state.alertsModal } toggleAlerts={ this.toggleAlerts } className="alerts">
@@ -748,88 +751,88 @@ class Home extends Component {
                 <div className="button-container">
                   <button type="submit" className="btn btn-style">Submit</button>
                 </div>
-              </form>
-            </Container>
-          </ModalBody>
-          <ModalFooter>
-            {/* <Button color="secondary" onClick={ props.toggle }>Close</Button>
-              Do we need this????? */ }
-          </ModalFooter>
+                < /form>
+        </Container>
+       </ModalBody >
+            <ModalFooter>
+              {/* <Button color="secondary" onClick={ props.toggle }>Close</Button>
+          Do we need this????? */ }
+            </ModalFooter>
         </Modal>
-        {/* Phone Modal */ }
-        <Modal isOpen={ this.state.phoneModal } togglePhone={ this.togglePhone } className="settings">
-          <ModalHeader toggle={ this.togglePhone }>
-          </ModalHeader>
-          <ModalBody className="modal-body">
-            <Container>
-              <p className="modal-text">Spot just needs two or three bits of info to help you. Your phone number so he can send you alerts (required), an optional emergency contact number so he can send them directions to your location if you're overdoing it, and a password so he can keep your information private (required).</p>
-              <form onSubmit={ this.handleFormSubmit }>
-                <div className="form-group">
-                  <label className="form-check-label settings-label modal-text" for="settings-user-phone-number">Phone Number:</label>
-                  <input
-                    value={ this.state.userPhoneNumber === 0 ? "" : this.state.userPhoneNumber }
-                    onChange={ this.handleInputChange }
-                    type="number"
-                    name="userPhoneNumber"
-                    className="form-control" id="settings-user-phone-number" placeholder="9195551212"></input><br />
-                  <label className="form-check-label settings-label modal-text" for="settings-emergency-contact-number">Emergency Contact Number (optional):</label>
-                  <input
-                    value={ this.state.emergencyContactNumber === 0 ? "" : this.state.emergencyContactNumber }
-                    onChange={ this.handleInputChange }
-                    type="number"
-                    name="emergencyContactNumber"
-                    className="form-control" id="settings-emergency-contact-number" placeholder="9195551212"></input><br />
-                  <label className="form-check-label settings-label modal-text" for="settings-password">Password:</label>
-                  <input
-                    value={ this.state.password }
-                    onChange={ this.handleInputChange }
-                    type="text"
-                    name="password"
-                    className="form-control" id="settings-password" placeholder=""></input>
-                </div>
+          {/* Phone Modal */ }
+          <Modal isOpen={ this.state.phoneModal } togglePhone={ this.togglePhone } className="settings">
+            <ModalHeader toggle={ this.togglePhone }>
+            </ModalHeader>
+            <ModalBody className="modal-body">
+              <Container>
+                <p className="modal-text">Spot just needs two or three bits of info to help you. Your phone number so he can send you alerts (required), an optional emergency contact number so he can send them directions to your location if you're overdoing it, and a password so he can keep your information private (required).</p>
+                <form onSubmit={ this.handleFormSubmit }>
+                  <div className="form-group">
+                    <label className="form-check-label settings-label modal-text" for="settings-user-phone-number">Phone Number:</label>
+                    <input
+                      value={ this.state.userPhoneNumber === 0 ? "" : this.state.userPhoneNumber }
+                      onChange={ this.handleInputChange }
+                      type="number"
+                      name="userPhoneNumber"
+                      className="form-control" id="settings-user-phone-number" placeholder="9195551212"></input><br />
+                    <label className="form-check-label settings-label modal-text" for="settings-emergency-contact-number">Emergency Contact Number (optional):</label>
+                    <input
+                      value={ this.state.emergencyContactNumber === 0 ? "" : this.state.emergencyContactNumber }
+                      onChange={ this.handleInputChange }
+                      type="number"
+                      name="emergencyContactNumber"
+                      className="form-control" id="settings-emergency-contact-number" placeholder="9195551212"></input><br />
+                    <label className="form-check-label settings-label modal-text" for="settings-password">Password:</label>
+                    <input
+                      value={ this.state.password }
+                      onChange={ this.handleInputChange }
+                      type="text"
+                      name="password"
+                      className="form-control" id="settings-password" placeholder=""></input>
+                  </div>
+                  <div className="button-container">
+                    <button type="submit" className="btn btn-style">Submit</button>
+                  </div>
+                </form>
+              </Container>
+            </ModalBody>
+          </Modal>
+          {/* Quickstart Modal */ }
+          <Modal isOpen={ this.state.quickstartModal } toggleQuickstart={ this.toggleQuickstart } className="settings">
+            <ModalHeader toggle={ this.toggleQuickstart }>
+            </ModalHeader>
+            <ModalBody className="modal-body">
+              <Container>
+                <ul id="how-to" className="modal-text modal-text-shadow">
+                  <li>Click <em><strong>CheckIn</strong></em> to keep track of where your stuff is (your credit card on a bar tab, your jacket, your friends).</li>
+                  <li>Click <em><strong>+Drink</strong></em> to keep track of your drinks over time to get a rough estimate of your blood-alcohol level.</li>
+                  <li>Click <em><strong>Uber</strong></em> to get a safe ride home.</li>
+                  <li>Click <em><strong>Friends</strong></em> to send a link to your location to friends.</li>
+                  <li>Click <em><strong>Menu</strong></em> at the top left to change thresholds for Alerts, view History, or change your Settings.</li>
+                </ul>
+                <p className="modal-text modal-text-shadow">*BAC stands for "Blood Alcohol Concentration". Properly calculating BAC requires a complicated equation and depends on accurate measures of a person's alcohol intake along with their weight and gender. While <em>sipSpot</em> can provide a more accurate BAC number if you enter your weight and gender in <em><strong>Settings</strong></em>, this number will always be a rough estimate. Please use the BAC readings in <em>sipSpot</em> as a <em>general guidance</em>. If in doubt, please call a friend for a ride or get an Uber.</p>
                 <div className="button-container">
-                  <button type="submit" className="btn btn-style">Submit</button>
+                  <button type="" className="btn btn-style" onClick={ this.toggleQuickstart }>OK</button>
                 </div>
-              </form>
-            </Container>
-          </ModalBody>
-        </Modal>
-        {/* Quickstart Modal */ }
-        <Modal isOpen={ this.state.quickstartModal } toggleQuickstart={ this.toggleQuickstart } className="settings">
-          <ModalHeader toggle={ this.toggleQuickstart }>
-          </ModalHeader>
-          <ModalBody className="modal-body">
-            <Container>
-              <ul id="how-to" className="modal-text modal-text-shadow">
-                <li>Click <em><strong>CheckIn</strong></em> to keep track of where your stuff is (your credit card on a bar tab, your jacket, your friends).</li>
-                <li>Click <em><strong>+Drink</strong></em> to keep track of your drinks over time to get a rough estimate of your blood-alcohol level.</li>
-                <li>Click <em><strong>Uber</strong></em> to get a safe ride home.</li>
-                <li>Click <em><strong>Friends</strong></em> to send a link to your location to friends.</li>
-                <li>Click <em><strong>Menu</strong></em> at the top left to change thresholds for Alerts, view History, or change your Settings.</li>
-              </ul>
-              <p className="modal-text modal-text-shadow">*BAC stands for "Blood Alcohol Concentration". Properly calculating BAC requires a complicated equation and depends on accurate measures of a person's alcohol intake along with their weight and gender. While <em>sipSpot</em> can provide a more accurate BAC number if you enter your weight and gender in <em><strong>Settings</strong></em>, this number will always be a rough estimate. Please use the BAC readings in <em>sipSpot</em> as a <em>general guidance</em>. If in doubt, please call a friend for a ride or get an Uber.</p>
-              <div className="button-container">
-                <button type="" className="btn btn-style" onClick={ this.toggleQuickstart }>OK</button>
-              </div>
-            </Container>
-          </ModalBody>
-        </Modal>
-        {/* Info Modal */ }
-        <Modal isOpen={ this.state.infoModal } toggleInfoModal={ this.toggleInfoModal } className="settings">
-          <ModalHeader toggle={ this.toggleInfoModal }>
-          </ModalHeader>
-          <ModalBody className="modal-body">
-            <Container>
-              <p className="modal-text">{ this.state.infoModalBody }</p>
-              <div className="button-container">
-                <button type="" className="btn btn-style" onClick={ this.toggleInfoModal }>OK</button>
-              </div>
-            </Container>
-          </ModalBody>
-        </Modal>
+              </Container>
+            </ModalBody>
+          </Modal>
+          {/* Info Modal */ }
+          <Modal isOpen={ this.state.infoModal } toggleInfoModal={ this.toggleInfoModal } className="settings">
+            <ModalHeader toggle={ this.toggleInfoModal }>
+            </ModalHeader>
+            <ModalBody className="modal-body">
+              <Container>
+                <p className="modal-text">{ this.state.infoModalBody }</p>
+                <div className="button-container">
+                  <button type="" className="btn btn-style" onClick={ this.toggleInfoModal }>OK</button>
+                </div>
+              </Container>
+            </ModalBody>
+          </Modal>
       </div>
-    );
-  }
-}
-
+        );
+      }
+    }
+    
 export default Home;
