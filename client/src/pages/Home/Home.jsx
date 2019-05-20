@@ -306,10 +306,8 @@ class Home extends Component {
     }
   };
 
-  contactFriends = (event) => {
-    event.preventDefault()
-    document.getElementById("title").focus();
-    // document.activeElement.blur();
+  contactFriends = () => {
+    document.activeElement.blur();
     this.checkForNumbers(this.sendText);
   };
 
@@ -542,11 +540,6 @@ class Home extends Component {
     }))
   }
 
-  touchCancel = (event) => {
-    event.preventDefault()
-    document.getElementById("title").focus();
-  }
-
   toggleLogout = () => { // doesn't really toggle, just logs out
     this.handleLogout();
     if (this.state.modal === true) {
@@ -640,7 +633,7 @@ class Home extends Component {
             ) }
 
           <button className="cntrl-btn" data-test="controls-drink" onClick={ this.drinkTracker }>+Drink</button>
-          <a className="cntrl-btn" data-test="controls-uber" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location" target="_blank" rel="noopener noreferrer" onTouchCancel={ this.touchCancel }>Uber</a>
+          <a className="cntrl-btn" data-test="controls-uber" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location" target="_blank" rel="noopener noreferrer">Uber</a>
           <button className="cntrl-btn" data-test="controls-friends" onClick={ this.contactFriends }>Friends</button>
         </div>
         {/* Alerts Modal */ }
