@@ -668,7 +668,8 @@ class Home extends Component {
             <Col>
               <div id="test-display">test display</div>
               <PostDrink drinks={ this.state.numberOfDrinks[ ((this.state.numberOfDrinks).length) - 1 ] } bac={ this.state.bac }
-                zero={ this.state.zero } drinkHistory={ this.toggleHistory } >
+               zero={ this.state.zero } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) } 
+               toggleHistory={ this.toggleHistory } >
               </PostDrink>
               <div>
                 <img id="superSip" src={ superSpot } alt="super sip the beer bottle" width="40%" />
