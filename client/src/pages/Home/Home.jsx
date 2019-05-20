@@ -226,6 +226,14 @@ class Home extends Component {
         infoModal: !prevState.infoModal,
         infoModalBody: theInformation
       }));
+      setTimeout(function () {
+        try {
+          document.getElementById("btn-info").focus()
+        }
+        catch (err) {
+          console.log(err.message);
+        }
+      }, 500);
     } else {
       this.storeCheckinLocation();
     };
@@ -444,7 +452,14 @@ class Home extends Component {
             infoModal: !prevState.infoModal,
             infoModalBody: theInformation
           }));
-          // alert("Password does not match, Please enter the correct password");
+          setTimeout(function () {
+            try {
+              document.getElementById("btn-info").focus()
+            }
+            catch (err) {
+              console.log(err.message);
+            }
+          }, 500);
           this.setState({ userPhoneNumber: 0, emergencyContactNumber: 0 });
           localStorage.clear();
         }
@@ -472,7 +487,15 @@ class Home extends Component {
       infoModal: !prevState.infoModal,
       infoModalBody: theInformation
     }));
-  }
+    setTimeout(function () {
+      try {
+        document.getElementById("btn-info").focus()
+      }
+      catch (err) {
+        console.log(err.message);
+      }
+    }, 500);
+  };
 
   toggleAlerts = () => {
     this.setState(prevState => ({
@@ -529,20 +552,44 @@ class Home extends Component {
     this.setState(prevState => ({
       phoneModal: !prevState.phoneModal,
     }))
-  }
+    setTimeout(function () {
+      try {
+        document.getElementById("btn-phone").focus()
+      }
+      catch (err) {
+        console.log(err.message);
+      }
+    }, 500);
+  };
 
   toggleQuickstart = () => {
     document.activeElement.blur();
     this.setState(prevState => ({
       quickstartModal: !prevState.quickstartModal
     }))
-  }
+    setTimeout(function () {
+      try {
+        document.getElementById("btn-quickstart").focus()
+      }
+      catch (err) {
+        console.log(err.message);
+      }
+    }, 500);
+  };
 
   toggleInfoModal = () => {
     this.setState(prevState => ({
       infoModal: !prevState.infoModal
     }))
-  }
+    setTimeout(function () {
+      try {
+        document.getElementById("btn-info").focus()
+      }
+      catch (err) {
+        console.log(err.message);
+      }
+    }, 500);
+  };
 
   toggleLogout = () => { // doesn't really toggle, just logs out
     this.handleLogout();
@@ -672,7 +719,6 @@ class Home extends Component {
             </Container>
           </ModalBody>
           <ModalFooter>
-            {/* <Button color="secondary" onClick={ props.toggle }>Close</Button> */ }
           </ModalFooter>
         </Modal>
         {/* History Modal */ }
@@ -796,7 +842,7 @@ class Home extends Component {
                     className="form-control" id="settings-password" placeholder=""></input>
                 </div>
                 <div className="button-container">
-                  <button type="submit" className="btn btn-style">Submit</button>
+                  <button id="btn-phone" type="submit" className="btn btn-style">Submit</button>
                 </div>
               </form>
             </Container>
@@ -817,7 +863,7 @@ class Home extends Component {
               </ul>
               <p className="modal-text modal-text-shadow">*BAC stands for "Blood Alcohol Concentration". Properly calculating BAC requires a complicated equation and depends on accurate measures of a person's alcohol intake along with their weight and gender. While <em>sipSpot</em> can provide a more accurate BAC number if you enter your weight and gender in <em><strong>Settings</strong></em>, this number will always be a rough estimate. Please use the BAC readings in <em>sipSpot</em> as a <em>general guidance</em>. If in doubt, please call a friend for a ride or get an Uber.</p>
               <div className="button-container">
-                <button type="" className="btn btn-style" onClick={ this.toggleQuickstart }>OK</button>
+                <button id="btn-quickstart" type="" className="btn btn-style" onClick={ this.toggleQuickstart }>OK</button>
               </div>
             </Container>
           </ModalBody>
@@ -830,7 +876,7 @@ class Home extends Component {
             <Container>
               <p className="modal-text">{ this.state.infoModalBody }</p>
               <div className="button-container">
-                <button type="" className="btn btn-style" onClick={ this.toggleInfoModal }>OK</button>
+                <button id="btn-info" type="" className="btn btn-style" onClick={ this.toggleInfoModal }>OK</button>
               </div>
             </Container>
           </ModalBody>
