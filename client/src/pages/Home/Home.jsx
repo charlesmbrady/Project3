@@ -10,10 +10,10 @@ import AUTH from '../../utils/AUTH';
 import { List } from "../../components/List";
 
 class Home extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
-      numberOfDrinks: [ { number: 0, timeOfLastDrink: new Date() } ],
+      numberOfDrinks: [{ number: 0, timeOfLastDrink: new Date() }],
       userPhoneNumber: 0,
       emergencyContactNumber: 0,
       password: '',
@@ -43,7 +43,7 @@ class Home extends Component {
       modal: false,
       drinks: [],
       addDrinkFlag: 0,
-      toggle () {
+      toggle() {
         this.setState(prevState => ({
           modal: !prevState.modal
         }));
@@ -58,10 +58,12 @@ class Home extends Component {
     }).then(res => {
       //Begin calculate history summary based on date  
       let dateArr = [];
+
       for (let i = 0; i < res.data[ 0 ].drinks.length; i++) {
         dateArr.push((new Date(res.data[ 0 ].drinks[ i ].timeOfLastDrink).getMonth() + 1 + "/" +
           new Date(res.data[ 0 ].drinks[ i ].timeOfLastDrink).getDate() + '/' +
           new Date(res.data[ 0 ].drinks[ i ].timeOfLastDrink).getFullYear()));
+
       }
       //remove duplicates dates
       dateArr.sort(function (a, b) { return a - b });
@@ -74,10 +76,10 @@ class Home extends Component {
       let drinkSum = [];
       for (let i = 0; i < uniqueDate.length; i++) {
         let dateOfDrink, count = 0;
-        for (let j = 0; j < res.data[ 0 ].drinks.length; j++) {
-          if (dateArr[ j ] === uniqueDate[ i ]) {
+        for (let j = 0; j < res.data[0].drinks.length; j++) {
+          if (dateArr[j] === uniqueDate[i]) {
             count++;
-            dateOfDrink = uniqueDate[ i ];
+            dateOfDrink = uniqueDate[i];
           }
         }
         if (count > 0) {
@@ -98,17 +100,17 @@ class Home extends Component {
       clearInterval(this.interval);
       let lastdrink = {};
       let numberOfDrinksCopy = this.state.numberOfDrinks;
-      if (res.data[ 0 ].drinks.length > 0) {
-        lastdrink.number = res.data[ 0 ].drinks[ (res.data[ 0 ].drinks.length) - 1 ].numberOfDrinks;
-        lastdrink.timeOfLastDrink = (new Date(res.data[ 0 ].drinks[ (res.data[ 0 ].drinks.length) - 1 ].timeOfLastDrink));
+      if (res.data[0].drinks.length > 0) {
+        lastdrink.number = res.data[0].drinks[(res.data[0].drinks.length) - 1].numberOfDrinks;
+        lastdrink.timeOfLastDrink = (new Date(res.data[0].drinks[(res.data[0].drinks.length) - 1].timeOfLastDrink));
         numberOfDrinksCopy.push(lastdrink);
       }
       //elapsed time in minutes since last recorded drink
       let now = new Date();
       let elapsedTime = (now - new Date(lastdrink.timeOfLastDrink)) / 60000;
       let bac = 0;
-      if (res.data[ 0 ].drinks.length > 0) {
-        bac = (res.data[ 0 ].drinks[ (res.data[ 0 ].drinks.length) - 1 ].bac - (elapsedTime * .00025)).toFixed(4);
+      if (res.data[0].drinks.length > 0) {
+        bac = (res.data[0].drinks[(res.data[0].drinks.length) - 1].bac - (elapsedTime * .00025)).toFixed(4);
       }
       if (bac < 0.005) { bac = 0; }
       //measure the time based on current bac for it to get to 0
@@ -121,8 +123,8 @@ class Home extends Component {
       if (bac < 0.005) { zero = 0; }
       //add all db vars to state on mount
       this.setState({
-        emergencyContactNumber: res.data[ 0 ].emergencyContactNumber, weight: res.data[ 0 ].weight,
-        gender: res.data[ 0 ].gender, selfAlertThreshold: res.data[ 0 ].selfAlertThreshold, emergencyAlertThreshold: res.data[ 0 ].emergencyAlertThreshold,
+        emergencyContactNumber: res.data[0].emergencyContactNumber, weight: res.data[0].weight,
+        gender: res.data[0].gender, selfAlertThreshold: res.data[0].selfAlertThreshold, emergencyAlertThreshold: res.data[0].emergencyAlertThreshold,
         numberOfDrinks: numberOfDrinksCopy, bac, zero
       });
       this.interval = setInterval(() => { this.updateBac.bind(this); this.updateBac(); }, 60000);
@@ -133,17 +135,17 @@ class Home extends Component {
       .catch(err => console.log(err));
   };
 
-  componentDidMount () {
+  componentDidMount() {
     this._isMounted = true;
     this.checkLocalStorageOnMount();
     this.watchLocation();
   };
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this._isMounted = false;
   };
 
-  calculateBac (drink, time, weight, gender) {
+  calculateBac(drink, time, weight, gender) {
     //calculate BAC(using 130lbs as generic weight and r=0.55 for conservative estimate if user does not give the data)
     let r = 0.55;
     if (gender.toLowerCase === 'm') {
@@ -159,7 +161,7 @@ class Home extends Component {
   };
 
   //update BAC every minute
-  updateBac () {
+  updateBac() {
     let bac = (this.state.bac - ((1 / 60) * .015)).toFixed(4);
     if (bac < 0.005) { bac = 0; }
     //measure the time based on current bac for it to get to 0
@@ -182,7 +184,7 @@ class Home extends Component {
       clearInterval(this.interval);
       let lastdrink = {};
       let numberOfDrinksCopy = this.state.numberOfDrinks;
-      lastdrink.number = (numberOfDrinksCopy[ (numberOfDrinksCopy.length - 1) ].number) + 1;
+      lastdrink.number = (numberOfDrinksCopy[(numberOfDrinksCopy.length - 1)].number) + 1;
       lastdrink.timeOfLastDrink = new Date();
       numberOfDrinksCopy.push(lastdrink);
       let bac = (parseFloat(this.calculateBac(1, lastdrink.timeOfLastDrink, this.state.weight, this.state.gender)) +
@@ -356,7 +358,7 @@ class Home extends Component {
       if (theMessage.indexOf("Uber") > -1) { // this removes the Uber link
         theMessage = "It looks like you have had a lot to drink. Please get a ride home or get an Uber, for your own safety and for the safety of others."
       }
-      window.navigator.vibrate([ 500, 200, 500 ]);
+      window.navigator.vibrate([500, 200, 500]);
       setTimeout(function () {
         alert(theMessage);
       }, 800);
@@ -401,9 +403,10 @@ class Home extends Component {
     // Getting the value and name of the input which triggered the change
     let value = event.target.value;
     const name = event.target.name;
+    
     // Updating the input's state
     this.setState({
-      [ name ]: value
+      [name]: value.trim()
     });
   };
 
@@ -412,6 +415,14 @@ class Home extends Component {
     //toggles off the respective modal
     event.preventDefault();
     if (this.state.settingsModal) {
+      if(this.state.weight > 600 || this.state.weight < 65){
+        const theInformation = "Make sure you have the correct weight in lbs"
+        this.setState(prevState => ({
+          infoModal: !prevState.infoModal,
+          infoModalBody: theInformation
+        }));
+        return 0;
+      }
       this.toggleSettings();
       AUTH.userUpdate({
         userPhoneNumber: this.state.userPhoneNumber,
@@ -423,6 +434,25 @@ class Home extends Component {
       });
     }
     if (this.state.phoneModal) {
+      //make sure phone number is 10 digits
+      if (String(this.state.userPhoneNumber).length !== 10 || String(this.state.userPhoneNumber).charAt(0) === '0' || String(this.state.userPhoneNumber).charAt(0) === '1') {
+        const theInformation = "Phone number must be 10 digits, contain only numbers, and not start with 0 or 1"
+        this.setState(prevState => ({
+          infoModal: !prevState.infoModal,
+          infoModalBody: theInformation
+        }));
+        return 0;
+      }
+
+      if(this.state.password.length < 4){
+        const theInformation = "Password must be at least 4 characters"
+        this.setState(prevState => ({
+          infoModal: !prevState.infoModal,
+          infoModalBody: theInformation
+        }));
+        return 0;
+      }
+
       AUTH.signup({
         userPhoneNumber: this.state.userPhoneNumber,
         emergencyContactNumber: this.state.emergencyContactNumber,
@@ -467,6 +497,15 @@ class Home extends Component {
       this.togglePhone();
     }
     if (this.state.alertsModal) {
+      //make sure anything over .1 BAC alert is intentional
+      if (this.state.selfAlertThreshold > .1 || this.state.emergencyAlertThreshold > .1) {
+        const theInformation = "Please note: 0.08 is legally intoxicated in most places and 0.1 is even more intoxicated. You have set your alert threshold over 0.1. If you don't really want to set your alert threshold so high, please change it in the Alerts dialog box."
+        this.setState(prevState => ({
+          infoModal: !prevState.infoModal,
+          infoModalBody: theInformation
+        }));
+        return 0;
+      }
       this.toggleAlerts();
       AUTH.userUpdate({
         userPhoneNumber: this.state.userPhoneNumber,
@@ -476,6 +515,7 @@ class Home extends Component {
         console.log("user info updated");
       });
     }
+
     if (this.state.historyModal) {
       this.toggleHistory();
     }
@@ -613,7 +653,7 @@ class Home extends Component {
 
   resetState = () => {
     this.setState({
-      numberOfDrinks: [ { number: 0, timeOfLastDrink: new Date() } ],
+      numberOfDrinks: [{ number: 0, timeOfLastDrink: new Date() }],
       userPhoneNumber: 0,
       emergencyContactNumber: 0,
       password: '',
@@ -646,18 +686,18 @@ class Home extends Component {
     })
   };
 
-  render () {
+  render() {
     return (
       <div>
         <div className="topbar">
-          <MenuModal user={ this.state.firstName } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) }
-            toggleAlerts={ this.toggleAlerts } toggleHistory={ this.toggleHistory } toggleSettings={ this.toggleSettings } togglePhone={ this.togglePhone }>
+          <MenuModal user={this.state.firstName} modal={this.state.modal} toggle={this.state.toggle.bind(this)}
+            toggleAlerts={this.toggleAlerts} toggleHistory={this.toggleHistory} toggleSettings={this.toggleSettings} togglePhone={this.togglePhone}>
           </MenuModal>
-          <button className="cntrl-btn" data-test="menu-quickstart" onClick={ this.toggleQuickstart }>Quick Start</button>
+          <button className="cntrl-btn" data-test="menu-quickstart" onClick={this.toggleQuickstart}>Quick Start</button>
         </div>
         <Container className="home">
-          <MenuModal isLoggedIn={ this.state.isLoggedIn } user={ this.state.firstName } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) }
-            toggleAlerts={ this.toggleAlerts } toggleHistory={ this.toggleHistory } toggleSettings={ this.toggleSettings } toggleLogout={ this.toggleLogout } togglePhone={ this.togglePhone }>
+          <MenuModal isLoggedIn={this.state.isLoggedIn} user={this.state.firstName} modal={this.state.modal} toggle={this.state.toggle.bind(this)}
+            toggleAlerts={this.toggleAlerts} toggleHistory={this.toggleHistory} toggleSettings={this.toggleSettings} toggleLogout={this.toggleLogout} togglePhone={this.togglePhone}>
           </MenuModal>
           <Row>
             <Col>
@@ -667,17 +707,20 @@ class Home extends Component {
           <Row >
             <Col>
               <div id="test-display">test display</div>
+
               <PostDrink drinks={ this.state.numberOfDrinks[ ((this.state.numberOfDrinks).length) - 1 ] } bac={ this.state.bac }
                zero={ this.state.zero } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) } 
                toggleHistory={ this.toggleHistory } >
               </PostDrink>
+
               <div>
-                <img id="superSip" src={ superSpot } alt="super sip the beer bottle" width="40%" />
+                <img id="superSip" src={superSpot} alt="super sip the beer bottle" width="40%" />
               </div>
             </Col>
           </Row>
         </Container>
         <div className="bottombar">
+
           { this.state.theCheckinLatitude === 0 ? (
             <button className="cntrl-btn" data-test="controls-checkin" onClick={ this.checkIn }>CheckIn</button>
           ) : (
@@ -686,20 +729,21 @@ class Home extends Component {
           <button className="cntrl-btn" data-test="controls-drink" onClick={ this.drinkTracker }>+Drink</button>
           <a id="uber-button" className="cntrl-btn" data-test="controls-uber" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location" target="_blank" rel="noopener noreferrer">Uber</a>
           <button id="friends-button" className="cntrl-btn" data-test="controls-friends" onClick={ this.contactFriends }>Friends</button>
+
         </div>
-        {/* Alerts Modal */ }
-        <Modal isOpen={ this.state.alertsModal } toggleAlerts={ this.toggleAlerts } className="alerts">
-          <ModalHeader toggle={ this.toggleAlerts }>
+        {/* Alerts Modal */}
+        <Modal isOpen={this.state.alertsModal} toggleAlerts={this.toggleAlerts} className="alerts">
+          <ModalHeader toggle={this.toggleAlerts}>
           </ModalHeader>
           <ModalBody className="modal-body">
             <Container>
               <p className="modal-text modal-text-shadow">Alerts: Set alert thresholds to remind yourself or to alert a friend if your BAC goes above the level you choose. Perhaps you want to remind yourself if your BAC gets up to 0.07 and you want to tell a friend if it gets up to 0.09. Alerts are sent to your phone or your friend's phone as text messages.</p>
-              <form onSubmit={ this.handleFormSubmit }>
+              <form onSubmit={this.handleFormSubmit}>
                 <div className="form-group">
                   <label className="form-check-label alerts-label modal-text modal-text-shadow">BAC Emergency Alert Threshold *0.08 is intoxicated, 0.1 is more intoxicated</label>
                   <input
-                    onChange={ this.handleInputChange }
-                    value={ this.state.emergencyAlertThreshold }
+                    onChange={this.handleInputChange}
+                    value={this.state.emergencyAlertThreshold}
                     name="emergencyAlertThreshold"
                     type="number" step="0.01"
                     className="form-control" id="settings-bac-threshold" placeholder="Ex. .08"></input>
@@ -707,8 +751,8 @@ class Home extends Component {
                 <div className="form-group">
                   <label className="alerts-label modal-text modal-text-shadow">BAC Self Alert Threshold *0.08 is intoxicated, 0.1 is more intoxicated</label>
                   <input
-                    onChange={ this.handleInputChange }
-                    value={ this.state.selfAlertThreshold }
+                    onChange={this.handleInputChange}
+                    value={this.state.selfAlertThreshold}
                     name="selfAlertThreshold"
                     type="number" step="0.01"
                     className="form-control" id="drinkCountThreshold" placeholder="Ex. 5"></input>
@@ -720,17 +764,19 @@ class Home extends Component {
             </Container>
           </ModalBody>
           <ModalFooter>
+
           </ModalFooter>
         </Modal>
-        {/* History Modal */ }
-        <Modal isOpen={ this.state.historyModal } toggleSettings={ this.toggleHistory } className="history">
-          <ModalHeader toggle={ this.toggleHistory }>
+        {/* History Modal */}
+        <Modal isOpen={this.state.historyModal} toggleSettings={this.toggleHistory} className="history">
+          <ModalHeader toggle={this.toggleHistory}>
           </ModalHeader>
           <ModalBody className="modal-body">
             <Container>
               <p className="modal-text modal-text-shadow">History: The number of drinks you added using the "+Drink" button per day.</p>
-              { this.state.drinks.length ? (
+              {this.state.drinks.length ? (
                 <List>
+
                   <table>
                     <tr>
                       <th>Date</th>
@@ -748,22 +794,23 @@ class Home extends Component {
                   <p className="modal-text modal-text-shadow">No drink history to display.</p>
                 ) }
               <button id="btn-history" type="" className="btn btn-style" onClick={ this.toggleHistory }>OK</button>
+
             </Container>
           </ModalBody>
         </Modal>
-        {/* Settings Modal */ }
-        <Modal isOpen={ this.state.settingsModal } toggleSettings={ this.toggleSettings } className="settings">
-          <ModalHeader toggle={ this.toggleSettings }>
+        {/* Settings Modal */}
+        <Modal isOpen={this.state.settingsModal} toggleSettings={this.toggleSettings} className="settings">
+          <ModalHeader toggle={this.toggleSettings}>
           </ModalHeader>
           <ModalBody className="modal-body">
             <Container>
               <p className="modal-text">Settings: Enter your weight and gender below to more-accurately calculate Blood Alcohol Concentration (BAC). You can also optionally change your emergency contact number and password here.</p>
-              <form onSubmit={ this.handleFormSubmit }>
+              <form onSubmit={this.handleFormSubmit}>
                 <div className="form-group">
                   <label className="form-check-label settings-label modal-text modal-text-shadow" for="settings-weight">Weight in pounds (for BAC calculations):</label>
                   <input type="number"
-                    onChange={ this.handleInputChange }
-                    value={ this.state.weight }
+                    onChange={this.handleInputChange}
+                    value={this.state.weight}
                     name="weight"
                     className="form-control" id="settings-weight" placeholder="Ex. 130"></input>
                 </div>
@@ -772,16 +819,16 @@ class Home extends Component {
                   <div className="form-group gender-selector">
                     <div className="form-check form-check-inline">
                       <input className="form-check-input modal-text gender-radio-btn"
-                        onChange={ this.handleInputChange }
+                        onChange={this.handleInputChange}
                         name="gender"
-                        type="radio" id="inputeGenderMale" value="m" checked={ this.state.gender === "m" }></input>
+                        type="radio" id="inputeGenderMale" value="m" checked={this.state.gender === "m"}></input>
                       <label className="form-check-label settings-label modal-text modal-text-shadow" for="inlineCheckbox1">Male</label>
                     </div>
                     <div className="form-check form-check-inline">
                       <input className="form-check-input modal-text gender-radio-btn"
-                        onChange={ this.handleInputChange }
+                        onChange={this.handleInputChange}
                         name="gender"
-                        type="radio" id="inputGenderFemale" value="f" checked={ this.state.gender === "f" }></input>
+                        type="radio" id="inputGenderFemale" value="f" checked={this.state.gender === "f"}></input>
                       <label className="form-check-label settings-label modal-text modal-text-shadow" for="inlineCheckbox2">Female</label>
                     </div>
                   </div>
@@ -791,14 +838,14 @@ class Home extends Component {
                     value=""
                     type="number"
                     name="userPhoneNumber"
-                    onClick={ this.changePhoneNotification }
-                    className="form-control" id="settings-user-phone-number" placeholder={ this.state.userPhoneNumber }></input>
+                    onClick={this.changePhoneNotification}
+                    className="form-control" id="settings-user-phone-number" placeholder={this.state.userPhoneNumber}></input>
                 </div>
                 <div className="form-group">
                   <label className="form-check-label settings-label modal-text modal-text-shadow" for="emergencyContactPhoneNumber">Emergency Contact Number:</label>
                   <input type="number"
-                    value={ this.state.emergencyContactNumber < 1 ? "" : this.state.emergencyContactNumber }
-                    onChange={ this.handleInputChange }
+                    value={this.state.emergencyContactNumber < 1 ? "" : this.state.emergencyContactNumber}
+                    onChange={this.handleInputChange}
                     name="emergencyContactNumber"
                     className="form-control" id="emergencyContactPhoneNumber" placeholder=""></input>
                 </div>
@@ -811,34 +858,34 @@ class Home extends Component {
           <ModalFooter>
           </ModalFooter>
         </Modal>
-        {/* Phone Modal */ }
-        <Modal isOpen={ this.state.phoneModal } togglePhone={ this.togglePhone } className="settings">
-          <ModalHeader toggle={ this.togglePhone }>
+        {/* Phone Modal */}
+        <Modal isOpen={this.state.phoneModal} togglePhone={this.togglePhone} className="settings">
+          <ModalHeader toggle={this.togglePhone}>
           </ModalHeader>
           <ModalBody className="modal-body">
             <Container>
               <p className="modal-text">Spot just needs two or three bits of info to help you. Your phone number so he can send you alerts (required), an optional emergency contact number so he can send them directions to your location if you're overdoing it, and a password so he can keep your information private (required).</p>
-              <form onSubmit={ this.handleFormSubmit }>
+              <form onSubmit={this.handleFormSubmit}>
                 <div className="form-group">
                   <label className="form-check-label settings-label modal-text" for="settings-user-phone-number">Phone Number:</label>
                   <input
-                    value={ this.state.userPhoneNumber === 0 ? "" : this.state.userPhoneNumber }
-                    onChange={ this.handleInputChange }
+                    value={this.state.userPhoneNumber === 0 ? "" : this.state.userPhoneNumber}
+                    onChange={this.handleInputChange}
                     type="number"
                     name="userPhoneNumber"
                     className="form-control" id="settings-user-phone-number" placeholder="9195551212"></input><br />
                   <label className="form-check-label settings-label modal-text" for="settings-emergency-contact-number">Emergency Contact Number (optional):</label>
                   <input
-                    value={ this.state.emergencyContactNumber === 0 ? "" : this.state.emergencyContactNumber }
-                    onChange={ this.handleInputChange }
+                    value={this.state.emergencyContactNumber === 0 ? "" : this.state.emergencyContactNumber}
+                    onChange={this.handleInputChange}
                     type="number"
                     name="emergencyContactNumber"
                     className="form-control" id="settings-emergency-contact-number" placeholder="9195551212"></input><br />
                   <label className="form-check-label settings-label modal-text" for="settings-password">Password:</label>
                   <input
-                    value={ this.state.password }
-                    onChange={ this.handleInputChange }
-                    type="text"
+                    value={this.state.password}
+                    onChange={this.handleInputChange}
+                    type="password"
                     name="password"
                     className="form-control" id="settings-password" placeholder=""></input>
                 </div>
@@ -849,9 +896,9 @@ class Home extends Component {
             </Container>
           </ModalBody>
         </Modal>
-        {/* Quickstart Modal */ }
-        <Modal isOpen={ this.state.quickstartModal } toggleQuickstart={ this.toggleQuickstart } className="settings">
-          <ModalHeader toggle={ this.toggleQuickstart }>
+        {/* Quickstart Modal */}
+        <Modal isOpen={this.state.quickstartModal} toggleQuickstart={this.toggleQuickstart} className="settings">
+          <ModalHeader toggle={this.toggleQuickstart}>
           </ModalHeader>
           <ModalBody className="modal-body">
             <Container>
@@ -865,19 +912,22 @@ class Home extends Component {
               <p className="modal-text modal-text-shadow">*BAC stands for "Blood Alcohol Concentration". Properly calculating BAC requires a complicated equation and depends on accurate measures of a person's alcohol intake along with their weight and gender. While <em>sipSpot</em> can provide a more accurate BAC number if you enter your weight and gender in <em><strong>Settings</strong></em>, this number will always be a rough estimate. Please use the BAC readings in <em>sipSpot</em> as a <em>general guidance</em>. If in doubt, please call a friend for a ride or get an Uber.</p>
               <div className="button-container">
                 <button id="btn-quickstart" type="" className="btn btn-style" onClick={ this.toggleQuickstart }>OK</button>
+
               </div>
             </Container>
           </ModalBody>
         </Modal>
-        {/* Info Modal */ }
-        <Modal isOpen={ this.state.infoModal } toggleInfoModal={ this.toggleInfoModal } className="settings">
-          <ModalHeader toggle={ this.toggleInfoModal }>
+        {/* Info Modal */}
+        <Modal isOpen={this.state.infoModal} toggleInfoModal={this.toggleInfoModal} className="settings">
+          <ModalHeader toggle={this.toggleInfoModal}>
           </ModalHeader>
           <ModalBody className="modal-body">
             <Container>
-              <p className="modal-text">{ this.state.infoModalBody }</p>
+              <p className="modal-text">{this.state.infoModalBody}</p>
               <div className="button-container">
+                
                 <button id="btn-info" type="" className="btn btn-style" onClick={ this.toggleInfoModal }>OK</button>
+
               </div>
             </Container>
           </ModalBody>
