@@ -442,7 +442,7 @@ class Home extends Component {
       //make sure phone number is 10 digits
       let phoneNumberTemp;
       let emergContactNumTemp;
-      phoneNumberTemp = (String(this.state.userPhoneNumber).replace(/\./g, '')).replace(/\-/g, '');
+      phoneNumberTemp = (String(this.state.userPhoneNumber).replace(/\./g, '')).replace(/-/g, '');
       console.log("phone num stripped: " + phoneNumberTemp);
       if (phoneNumberTemp.length !== 10 || phoneNumberTemp.charAt(0) === '0' || phoneNumberTemp.charAt(0) === '1') {
         const theInformation = "Your Phone Number must be 10 digits and must not start with 0 or 1. Please enter only your area code and phone number."
@@ -467,7 +467,7 @@ class Home extends Component {
         }
       }
       if (String(this.state.emergencyContactNumber).length > 0) { // emergency number is not required
-        emergContactNumTemp = (String(this.state.emergencyContactNumber).replace(/\./g, '')).replace(/\-/g, '');
+        emergContactNumTemp = (String(this.state.emergencyContactNumber).replace(/\./g, '')).replace(/-/g, '');
         console.log("emerg cont num stripped: " + emergContactNumTemp);
         if (emergContactNumTemp.length !== 10 || emergContactNumTemp.charAt(0) === '0' || emergContactNumTemp.charAt(0) === '1') {
           const theInformation = "Emergency Contact Number must be 10 digits and must not start with 0 or 1. Please enter only your area code and phone number."
