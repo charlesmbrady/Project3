@@ -292,7 +292,6 @@ class Home extends Component {
   };
 
   checkLocation = (position) => {
-    // document.getElementById("test-display").innerText = "*Check* location: " + this.state.latitude + ", " + this.state.longitude + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
     this._isMounted && this.setState({ latitude: position.coords.latitude, longitude: position.coords.longitude });
     if (this.state.theCheckinLatitude !== 0) {
       let theDifferenceLatitude = (Math.abs(position.coords.latitude - this.state.theCheckinLatitude)).toFixed(6);
@@ -403,7 +402,6 @@ class Home extends Component {
     // Getting the value and name of the input which triggered the change
     let value = event.target.value;
     const name = event.target.name;
-
     // Updating the input's state
     this.setState({
       [ name ]: value.trim()
@@ -411,12 +409,11 @@ class Home extends Component {
   };
 
   handleFormSubmit = event => {
-    // Preventing the default behavior of the form submit (which is to refresh the page)
     //toggles off the respective modal
     event.preventDefault();
     if (this.state.settingsModal) {
       if (this.state.weight > 600 || this.state.weight < 65) {
-        const theInformation = "Make sure you have the correct weight in lbs"
+        const theInformation = "Please make sure you have enter the weight in pounds correctly."
         this.setState(prevState => ({
           infoModal: !prevState.infoModal,
           infoModalBody: theInformation
@@ -443,7 +440,11 @@ class Home extends Component {
     }
     if (this.state.phoneModal) {
       //make sure phone number is 10 digits
-      if (String(this.state.userPhoneNumber).length !== 10 || String(this.state.userPhoneNumber).charAt(0) === '0' || String(this.state.userPhoneNumber).charAt(0) === '1') {
+      let phoneNumberTemp;
+      let emergContactNumTemp;
+      phoneNumberTemp = (String(this.state.userPhoneNumber).replace(/\./g, '')).replace(/-/g, '');
+      console.log("phone num stripped: " + phoneNumberTemp);
+      if (phoneNumberTemp.length !== 10 || phoneNumberTemp.charAt(0) === '0' || phoneNumberTemp.charAt(0) === '1') {
         const theInformation = "Your Phone Number must be 10 digits and must not start with 0 or 1. Please enter only your area code and phone number."
         this.setState(prevState => ({
           infoModal: !prevState.infoModal,
@@ -458,22 +459,38 @@ class Home extends Component {
           }
         }, 500);
         return 0;
+      } else {
+        if (phoneNumberTemp !== this.state.userPhoneNumber) {
+          this.setState({
+            userPhoneNumber: phoneNumberTemp
+          });
+        }
       }
-      if (String(this.state.emergencyContactNumber).length !== 10 || String(this.state.emergencyContactNumber).charAt(0) === '0' || String(this.state.emergencyContactNumber).charAt(0) === '1') {
-        const theInformation = "Emergency Contact Number must be 10 digits and must not start with 0 or 1. Please enter only your area code and phone number."
-        this.setState(prevState => ({
-          infoModal: !prevState.infoModal,
-          infoModalBody: theInformation
-        }));
-        setTimeout(function () {
-          try {
-            document.getElementById("btn-info").focus()
+      if (String(this.state.emergencyContactNumber).length > 0) { // emergency number is not required
+        emergContactNumTemp = (String(this.state.emergencyContactNumber).replace(/\./g, '')).replace(/-/g, '');
+        console.log("emerg cont num stripped: " + emergContactNumTemp);
+        if (emergContactNumTemp.length !== 10 || emergContactNumTemp.charAt(0) === '0' || emergContactNumTemp.charAt(0) === '1') {
+          const theInformation = "Emergency Contact Number must be 10 digits and must not start with 0 or 1. Please enter only your area code and phone number."
+          this.setState(prevState => ({
+            infoModal: !prevState.infoModal,
+            infoModalBody: theInformation
+          }));
+          setTimeout(function () {
+            try {
+              document.getElementById("btn-info").focus()
+            }
+            catch (err) {
+              console.log(err.message);
+            }
+          }, 500);
+          return 0;
+        } else {
+          if (emergContactNumTemp !== this.state.emergencyContactNumber) {
+            this.setState({
+              emergencyContactNumber: emergContactNumTemp
+            });
           }
-          catch (err) {
-            console.log(err.message);
-          }
-        }, 500);
-        return 0;
+        }
       }
       if (this.state.password.length < 4 || this.state.password.length > 10 || this.state.password.indexOf(" ") > -1) {
         const theInformation = "Password must be between 4 and 10 characters with no spaces. Please try again."
@@ -491,10 +508,17 @@ class Home extends Component {
         }, 500);
         return 0;
       }
-
+      let userPhoneNumber = this.state.userPhoneNumber;
+      if (phoneNumberTemp !== this.state.userPhoneNumber) { // in case state not updated yet
+        userPhoneNumber = phoneNumberTemp;
+      }
+      let emergencyContactNumber = this.state.emergencyContactNumber;
+      if (emergContactNumTemp !== this.state.emergencyContactNumber) { // in case state not updated yet
+        emergencyContactNumber = emergContactNumTemp;
+      }
       AUTH.signup({
-        userPhoneNumber: this.state.userPhoneNumber,
-        emergencyContactNumber: this.state.emergencyContactNumber,
+        userPhoneNumber: userPhoneNumber,
+        emergencyContactNumber: emergencyContactNumber,
         password: this.state.password
       }).then(response => {
         if (response.data.error !== 'Password does not match') {
@@ -562,7 +586,6 @@ class Home extends Component {
         console.log("user info updated");
       });
     }
-
     if (this.state.historyModal) {
       this.toggleHistory();
     }
@@ -754,12 +777,10 @@ class Home extends Component {
           <Row >
             <Col>
               <div id="test-display">test display</div>
-
               <PostDrink drinks={ this.state.numberOfDrinks[ ((this.state.numberOfDrinks).length) - 1 ] } bac={ this.state.bac }
                 zero={ this.state.zero } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) }
                 toggleHistory={ this.toggleHistory } >
               </PostDrink>
-
               <div>
                 <img id="superSip" src={ superSpot } alt="super sip the beer bottle" width="40%" />
               </div>
@@ -767,7 +788,6 @@ class Home extends Component {
           </Row>
         </Container>
         <div className="bottombar">
-
           { this.state.theCheckinLatitude === 0 ? (
             <button className="cntrl-btn" data-test="controls-checkin" onClick={ this.checkIn }>CheckIn</button>
           ) : (
@@ -776,7 +796,6 @@ class Home extends Component {
           <button className="cntrl-btn" data-test="controls-drink" onClick={ this.drinkTracker }>+Drink</button>
           <a id="uber-button" className="cntrl-btn" data-test="controls-uber" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location" target="_blank" rel="noopener noreferrer">Uber</a>
           <button id="friends-button" className="cntrl-btn" data-test="controls-friends" onClick={ this.contactFriends }>Friends</button>
-
         </div>
         {/* Alerts Modal */ }
         <Modal isOpen={ this.state.alertsModal } toggleAlerts={ this.toggleAlerts } className="alerts">
@@ -811,7 +830,6 @@ class Home extends Component {
             </Container>
           </ModalBody>
           <ModalFooter>
-
           </ModalFooter>
         </Modal>
         {/* History Modal */ }
@@ -823,7 +841,6 @@ class Home extends Component {
               <p className="modal-text modal-text-shadow">History: The number of drinks you added using the "+Drink" button per day.</p>
               { this.state.drinks.length ? (
                 <List>
-
                   <table>
                     <tr>
                       <th>Date</th>
@@ -841,7 +858,6 @@ class Home extends Component {
                   <p className="modal-text modal-text-shadow">No drink history to display.</p>
                 ) }
               <button id="btn-history" type="" className="btn btn-style" onClick={ this.toggleHistory }>OK</button>
-
             </Container>
           </ModalBody>
         </Modal>
@@ -959,7 +975,6 @@ class Home extends Component {
               <p className="modal-text modal-text-shadow">*BAC stands for "Blood Alcohol Concentration". Properly calculating BAC requires a complicated equation and depends on accurate measures of a person's alcohol intake along with their weight and gender. While <em>sipSpot</em> can provide a more accurate BAC number if you enter your weight and gender in <em><strong>Settings</strong></em>, this number will always be a rough estimate. Please use the BAC readings in <em>sipSpot</em> as a <em>general guidance</em>. If in doubt, please call a friend for a ride or get an Uber.</p>
               <div className="button-container">
                 <button id="btn-quickstart" type="" className="btn btn-style" onClick={ this.toggleQuickstart }>OK</button>
-
               </div>
             </Container>
           </ModalBody>
@@ -972,9 +987,7 @@ class Home extends Component {
             <Container>
               <p className="modal-text">{ this.state.infoModalBody }</p>
               <div className="button-container">
-
                 <button id="btn-info" type="" className="btn btn-style" onClick={ this.toggleInfoModal }>OK</button>
-
               </div>
             </Container>
           </ModalBody>
