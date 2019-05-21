@@ -398,9 +398,10 @@ class Home extends Component {
     // Getting the value and name of the input which triggered the change
     let value = event.target.value;
     const name = event.target.name;
+    
     // Updating the input's state
     this.setState({
-      [name]: value
+      [name]: value.trim()
     });
   };
 
@@ -409,6 +410,14 @@ class Home extends Component {
     //toggles off the respective modal
     event.preventDefault();
     if (this.state.settingsModal) {
+      if(this.state.weight > 600 || this.state.weight < 65){
+        const theInformation = "Make sure you have the correct weight in lbs"
+        this.setState(prevState => ({
+          infoModal: !prevState.infoModal,
+          infoModalBody: theInformation
+        }));
+        return 0;
+      }
       this.toggleSettings();
       AUTH.userUpdate({
         userPhoneNumber: this.state.userPhoneNumber,
@@ -421,8 +430,17 @@ class Home extends Component {
     }
     if (this.state.phoneModal) {
       //make sure phone number is 10 digits
-      if (String(this.state.userPhoneNumber).length !== 10) {
-        const theInformation = "Phone number must be 10 digits"
+      if (String(this.state.userPhoneNumber).length !== 10 || String(this.state.userPhoneNumber).charAt(0) === '0' || String(this.state.userPhoneNumber).charAt(0) === '1') {
+        const theInformation = "Phone number must be 10 digits, contain only numbers, and not start with 0 or 1"
+        this.setState(prevState => ({
+          infoModal: !prevState.infoModal,
+          infoModalBody: theInformation
+        }));
+        return 0;
+      }
+
+      if(this.state.password.length < 4){
+        const theInformation = "Password must be at least 4 characters"
         this.setState(prevState => ({
           infoModal: !prevState.infoModal,
           infoModalBody: theInformation
@@ -477,6 +495,7 @@ class Home extends Component {
       }
       this.toggleAlerts();
     }
+
     if (this.state.historyModal) {
       this.toggleHistory();
     }
