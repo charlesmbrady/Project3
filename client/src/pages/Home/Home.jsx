@@ -501,7 +501,7 @@ class Home extends Component {
         }, 500);
         return 0;
       }
-      let emergencyContactNumber = this.state.emergencyContactNumber;
+      let emergContactNumTemp = this.state.emergencyContactNumber;
       if (emergContactNumTemp !== this.state.emergencyContactNumber) { // in case state not updated yet
         emergencyContactNumber = emergContactNumTemp;
       }
