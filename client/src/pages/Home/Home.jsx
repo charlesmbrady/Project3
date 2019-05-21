@@ -466,7 +466,7 @@ class Home extends Component {
           });
         }
       }
-      if (String(this.state.emergencyContactNumber).length > 0) { // emergency number is not required
+      if (String(this.state.emergencyContactNumber).length > 2) { // emergency number is not required
         emergContactNumTemp = (String(this.state.emergencyContactNumber).replace(/\./g, '')).replace(/-/g, '');
         console.log("emerg cont num stripped: " + emergContactNumTemp);
         if (emergContactNumTemp.length !== 10 || emergContactNumTemp.charAt(0) === '0' || emergContactNumTemp.charAt(0) === '1') {
@@ -491,6 +491,10 @@ class Home extends Component {
             });
           }
         }
+      } else { // if it's not a real number then user phone number gets emergency texts.
+        this.setState({
+          emergencyContactNumber: this.state.userPhoneNumber
+        });
       }
       if (this.state.password.length < 4 || this.state.password.length > 10 || this.state.password.indexOf(" ") > -1) {
         const theInformation = "Password must be between 4 and 10 characters with no spaces. Please try again."
@@ -513,8 +517,10 @@ class Home extends Component {
         userPhoneNumber = phoneNumberTemp;
       }
       let emergencyContactNumber = this.state.emergencyContactNumber;
-      if (emergContactNumTemp !== this.state.emergencyContactNumber) { // in case state not updated yet
+      if (emergContactNumTemp !== this.state.emergencyContactNumber && emergContactNumTemp > 0) { // in case state not updated yet
         emergencyContactNumber = emergContactNumTemp;
+      } else {
+        emergencyContactNumber = this.state.userPhoneNumber;
       }
       AUTH.signup({
         userPhoneNumber: userPhoneNumber,
