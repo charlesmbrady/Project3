@@ -13,8 +13,8 @@ const userSchema = new Schema({
 	emergencyContactNumber: { type: Number, unique: false, required: true, default: 0 },
 	weight: { type: Number, unique: false, required: true, default: 130 },
 	gender: { type: String, unique: false, required: true, default: 'f' },
-	selfAlertThreshold: { type: Number, unique: false, required: true, default: 1 },
-	emergencyAlertThreshold: { type: Number, unique: false, required: true, default: 1 },
+	selfAlertThreshold: { type: Number, unique: false, required: true, default: 0.1 },
+	emergencyAlertThreshold: { type: Number, unique: false, required: true, default: 0.1 },
 	drinks: [
 		{
 			// Store ObjectIds in the array
@@ -62,7 +62,7 @@ userSchema.methods = {
 // Define hooks for pre-saving
 userSchema.pre('save', function (next) {
 	if (!this.password) {
-		console.log('No password provided!');
+		// no password provided
 		next();
 	} else {
 		this.password = this.hashPassword(this.password);

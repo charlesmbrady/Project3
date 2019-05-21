@@ -8,29 +8,29 @@ import './style.css';
 
 class SignupForm extends Component {
 
-	constructor() {
+  constructor () {
     super();
-    
-		this.state = {
+
+    this.state = {
       firstName: '',
       lastName: '',
-			username: '',
-			password: '',
-			confirmPassword: '',
-			redirectTo: null
-		};
+      username: '',
+      password: '',
+      confirmPassword: '',
+      redirectTo: null
+    };
   }
-  
-	handleChange = (event) => {
-		this.setState({
-			[event.target.name]: event.target.value
-		});
+
+  handleChange = (event) => {
+    this.setState({
+      [ event.target.name ]: event.target.value
+    });
   }
-  
-	handleSubmit = (event) => {
-		event.preventDefault();
-		// TODO - validate!
-		AUTH.signup({
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+    // TODO - validate!
+    AUTH.signup({
       firstName: this.state.firstName,
       lastName: this.state.lastName,
       username: this.state.username,
@@ -38,73 +38,70 @@ class SignupForm extends Component {
     }).then(response => {
       console.log(response);
       if (!response.data.errmsg) {
-        console.log('youre good');
         this.setState({
           redirectTo: '/'
         });
-      } else {
-        console.log('duplicate');
       }
     });
   }
-  
-	render() {
-		if (this.state.redirectTo) {
-			return <Redirect to={{ pathname: this.state.redirectTo }} />
+
+  render () {
+    if (this.state.redirectTo) {
+      return <Redirect to={ { pathname: this.state.redirectTo } } />
     }
-    
-		return (
+
+    return (
       <Container>
         <Row>
           <Col size="md-3"></Col>
           <Col size="md-6">
             <Card title="Register for sipSpot">
-              <form style={{marginTop: 10}}>
+              <form style={ { marginTop: 10 } }>
                 <label htmlFor="username">First name: </label>
                 <Input
                   type="text"
                   name="firstName"
-                  value={this.state.firstName}
-                  onChange={this.handleChange}
+                  value={ this.state.firstName }
+                  onChange={ this.handleChange }
                 />
                 <label htmlFor="username">Last name: </label>
                 <Input
                   type="text"
                   name="lastName"
-                  value={this.state.lastName}
-                  onChange={this.handleChange}
+                  value={ this.state.lastName }
+                  onChange={ this.handleChange }
                 />
                 <label htmlFor="username">Username: </label>
                 <Input
                   type="text"
                   name="username"
-                  value={this.state.username}
-                  onChange={this.handleChange}
+                  value={ this.state.username }
+                  onChange={ this.handleChange }
                 />
                 <label htmlFor="password">Password: </label>
                 <Input
                   type="password"
                   name="password"
-                  value={this.state.password}
-                  onChange={this.handleChange}
+                  value={ this.state.password }
+                  onChange={ this.handleChange }
                 />
                 <label htmlFor="confirmPassword">Confirm Password: </label>
                 <Input
                   type="password"
                   name="confirmPassword"
-                  value={this.state.confirmPassword}
-                  onChange={this.handleChange}
+                  value={ this.state.confirmPassword }
+                  onChange={ this.handleChange }
                 />
-                <Link className="auth-button" to="/login">Login</Link><br/><Link className="auth-button"to="/">Use without login/register</Link>
-                <FormBtn onClick={this.handleSubmit}>Register</FormBtn>
-              </form> 
+                <Link className="auth-button" to="/login">Login</Link><br /><Link className="auth-button" to="/">Use without login/register</Link>
+                <FormBtn onClick={ this.handleSubmit }>Register</FormBtn>
+              </form>
             </Card>
           </Col>
           <Col size="md-3"></Col>
         </Row>
       </Container>
-		)
-	}
+    )
+  }
 }
 
 export default SignupForm;

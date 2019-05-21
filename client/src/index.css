@@ -21,6 +21,7 @@ p {
 }
 
 #superSip {
+  z-index: -99;
   position: relative;
   width: 70%;
   margin: -4%;
@@ -237,4 +238,17 @@ input[type='radio']:checked:after {
   display: inline-block;
   visibility: visible;
   border: 3px solid white;
+}
+
+table {}
+
+tr {
+  width: 100%;
+}
+
+th, td {
+  width: 50%;
+  text-align: center;
+  color: white;
+  text-shadow: 1px 1px 1px black;
 }

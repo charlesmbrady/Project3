@@ -7,7 +7,7 @@ import './Home.css';
 import API from "../../utils/API";
 import superSpot from '../../images/superSpot.gif';
 import AUTH from '../../utils/AUTH';
-import { List, ListItem } from "../../components/List";
+import { List } from "../../components/List";
 
 class Home extends Component {
   constructor(props) {
@@ -49,7 +49,7 @@ class Home extends Component {
         }));
       }
     };
-  }
+  };
 
   //Drink history summary
   drinkHistory = () => {
@@ -58,13 +58,13 @@ class Home extends Component {
     }).then(res => {
       //Begin calculate history summary based on date  
       let dateArr = [];
-      for (let i = 0; i < res.data[0].drinks.length; i++) {
-        dateArr.push((new Date(res.data[0].drinks[i].timeOfLastDrink).getMonth() + 1 + "/" +
-          new Date(res.data[0].drinks[i].timeOfLastDrink).getDate() + '/' +
-          new Date(res.data[0].drinks[i].timeOfLastDrink).getFullYear()));
+
+      for (let i = 0; i < res.data[ 0 ].drinks.length; i++) {
+        dateArr.push((new Date(res.data[ 0 ].drinks[ i ].timeOfLastDrink).getMonth() + 1 + "/" +
+          new Date(res.data[ 0 ].drinks[ i ].timeOfLastDrink).getDate() + '/' +
+          new Date(res.data[ 0 ].drinks[ i ].timeOfLastDrink).getFullYear()));
 
       }
-
       //remove duplicates dates
       dateArr.sort(function (a, b) { return a - b });
       let uniqueDate = dateArr.filter(function (item, pos) {
@@ -86,12 +86,11 @@ class Home extends Component {
           drinkSum.push({ dateOfDrink: dateOfDrink, count: count });
         }
       }
-
       //End of calculate history summary based on date
       this.setState({ drinks: drinkSum });
     })
       .catch(err => console.log(err));
-  }
+  };
 
   //grab previous drink info from db
   loadDrinks = (when) => {
@@ -121,9 +120,7 @@ class Home extends Component {
         counter++;
       }
       let zero = (counter / 60).toFixed(2);
-
       if (bac < 0.005) { zero = 0; }
-
       //add all db vars to state on mount
       this.setState({
         emergencyContactNumber: res.data[0].emergencyContactNumber, weight: res.data[0].weight,
@@ -142,11 +139,11 @@ class Home extends Component {
     this._isMounted = true;
     this.checkLocalStorageOnMount();
     this.watchLocation();
-  }
+  };
 
   componentWillUnmount() {
     this._isMounted = false;
-  }
+  };
 
   calculateBac(drink, time, weight, gender) {
     //calculate BAC(using 130lbs as generic weight and r=0.55 for conservative estimate if user does not give the data)
@@ -161,7 +158,7 @@ class Home extends Component {
     let elapsedTime = now - first;
     bac = (bac - (elapsedTime * 0.015)).toFixed(4);
     return bac;
-  }
+  };
 
   //update BAC every minute
   updateBac() {
@@ -176,7 +173,7 @@ class Home extends Component {
     let zero = (counter / 60).toFixed(2);
     if (bac < 0.005) { zero = 0; }
     this.setState({ bac, zero });
-  }
+  };
 
   drinkTracker = (e) => {
     if (this.state.addDrinkFlag !== 1) {
@@ -231,6 +228,14 @@ class Home extends Component {
         infoModal: !prevState.infoModal,
         infoModalBody: theInformation
       }));
+      setTimeout(function () {
+        try {
+          document.getElementById("btn-info").focus()
+        }
+        catch (err) {
+          console.log(err.message);
+        }
+      }, 500);
     } else {
       this.storeCheckinLocation();
     };
@@ -252,15 +257,15 @@ class Home extends Component {
       let emergencyContactNumber = localStorage.getItem("emergencyContactNumber");
       let isLoggedIn = localStorage.getItem("isLoggedIn");
       if (userPhoneNumber > 0) {
-        this.setState({ userPhoneNumber: userPhoneNumber }, () => { console.log("set userPhoneNumber from localStorage: " + this.state.userPhoneNumber); console.log("line 214 loaddrinks"); this.loadDrinks() });
+        this.setState({ userPhoneNumber: userPhoneNumber }, () => { this.loadDrinks() });
       }
       if (emergencyContactNumber > 0) {
-        this.setState({ emergencyContactNumber: emergencyContactNumber }, console.log("set emergencyContactNumber from localStorage: " + emergencyContactNumber));
+        this.setState({ emergencyContactNumber: emergencyContactNumber });
       }
       if (isLoggedIn === "true") {
-        this.setState({ isLoggedIn: true }, () => { console.log("isLoggedIn: " + this.state.isLoggedIn) });
+        this.setState({ isLoggedIn: true });
       } else {
-        this.setState({ isLoggedIn: false }, () => { console.log("isLoggedIn: " + this.state.isLoggedIn) });
+        this.setState({ isLoggedIn: false });
       }
     }
   };
@@ -453,7 +458,6 @@ class Home extends Component {
         emergencyContactNumber: this.state.emergencyContactNumber,
         password: this.state.password
       }).then(response => {
-        console.log("user: " + this.state.userPhoneNumber + ", emerg: " + this.state.emergencyContactNumber + ", pass: " + this.state.password);
         if (response.data.error !== 'Password does not match') {
           this.setState({
             isLoggedIn: true
@@ -463,7 +467,6 @@ class Home extends Component {
           localStorage.setItem("isLoggedIn", true);
         }
         if (response.data.error !== 'Phone number exists' && response.data.error !== 'Password does not match') {
-          console.log('youre registered');
           if (this.state.addDrinkFlag === 1) {
             this.drinkTracker();
           } else {
@@ -472,11 +475,21 @@ class Home extends Component {
             });
           }
         } else if (response.data.error === 'Phone number exists') {
-          console.log('duplicate');
           this.loadDrinks('on login');
         } else if (response.data.error === 'Password does not match') {
-          console.log('wrong password');
-          alert("Password does not match, Please enter the correct password");
+          const theInformation = "Password does not match. Please enter the correct password."
+          this.setState(prevState => ({
+            infoModal: !prevState.infoModal,
+            infoModalBody: theInformation
+          }));
+          setTimeout(function () {
+            try {
+              document.getElementById("btn-info").focus()
+            }
+            catch (err) {
+              console.log(err.message);
+            }
+          }, 500);
           this.setState({ userPhoneNumber: 0, emergencyContactNumber: 0 });
           localStorage.clear();
         }
@@ -494,6 +507,13 @@ class Home extends Component {
         return 0;
       }
       this.toggleAlerts();
+      AUTH.userUpdate({
+        userPhoneNumber: this.state.userPhoneNumber,
+        selfAlertThreshold: this.state.selfAlertThreshold,
+        emergencyAlertThreshold: this.state.emergencyAlertThreshold,
+      }).then(response => {
+        console.log("user info updated");
+      });
     }
 
     if (this.state.historyModal) {
@@ -502,44 +522,65 @@ class Home extends Component {
   };
 
   changePhoneNotification = () => {
-    console.log('change phone');
     const theInformation = "The only way to change your phone number is to Logout and then start fresh. If you do so, you will lose any drink history and settings you may have saved. For most people this is not a big deal; it is the only way to change your phone number."
     this.setState(prevState => ({
       infoModal: !prevState.infoModal,
       infoModalBody: theInformation
     }));
-  }
+    setTimeout(function () {
+      try {
+        document.getElementById("btn-info").focus()
+      }
+      catch (err) {
+        console.log(err.message);
+      }
+    }, 500);
+  };
 
   toggleAlerts = () => {
-    if (this.state.alertsModal === false) {
-      this.setState({ // close menu modal
-        modal: false
-      });
-    }
     this.setState(prevState => ({
-      alertsModal: !prevState.alertsModal
+      alertsModal: !prevState.alertsModal,
+      modal: false
     }));
+    setTimeout(function () {
+      try {
+        document.getElementById("btn-alerts").focus()
+      }
+      catch (err) {
+        console.log(err.message);
+      }
+    }, 500);
   }
 
   toggleHistory = () => {
-    console.log("toggling history");
     this.drinkHistory();
     this.setState(prevState => ({
       historyModal: !prevState.historyModal,
       modal: false
     }));
+    setTimeout(function () {
+      try {
+        document.getElementById("btn-history").focus()
+      }
+      catch (err) {
+        console.log(err.message);
+      }
+    }, 500);
   }
 
   toggleSettings = () => {
-    if (this.state.settingsModal === false) {
-      this.setState({ // close menu modal
-        modal: false
-      });
-    }
-    console.log('this too')
     this.setState(prevState => ({
-      settingsModal: !prevState.settingsModal
+      settingsModal: !prevState.settingsModal,
+      modal: false
     }));
+    setTimeout(function () {
+      try {
+        document.getElementById("btn-settings").focus()
+      }
+      catch (err) {
+        console.log(err.message);
+      }
+    }, 500);
   }
 
   togglePhone = () => {
@@ -551,20 +592,44 @@ class Home extends Component {
     this.setState(prevState => ({
       phoneModal: !prevState.phoneModal,
     }))
-  }
+    setTimeout(function () {
+      try {
+        document.getElementById("btn-phone").focus()
+      }
+      catch (err) {
+        console.log(err.message);
+      }
+    }, 500);
+  };
 
   toggleQuickstart = () => {
     document.activeElement.blur();
     this.setState(prevState => ({
       quickstartModal: !prevState.quickstartModal
     }))
-  }
+    setTimeout(function () {
+      try {
+        document.getElementById("btn-quickstart").focus()
+      }
+      catch (err) {
+        console.log(err.message);
+      }
+    }, 500);
+  };
 
   toggleInfoModal = () => {
     this.setState(prevState => ({
       infoModal: !prevState.infoModal
     }))
-  }
+    setTimeout(function () {
+      try {
+        document.getElementById("btn-info").focus()
+      }
+      catch (err) {
+        console.log(err.message);
+      }
+    }, 500);
+  };
 
   toggleLogout = () => { // doesn't really toggle, just logs out
     this.handleLogout();
@@ -619,7 +684,7 @@ class Home extends Component {
       drinks: [],
       addDrinkFlag: 0
     })
-  }
+  };
 
   render() {
     return (
@@ -639,10 +704,15 @@ class Home extends Component {
               <div id="title">sipSpot</div>
             </Col>
           </Row>
-          <Row>
+          <Row >
             <Col>
               <div id="test-display">test display</div>
-              <PostDrink drinks={this.state.numberOfDrinks[((this.state.numberOfDrinks).length) - 1]} bac={this.state.bac} zero={this.state.zero}></PostDrink>
+
+              <PostDrink drinks={ this.state.numberOfDrinks[ ((this.state.numberOfDrinks).length) - 1 ] } bac={ this.state.bac }
+               zero={ this.state.zero } modal={ this.state.modal } toggle={ this.state.toggle.bind(this) } 
+               toggleHistory={ this.toggleHistory } >
+              </PostDrink>
+
               <div>
                 <img id="superSip" src={superSpot} alt="super sip the beer bottle" width="40%" />
               </div>
@@ -651,16 +721,15 @@ class Home extends Component {
         </Container>
         <div className="bottombar">
 
-
-          {this.state.theCheckinLatitude === 0 ? (
-            <button className="cntrl-btn" data-test="controls-checkin" onClick={this.checkIn}>CheckIn</button>
+          { this.state.theCheckinLatitude === 0 ? (
+            <button className="cntrl-btn" data-test="controls-checkin" onClick={ this.checkIn }>CheckIn</button>
           ) : (
-              <button className="cntrl-btn" data-test="controls-checkin" onClick={this.checkOut}>ChkOut</button>
-            )}
+              <button className="cntrl-btn" data-test="controls-checkin" onClick={ this.checkOut }>ChkOut</button>
+            ) }
+          <button className="cntrl-btn" data-test="controls-drink" onClick={ this.drinkTracker }>+Drink</button>
+          <a id="uber-button" className="cntrl-btn" data-test="controls-uber" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location" target="_blank" rel="noopener noreferrer">Uber</a>
+          <button id="friends-button" className="cntrl-btn" data-test="controls-friends" onClick={ this.contactFriends }>Friends</button>
 
-          <button className="cntrl-btn" data-test="controls-drink" onClick={this.drinkTracker}>+Drink</button>
-          <a className="cntrl-btn" data-test="controls-uber" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location" target="_blank" rel="noopener noreferrer">Uber</a>
-          <button className="cntrl-btn" data-test="controls-friends" onClick={this.contactFriends}>Friends</button>
         </div>
         {/* Alerts Modal */}
         <Modal isOpen={this.state.alertsModal} toggleAlerts={this.toggleAlerts} className="alerts">
@@ -689,13 +758,13 @@ class Home extends Component {
                     className="form-control" id="drinkCountThreshold" placeholder="Ex. 5"></input>
                 </div>
                 <div className="button-container">
-                  <button type="submit" className="btn btn-style">Submit</button>
+                  <button id="btn-alerts" type="submit" className="btn btn-style">Submit</button>
                 </div>
               </form>
             </Container>
           </ModalBody>
           <ModalFooter>
-            {/* <Button color="secondary" onClick={ props.toggle }>Close</Button> */}
+
           </ModalFooter>
         </Modal>
         {/* History Modal */}
@@ -707,15 +776,25 @@ class Home extends Component {
               <p className="modal-text modal-text-shadow">History: The number of drinks you added using the "+Drink" button per day.</p>
               {this.state.drinks.length ? (
                 <List>
-                  {this.state.drinks.map((drink, index) => (
-                    <ListItem key={index}>
-                      Date: {drink.dateOfDrink}, Number Of Drinks: {drink.count}
-                    </ListItem>
-                  ))}
+
+                  <table>
+                    <tr>
+                      <th>Date</th>
+                      <th>Number of Drinks</th>
+                    </tr>
+                    { this.state.drinks.map((drink, index) => (
+                      <tr key={ index }>
+                        <td>{ drink.dateOfDrink }</td>
+                        <td>{ drink.count }</td>
+                      </tr>
+                    )) }
+                  </table>
                 </List>
               ) : (
-                  <h3 style={{ color: "yellow" }}>No Drink history to Display</h3>
-                )}
+                  <p className="modal-text modal-text-shadow">No drink history to display.</p>
+                ) }
+              <button id="btn-history" type="" className="btn btn-style" onClick={ this.toggleHistory }>OK</button>
+
             </Container>
           </ModalBody>
         </Modal>
@@ -771,14 +850,12 @@ class Home extends Component {
                     className="form-control" id="emergencyContactPhoneNumber" placeholder=""></input>
                 </div>
                 <div className="button-container">
-                  <button type="submit" className="btn btn-style">Submit</button>
+                  <button id="btn-settings" type="submit" className="btn btn-style">Submit</button>
                 </div>
               </form>
             </Container>
-          </ModalBody>
+          </ModalBody >
           <ModalFooter>
-            {/* <Button color="secondary" onClick={ props.toggle }>Close</Button>
-              Do we need this????? */ }
           </ModalFooter>
         </Modal>
         {/* Phone Modal */}
@@ -813,7 +890,7 @@ class Home extends Component {
                     className="form-control" id="settings-password" placeholder=""></input>
                 </div>
                 <div className="button-container">
-                  <button type="submit" className="btn btn-style">Submit</button>
+                  <button id="btn-phone" type="submit" className="btn btn-style">Submit</button>
                 </div>
               </form>
             </Container>
@@ -834,7 +911,8 @@ class Home extends Component {
               </ul>
               <p className="modal-text modal-text-shadow">*BAC stands for "Blood Alcohol Concentration". Properly calculating BAC requires a complicated equation and depends on accurate measures of a person's alcohol intake along with their weight and gender. While <em>sipSpot</em> can provide a more accurate BAC number if you enter your weight and gender in <em><strong>Settings</strong></em>, this number will always be a rough estimate. Please use the BAC readings in <em>sipSpot</em> as a <em>general guidance</em>. If in doubt, please call a friend for a ride or get an Uber.</p>
               <div className="button-container">
-                <button type="" className="btn btn-style" onClick={this.toggleQuickstart}>OK</button>
+                <button id="btn-quickstart" type="" className="btn btn-style" onClick={ this.toggleQuickstart }>OK</button>
+
               </div>
             </Container>
           </ModalBody>
@@ -847,7 +925,9 @@ class Home extends Component {
             <Container>
               <p className="modal-text">{this.state.infoModalBody}</p>
               <div className="button-container">
-                <button type="" className="btn btn-style" onClick={this.toggleInfoModal}>OK</button>
+                
+                <button id="btn-info" type="" className="btn btn-style" onClick={ this.toggleInfoModal }>OK</button>
+
               </div>
             </Container>
           </ModalBody>
@@ -855,6 +935,6 @@ class Home extends Component {
       </div>
     );
   }
-}
+};
 
 export default Home;

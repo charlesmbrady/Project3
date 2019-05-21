@@ -2,26 +2,25 @@ const db = require("../models");
 
 // Defining methods for the drinksController
 module.exports = {
-  findAll: function(req, res) {
-    console.log("here");console.log(req.body);
+  findAll: function (req, res) {
     db.Drink
       .find(req.query)
       .sort({ date: -1 })
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
-  findById: function(req, res) {
+  findById: function (req, res) {
     db.Drink
       .findById(req.params.id)
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
-  create: function(req, res) {
-    let drink={
+  create: function (req, res) {
+    let drink = {
       numberOfDrinks: req.body.numberOfDrinks,
-      bac: req.body.bac, 
-      timeOfLastDrink: req.body.timeOfLastDrink, 
-      latitude: req.body.latitude, 
+      bac: req.body.bac,
+      timeOfLastDrink: req.body.timeOfLastDrink,
+      latitude: req.body.latitude,
       longitude: req.body.longitude
     };
     db.Drink
@@ -35,13 +34,13 @@ module.exports = {
       })
       .catch(err => res.status(422).json(err));
   },
-  update: function(req, res) {
+  update: function (req, res) {
     db.Drink
       .findOneAndUpdate({ _id: req.params.id }, req.body)
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
-  remove: function(req, res) {
+  remove: function (req, res) {
     db.Drink
       .findById({ _id: req.params.id })
       .then(dbModel => dbModel.remove())
