@@ -416,7 +416,7 @@ class Home extends Component {
     event.preventDefault();
     if (this.state.settingsModal) {
       if (this.state.weight > 600 || this.state.weight < 65) {
-        const theInformation = "Make sure you have the correct weight in lbs"
+        const theInformation = "Please make sure you have enter the weight in pounds correctly."
         this.setState(prevState => ({
           infoModal: !prevState.infoModal,
           infoModalBody: theInformation
@@ -459,21 +459,31 @@ class Home extends Component {
         }, 500);
         return 0;
       }
-      if (String(this.state.emergencyContactNumber).length !== 10 || String(this.state.emergencyContactNumber).charAt(0) === '0' || String(this.state.emergencyContactNumber).charAt(0) === '1') {
-        const theInformation = "Emergency Contact Number must be 10 digits and must not start with 0 or 1. Please enter only your area code and phone number."
-        this.setState(prevState => ({
-          infoModal: !prevState.infoModal,
-          infoModalBody: theInformation
-        }));
-        setTimeout(function () {
-          try {
-            document.getElementById("btn-info").focus()
+      if (this.state.emergencyContactNumber.length > 0) { // emergency number is not required
+        const emergContactNumTemp = (this.state.emergencyContactNumber.replace(/\./g, '')).replace(/\-/g, '');
+        console.log(emergContactNumTemp);
+        if (emergContactNumTemp !== 10 || emergContactNumTemp.charAt(0) === '0' || emergContactNumTemp.charAt(0) === '1') {
+          const theInformation = "Emergency Contact Number must be 10 digits and must not start with 0 or 1. Please enter only your area code and phone number."
+          this.setState(prevState => ({
+            infoModal: !prevState.infoModal,
+            infoModalBody: theInformation
+          }));
+          setTimeout(function () {
+            try {
+              document.getElementById("btn-info").focus()
+            }
+            catch (err) {
+              console.log(err.message);
+            }
+          }, 500);
+          return 0;
+        } else {
+          if (emergContactNumTemp !== this.state.emergencyContactNumber) {
+            this.setState({
+              emergencyContactNumber: emergContactNumTemp
+            });
           }
-          catch (err) {
-            console.log(err.message);
-          }
-        }, 500);
-        return 0;
+        }
       }
       if (this.state.password.length < 4 || this.state.password.length > 10 || this.state.password.indexOf(" ") > -1) {
         const theInformation = "Password must be between 4 and 10 characters with no spaces. Please try again."
@@ -491,10 +501,13 @@ class Home extends Component {
         }, 500);
         return 0;
       }
-
+      let emergencyContactNumber = this.state.emergencyContactNumber;
+      if (emergContactNumTemp !== this.state.emergencyContactNumber) { // in case state not updated yet
+        emergencyContactNumber = emergContactNumTemp;
+      }
       AUTH.signup({
         userPhoneNumber: this.state.userPhoneNumber,
-        emergencyContactNumber: this.state.emergencyContactNumber,
+        emergencyContactNumber: emergencyContactNumber,
         password: this.state.password
       }).then(response => {
         if (response.data.error !== 'Password does not match') {
