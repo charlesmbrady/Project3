@@ -159,14 +159,12 @@ p {
   vertical-align: middle;
 }
 
-.menu-btn:hover, .topbar>a:hover, .topbar>button:hover, .bottombar>a:hover, .bottombar>button:hover {
-  background-color: #fff10a;
-  color: #121212;
+@media (hover: hover) {
+  .menu-btn:hover, .topbar>a:hover, .topbar>button:hover, .bottombar>a:hover, .bottombar>button:hover {
+    background-color: #fff10a;
+    color: #121212;
+  }
 }
-
-/*can we delete this?*/
-
-.menu-settings {}
 
 #how-to {
   color: white;
