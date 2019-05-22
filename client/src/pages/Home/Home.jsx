@@ -933,7 +933,7 @@ class Home extends Component {
           </ModalHeader>
           <ModalBody className="modal-body">
             <Container>
-              <p className="modal-text">Spot just needs two or three bits of info to help you. Your phone number so he can send you alerts (required), an optional emergency contact number so he can send them directions to your location if you're overdoing it, and a password so he can keep your information private (required).</p>
+              <p className="modal-text">Spot just needs two or three bits of info to help you. Your phone number so he can send you alerts (required). An optional emergency contact number so he can send that person directions to your location if you're overdoing it. And a password so he can keep your information private (required).</p>
               <form onSubmit={ this.handleFormSubmit }>
                 <div className="form-group">
                   <label className="form-check-label settings-label modal-text" for="settings-user-phone-number">Phone Number:</label>
@@ -973,10 +973,10 @@ class Home extends Component {
             <Container>
               <ul id="how-to" className="modal-text modal-text-shadow">
                 <li>Click <em><strong>CheckIn</strong></em> to keep track of where your stuff is (your credit card on a bar tab, your jacket, your friends). sipSpot uses GPS to note where you are when you Check In and then let you know if it looks like you're leaving the area. For some of us this is a great way to make sure we don't forget things!</li>
-                <li>Click <em><strong>+Drink</strong></em> to keep track of your drinks over time to get a rough estimate of your BAC*. sipSpot constantly updates your estimated BAC and hours-back-to-zero. Please remember that these numbers are only <strong>rough estimates</strong>.</li>
+                <li>Click <em><strong>+Drink</strong></em> each time you get a drink. sipSpot will keep track of your drinks over time to give you a rough estimate of your BAC*. sipSpot constantly updates your estimated BAC and hours-back-to-zero. Please remember that these numbers are only <strong>rough estimates</strong>.</li>
                 <li>Click <em><strong>Uber</strong></em> to get a safe ride home.</li>
-                <li>Click <em><strong>Friends</strong></em> to send a link to your location to friends. Invite them out to join you, or ask them for a ride!</li>
-                <li>Click <em><strong>Menu</strong></em> at the top left to change thresholds for Alerts, view History, or change your Settings.</li>
+                <li>Click <em><strong>Friends</strong></em> to send friends a link to your location. Invite them out to join you, or ask them for a ride!</li>
+                <li>Click <em><strong>Menu</strong></em> at the top left to change thresholds for Alerts, to view History, or to change your Settings.</li>
               </ul>
               <p className="modal-text modal-text-shadow">*BAC stands for "Blood Alcohol Concentration". Properly calculating BAC requires a complicated equation and depends on accurate measures of a person's alcohol intake along with their weight and gender. While <em>sipSpot</em> can provide a more accurate BAC number if you enter your weight and gender in <em><strong>Settings</strong></em>, this number will always be a rough estimate. Please use the BAC readings in <em>sipSpot</em> as a <em>general guidance</em>. If in doubt, please call a friend for a ride or get an Uber.</p>
               <div className="button-container">
